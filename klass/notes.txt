@@ -1,0 +1,35 @@
+# Lag ny kolonne med navn fra koder
+- kode + navn - klassifikasjon
+- "merge sammen"?
+- Ny kolonne med navn replace/merge/map
+- Vil gjerne beholde begge deler
+
+# Hente alle source/target-kolonner i korrespondanser og minimere selv?
+- Korrespondansetabell
+- 1 kolonne til som Sebastian ønsket "sourceCode, sourceName, targetCode, targetName"
+
+# Hente riktig korrespondanse etter dato
+- Henter nå på id
+- Men vil hente "på dato" utifra
+- "correspondsAt" fra API-beskrivelsen, må da "ut" til to klassifikasjoner som korresponderer på ett tidspunkt
+- Viktig med retning "fra" og "til" for dette blir forskjellig
+- sjekke om det finnes, evt. prøve noen "bytter" for å se om man "finner noe"
+
+# Kan funksjoner kombineres med parameter som bytting mellom ulike API-kall, eller er de for ulike i parameter-utvalg?
+
+# Smartere leting gjennom dataframe etter hva man er ute etter, så man slipper å definere "levels"
+
+# Kombinere over-rader i hierarkier til ulike nivåer (se punkt 2)
+"output-style" i Rklass, programmert selv?
+
+# https - automatisk putte inn s
+
+# validate_date smartere henting av år
+- hente ut på bare år, eller bare år og måned 
+- bare sette til 01.01 og gi varsel?
+- sjekke om det bare finnes en innenfor år / , og så plukke den
+
+# Andre utformater enn pandas
+
+# Eksempler på fungerende kode i docstrings
+doctest - teste doctests
