@@ -1,6 +1,6 @@
 import requests
 from functools import lru_cache
-from load_config import BASE_URL
+from .load_config import BASE_URL
 
 # As these functions are used by the validate functions also,
 # they are in their own file to avoid circular imports

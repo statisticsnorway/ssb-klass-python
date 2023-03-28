@@ -3,9 +3,9 @@ import pandas as pd
 import dateutil.parser
 from datetime import timezone, timedelta
 
-from load_config import BASE_URL, HEADERS
-from validate import validate_params
-from sections import sections_dict
+from .load_config import BASE_URL, HEADERS
+from .validate import validate_params
+from .sections import sections_dict
 
 # ##########
 # GENERAL #

@@ -1,6 +1,7 @@
 import toml
+import os
 
-config = toml.load("klass_config.toml")
+config = toml.load(os.path.abspath("klass/klass_config.toml"))
 
 LANGUAGES = config["LANGUAGES"]
 

@@ -1,7 +1,7 @@
 from datetime import datetime
 
-from load_config import LANGUAGES
-from sections import sections_dict
+from .load_config import LANGUAGES
+from .sections import sections_dict
 
 
 def validate_params(params: dict) -> dict:
