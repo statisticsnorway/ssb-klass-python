@@ -1,9 +1,11 @@
 [tool.poetry]
 name = "ssb-klass-python"
-version = "0.1.0"
+version = "0.0.1"
 description = "A Python package built on top of KLASS's API for retrieving classifications, codes, correspondances etc."
 authors = ["Carl Corneil <cfc@ssb.no>"]
 license = "MIT"
+readme = "README.md"
+packages = [{include = "klass"}]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.11"
