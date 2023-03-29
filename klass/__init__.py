@@ -11,6 +11,7 @@ local_imports = {
                        "corresponds", "corresponds_at", "correspondance_table_by_id", 
                        "changes", "classificationfamilies", "classificationfamilies_by_id"], 
     "classification": ["KlassClassification"],
+    "sections": ["sections_list", "sections_dict"],
 }
 
 # Loop that imports local files into this namespace and appends to __all__ for star imports
