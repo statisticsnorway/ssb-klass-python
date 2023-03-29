@@ -13,6 +13,7 @@ local_imports = {
     "classes.codes": ["KlassCodes"],
     "classes.correspondance": ["KlassCorrespondance"],
     "classes.classification": ["KlassClassification"],
+    "classes.family": ["KlassClassificationFamily"],
     "classes.search": ["KlassSearchVariants", "KlassSearchClassifications", "KlassSearchClassificationFamilies"],
     "requests.sections": ["sections_list", "sections_dict"],
     "classes.variant": ["KlassVariant"],
