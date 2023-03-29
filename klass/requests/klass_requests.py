@@ -3,7 +3,7 @@ import pandas as pd
 import dateutil.parser
 from datetime import timezone, timedelta
 
-from .load_config import BASE_URL, HEADERS
+from ..klass_config import BASE_URL, HEADERS
 from .validate import validate_params
 from .sections import sections_dict
 
@@ -17,6 +17,7 @@ def get_json(url, params):
     #print(req.url, req.headers, req.params)
     print("Full URL, check during testing:", req.prepare().url)
     response = requests.Session().send(req.prepare())
+    response.raise_for_status()
     #print(response.text)
     return response.json()
 
@@ -166,7 +167,7 @@ def variant(classification_id: str,
         params["to"] = convert_datestring(to_date, "yyyy-mm-dd")
     params = validate_params({k: v for k, v in params.items() if v != ""})
     print(params)
-    return convert_return_type(get_json(url, params)["codes"], return_type)
+    return convert_return_type(get_json(url, params), return_type)
 
 
 def variant_at(classification_id: str,
@@ -190,10 +191,10 @@ def variant_at(classification_id: str,
         'includeFuture': include_future,
     }
     params = validate_params({k: v for k, v in params.items() if v != ""})
-    return convert_return_type(get_json(url, params)["codes"], return_type)
+    return convert_return_type(get_json(url, params), return_type)
 
 
-def variant_by_id(variant_id: str,
+def variants_by_id(variant_id: str,
                   language: str = "nb",
                   return_type: str = "json"
                   ):

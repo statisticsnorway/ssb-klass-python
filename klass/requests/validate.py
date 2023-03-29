@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from .load_config import LANGUAGES
+from ..klass_config import LANGUAGES
 from .sections import sections_dict
 
 
