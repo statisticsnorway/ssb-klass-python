@@ -1,22 +1,27 @@
 from ..requests.klass_requests import classification_by_id
+from .correspondance import KlassCorrespondance
 from .version import KlassVersion
 
-class KlassClassification:
 
+
+class KlassClassification:
 
     def __init__(self, 
                  classification_id: str,
                  language: str = "nb",
                  include_future: bool = False):
         self.classification_id = classification_id
+        self.selected_language = language
+        self.selected_future = include_future
+        
         for key, value in classification_by_id(classification_id,
                                                language=language,
                                                include_future=include_future).items():
             setattr(self, key, value)
+        
         version_replace = []
         for ver in self.versions:
-            ver["version_id"] = int(ver["_links"]["self"]["href"].split("/")[-1])
-            version_replace.append(ver)
+            version_replace.append({"version_id": int(ver["_links"]["self"]["href"].split("/")[-1]), **ver})
         self.versions = version_replace
 
 
@@ -35,6 +40,34 @@ class KlassClassification:
         """
         return result
     
+    def __repr__(self):
+        result = f"KlassClassification(classification_id='{self.classification_id}', "
+        if self.selected_language != "nb":
+            result += f"language='{self.selected_language}', "
+        if self.selected_future:
+            result += "include_future=True, "
+        result += ")"
+        return result
+    
     @staticmethod
-    def get_version(version_id):
+    def get_version(version_id) -> KlassVersion:
         return KlassVersion(version_id)
+
+    
+    def get_correspondance_to(target_classification_id: str,
+                              from_date: str,
+                              to_date: str = "",
+                              language: str = "",
+                              include_future: bool = None,
+                             ) -> KlassCorrespondance:
+        if language == "":
+            language = self.selected_language
+        if include_future is None:
+            include_future = self.selected_future
+        return KlassCorrespondance(source_classification_id=self.classification_id,
+                                   target_classification_id=target_classification_id,
+                                   from_date=from_date,
+                                   to_date=to_date,
+                                   language=language,
+                                   include_future=include_future,
+                                  )
