@@ -89,7 +89,9 @@ def codes(classification_id: str,
           presentation_name_pattern: str = "",
           language: str = "nb",
           include_future: bool = False,
-          return_type: str = "pandas") -> pd.DataFrame:
+          return_type: str = "pandas",
+          wide: bool = False
+         ) -> pd.DataFrame:
     url = BASE_URL + "classifications/" + str(classification_id) + "/codes"
     from_date = convert_datestring(from_date, "yyyy-mm-dd")
     params = {
@@ -104,7 +106,9 @@ def codes(classification_id: str,
         params["to"] = convert_datestring(to_date)
         params["to"] = to_date
     params = validate_params({k: v for k, v in params.items() if v != ""})
-    return convert_return_type(get_json(url, params)["codes"], return_type)
+    df_long = convert_return_type(get_json(url, params)["codes"], return_type)
+    if wide: return to_wide(df_long)
+    else: return df_long
 
 
 def codes_at(classification_id: str,
@@ -114,7 +118,9 @@ def codes_at(classification_id: str,
              presentation_name_pattern: str = "",
              language: str = "nb",
              include_future: bool = False,
-             return_type: str = "pandas"):
+             return_type: str = "pandas",
+             wide: bool = False
+             ):
     url = BASE_URL + "classifications/" + str(classification_id) + "/codesAt"
     date = convert_datestring(date, "yyyy-mm-dd")
     params = {
@@ -126,7 +132,41 @@ def codes_at(classification_id: str,
         'includeFuture': include_future,
     }
     params = validate_params({k: v for k, v in params.items() if v != ""})
-    return convert_return_type(get_json(url, params)["codes"], return_type)
+    df_long = convert_return_type(get_json(url, params)["codes"], return_type)
+    if wide: return to_wide(df_long)
+    else: return df_long
+
+
+def to_wide(df_raw: pd.DataFrame) -> pd.DataFrame:
+    """
+    This function converts from long to wide data format. The level codes are
+    preserved in the column names. Use this to get a dataframe where all rows
+    are entries in the highest levels.
+    """
+    
+    df_raw = df_raw[['code', 'parentCode', 'level', 'name']]
+    
+    lowest_level = int(df_raw.level.unique().max())
+    df_list = []
+    for i in range(1, lowest_level+1):
+        temp = df_raw[df_raw['level'] == f'{i}'].copy()
+        temp.columns = [f'code_{i}', f'parentCode_{i}', 'level', f'name_{i}']
+        temp = temp.drop(columns=['level'])
+        df_list.append(temp)
+    df_wide = df_list[0].copy()
+
+    for i in range(0, len(df_list)-1):
+        this_lvl = i + 1
+        child_lvl = i + 2
+
+        df_wide = pd.merge(
+             df_wide,
+             df_list[i+1],
+             how='left',
+             left_on=f'code_{this_lvl}',
+             right_on=f'parentCode_{child_lvl}'
+        )
+    return df_wide
 
 
 def version_by_id(version_id: str,
