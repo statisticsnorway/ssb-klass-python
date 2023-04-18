@@ -1,5 +1,6 @@
 from ..requests.klass_requests import classification_by_id
 from .correspondance import KlassCorrespondance
+from .variant import KlassVariant
 from .version import KlassVersion
 from .codes import KlassCodes
 
@@ -54,6 +55,12 @@ class KlassClassification:
     @staticmethod
     def get_version(version_id) -> KlassVersion:
         return KlassVersion(version_id)
+    
+    def get_variants() -> list[KlassVariant]:
+        pass
+    
+    def get_variant() -> KlassVariant:
+        pass
 
     def get_correspondance_to(target_classification_id: str,
                               from_date: str,
