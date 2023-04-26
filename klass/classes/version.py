@@ -35,7 +35,7 @@ class KlassVersion:
         """
         return result
     
-    def classification_codes(self, select_level: int = 0):
+    def get_classification_codes(self, select_level: int = 0):
         data = pd.json_normalize(self.classificationItems)
         level_map = {str(item["levelNumber"]): item["levelName"] for item in self.levels}
         level_map_reverse = {v: k for k, v in level_map.items()}

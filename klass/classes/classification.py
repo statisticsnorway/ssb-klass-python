@@ -45,9 +45,9 @@ class KlassClassification:
 
     def __repr__(self):
         result = f"KlassClassification(classification_id='{self.classification_id}', "
-        if self.selected_language != "nb":
-            result += f"language='{self.selected_language}', "
-        if self.selected_future:
+        if self.language != "nb":
+            result += f"language='{self.language}', "
+        if self.include_future:
             result += "include_future=True, "
         result += ")"
         return result
@@ -69,9 +69,9 @@ class KlassClassification:
                               include_future: bool = None,
                              ) -> KlassCorrespondance:
         if language == "":
-            language = self.selected_language
+            language = self.language
         if include_future is None:
-            include_future = self.selected_future
+            include_future = self.include_future
         return KlassCorrespondance(source_classification_id=self.classification_id,
                                    target_classification_id=target_classification_id,
                                    from_date=from_date,
