@@ -1,5 +1,5 @@
 from ..requests.klass_requests import codes, codes_at
-
+from datetime import datetime
 
 class KlassCodes():
     def __init__(self, 
@@ -12,6 +12,8 @@ class KlassCodes():
                  language: str = "nb",
                  include_future: bool = False):
         self.classification_id = classification_id
+        if not from_date:
+            from_date = datetime.now().strftime("%Y-%m-%d")
         self.from_date = from_date
         self.to_date = to_date
         self.select_codes = select_codes
@@ -52,6 +54,31 @@ class KlassCodes():
         return result
 
     def get_codes(self):
+        """
+        Retrieve codes from the classification specified by self.classification_id.
+
+        If self.to_date is not None, codes will be retrieved from the date range specified
+        by self.from_date and self.to_date. Otherwise, codes will be retrieved only for
+        the date specified by self.from_date.
+
+        Parameters
+        ----------
+        self : object
+            Instance of a class containing classification_id, from_date, to_date,
+            select_codes, select_level, presentation_name_pattern, language,
+            and include_future attributes.
+
+        Returns
+        -------
+        data : object
+            Object containing retrieved codes, with properties dependent on the API
+            used to retrieve them.
+
+        Raises
+        ------
+        Any exceptions raised by the codes() or codes_at() functions called within
+        this method.
+        """
         if self.to_date:
             self.data = codes(classification_id=self.classification_id,
                                  from_date=self.from_date,
@@ -71,4 +98,6 @@ class KlassCodes():
                               language=self.language,
                               include_future=self.include_future,
                              )
-        
+    
+    def wide_data(self):
+        return self.data.pivot_table("level")

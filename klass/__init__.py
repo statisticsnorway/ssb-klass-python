@@ -13,11 +13,12 @@ local_imports = {
     "classes.codes": ["KlassCodes"],
     "classes.correspondance": ["KlassCorrespondance"],
     "classes.classification": ["KlassClassification"],
-    "classes.family": ["KlassClassificationFamily"],
-    "classes.search": ["KlassSearchVariants", "KlassSearchClassifications", "KlassSearchClassificationFamilies"],
+    "classes.family": ["KlassFamily"],
+    "classes.search": ["KlassSearchClassifications", "KlassSearchFamilies"],
     "requests.sections": ["sections_list", "sections_dict"],
-    "classes.variant": ["KlassVariant"],
+    "classes.variant": ["KlassVariant", "KlassVariantCodes"],
     "classes.version": ["KlassVersion"],
+    "utility.codes": ["get_codes"],
 }
 
 # Loop that imports local files into this namespace and appends to __all__ for star imports
