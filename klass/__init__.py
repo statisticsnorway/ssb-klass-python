@@ -18,6 +18,7 @@ local_imports = {
     "requests.sections": ["sections_list", "sections_dict"],
     "classes.variant": ["KlassVariant", "KlassVariantCodes"],
     "classes.version": ["KlassVersion"],
+    "utility.codes": ["get_codes"],
 }
 
 # Loop that imports local files into this namespace and appends to __all__ for star imports
