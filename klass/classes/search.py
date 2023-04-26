@@ -28,7 +28,7 @@ class KlassSearchClassifications():
         return KlassClassification(classification_id)
 
 
-class KlassSearchClassificationFamilies():
+class KlassSearchFamilies():
     def __init__(self,
                  ssbsection: str = "",
                  include_codelists: bool = False,
