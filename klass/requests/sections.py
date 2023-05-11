@@ -1,8 +1,5 @@
 from functools import lru_cache
-
-import requests
-
-from ..klass_config import BASE_URL
+from ..klass_config import KlassConfig
 
 
 # As these functions are used by the validate functions also,
@@ -11,7 +8,7 @@ from ..klass_config import BASE_URL
 
 @lru_cache(maxsize=1)
 def sections_list() -> list:
-    url = BASE_URL + "/ssbsections"
+    url = KlassConfig().BASE_URL + '/ssbsections'
     response = requests.get(url).json()
     sections = [x["name"] for x in response["_embedded"]["ssbSections"]]
     return sections
