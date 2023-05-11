@@ -1,6 +1,6 @@
-import requests
 from functools import lru_cache
 from ..klass_config import KlassConfig
+
 
 # As these functions are used by the validate functions also,
 # they are in their own file to avoid circular imports
