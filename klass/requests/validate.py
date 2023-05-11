@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from ..klass_config import LANGUAGES
+from ..klass_config import KlassConfig
 from .sections import sections_dict
 
 
@@ -39,7 +39,7 @@ def validate_date(date: str) -> str:
 
 def validate_language(language: str) -> str:
     language = language.lower()
-    if language not in LANGUAGES:
+    if language not in KlassConfig().LANGUAGES:
         raise ValueError(f"Specify one of the valid languages: {', '.join(LANGUAGES)}")
     return language
 
