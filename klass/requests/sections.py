@@ -1,6 +1,9 @@
-import requests
 from functools import lru_cache
+
+import requests
+
 from ..klass_config import BASE_URL
+
 
 # As these functions are used by the validate functions also,
 # they are in their own file to avoid circular imports
@@ -8,7 +11,7 @@ from ..klass_config import BASE_URL
 
 @lru_cache(maxsize=1)
 def sections_list() -> list:
-    url = BASE_URL + '/ssbsections'
+    url = BASE_URL + "/ssbsections"
     response = requests.get(url).json()
     sections = [x["name"] for x in response["_embedded"]["ssbSections"]]
     return sections

@@ -25,7 +25,7 @@
 # https - automatisk putte inn s
 
 # validate_date smartere henting av år
-- hente ut på bare år, eller bare år og måned 
+- hente ut på bare år, eller bare år og måned
 - bare sette til 01.01 og gi varsel?
 - sjekke om det bare finnes en innenfor år / , og så plukke den
 
@@ -33,3 +33,6 @@
 
 # Eksempler på fungerende kode i docstrings
 doctest - teste doctests
+
+
+# Ulik temporalitet / kodelister innad i datasett?
