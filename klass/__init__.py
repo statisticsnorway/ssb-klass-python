@@ -20,6 +20,7 @@ local_imports = {
     "classes.version": ["KlassVersion"],
     "utility.codes": ["get_codes"],
     "utility.classification": ["get_classification"],
+    "klass_config": ["KlassConfig"],
 }
 
 # Loop that imports local files into this namespace and appends to __all__ for star imports
