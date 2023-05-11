@@ -9,12 +9,30 @@ class KlassSearchClassifications:
         self.query = query
         self.include_codelists = include_codelists
         self.ssbsection = ssbsection
+        
+        # If you enter a number, replace with name of the classification
+        if query.isdigit() and query != "":
+            result = KlassClassification(query)
+            print(result.name)
+            self.query = "".join([c for c in result.name if c.isalnum() or c == " "])
+        elif not self.query and self.ssbsection:
+            self.query= " "
+        
+        print(self.query, self.ssbsection)
+        
         result = classification_search(
             query=self.query,
             include_codelists=self.include_codelists,
             ssbsection=self.ssbsection,
         )
-        self.classifications = result["_embedded"]["searchResults"]
+        print(result)
+        if "_embedded" in result.keys():
+            self.classifications = result["_embedded"]["searchResults"]
+        elif "searchResults" in result.keys():
+            self.classifications = result["searchResults"]
+        else:
+            self.classifications = [result]
+
         self.links = result["_links"]
         classification_replace = []
         for cl in self.classifications:
@@ -23,6 +41,7 @@ class KlassSearchClassifications:
                 **cl,
             }
             classification_replace.append(cl)
+
         self.classifications = classification_replace
 
     @staticmethod

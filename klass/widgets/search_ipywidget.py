@@ -8,15 +8,10 @@ def search_classification():
         nonlocal section_dropdown
         nonlocal search_result
         
-        if not search_term.value:
-            search_term_value = "1"
-        else:
-            search_term_value = search_term.value
-        
         if section_dropdown.value != "Choose...":
-            search_class = KlassSearchClassifications(search_term_value, ssbsection=section_dropdown.value)
+            search_class = KlassSearchClassifications(search_term.value, ssbsection=section_dropdown.value)
         else:
-            search_class = KlassSearchClassifications(search_term_value)
+            search_class = KlassSearchClassifications(search_term.value)
         search_content = ""
         for cl in search_class.classifications:
             var_name = (cl["name"]

@@ -1,4 +1,5 @@
 from ..requests.klass_requests import correspondance_table_by_id, corresponds
+import pandas as pd
 
 
 class KlassCorrespondance:
@@ -21,11 +22,11 @@ class KlassCorrespondance:
         self.include_future = include_future
 
         if correspondance_id:
-            json_content = correspondance_table_by_id(
+            self.data = correspondance_table_by_id(
                 correspondance_id, language=language
             )
         elif source_classification_id and target_classification_id and from_date:
-            json_content = corresponds(
+            self.data = corresponds(
                 source_classification_id=source_classification_id,
                 target_classification_id=target_classification_id,
                 from_date=from_date,
@@ -35,13 +36,11 @@ class KlassCorrespondance:
             )
         else:
             raise ValueError(
-                "Please set correspondance ID, or source and target classification IDs"
+                "Please set correspondance ID, or source and target classification IDs + from_date"
             )
-        for key, value in json_content.items():
-            setattr(self, key, value)
 
     def __str__(self):
-        return self.__dict__
+        return str(self.__dict__)
 
     def __repr__(self):
         result = "KlassCorrespondance("

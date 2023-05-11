@@ -4,7 +4,7 @@ import dateutil.parser
 import pandas as pd
 import requests
 
-from ..klass_config import BASE_URL, HEADERS
+from ..klass_config import KlassConfig
 from .sections import sections_dict
 from .validate import validate_params
 
@@ -170,7 +170,7 @@ def variant(classification_id: str,
         params["to"] = convert_datestring(to_date, "yyyy-mm-dd")
     params = validate_params({k: v for k, v in params.items() if v != ""})
     print(params)
-    return convert_return_type(get_json(url, params), return_type)
+    return convert_return_type(get_json(url, params)["codes"], return_type)
 
 
 def variant_at(classification_id: str,
@@ -194,7 +194,7 @@ def variant_at(classification_id: str,
         "includeFuture": include_future,
     }
     params = validate_params({k: v for k, v in params.items() if v != ""})
-    return convert_return_type(get_json(url, params), return_type)
+    return convert_return_type(get_json(url, params)["codes"], return_type)
 
 
 def variants_by_id(variant_id: str,

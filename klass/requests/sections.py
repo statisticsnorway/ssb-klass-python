@@ -1,5 +1,6 @@
 from functools import lru_cache
 from ..klass_config import KlassConfig
+import requests
 
 
 # As these functions are used by the validate functions also,
