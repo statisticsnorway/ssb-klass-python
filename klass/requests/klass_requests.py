@@ -3,7 +3,7 @@ import pandas as pd
 import dateutil.parser
 from datetime import timezone, timedelta
 
-from ..klass_config import BASE_URL, HEADERS
+from ..klass_config import BASE_URL, HEADERS, TESTING
 from .validate import validate_params
 from .sections import sections_dict
 
@@ -14,11 +14,10 @@ from .sections import sections_dict
 
 def get_json(url, params):
     req = requests.Request("GET", url=url, headers=HEADERS, params=params)
-    #print(req.url, req.headers, req.params)
-    print("Full URL, check during testing:", req.prepare().url)
+    if TESTING:
+        print("Full URL, check during testing:", req.prepare().url)
     response = requests.Session().send(req.prepare())
     response.raise_for_status()
-    #print(response.text)
     return response.json()
 
 

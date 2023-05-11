@@ -3,5 +3,4 @@ BASE_URL = "https://data.ssb.no/api/klass/v1/"
 HEADERS = {
     "Accept": 'application/json',
 }
-
-
+TESTING = False
