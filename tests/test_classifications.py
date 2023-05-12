@@ -3,7 +3,7 @@ from unittest import mock
 import requests
 from klass import KlassClassification
 from klass.requests import klass_requests
-import mock_responses
+from tests import mock_responses
 
 
 @mock.patch.object(requests.Session, "send")
