@@ -11,7 +11,7 @@ Where data is possible to fit into pandas DataFrames, this will be preferred, bu
 ```python
 from klass import search_classification
 # Opens a ipywidget in notebooks for searching for classifications and copying code, to get started
-search_classification()  
+search_classification(no_dupes=True)
 ```
 
 ```python
