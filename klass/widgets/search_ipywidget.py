@@ -45,7 +45,7 @@ def search_classification(no_dupes=True):
                     )
                     text = f"""from klass import KlassClassification\\n{var_name} = KlassClassification({cl["classification_id"]})\\n{var_name}.get_codes().data"""
                     var_name = "klass" + str(cl["classification_id"])
-                    search_content += f"""<button onclick="navigator.clipboard.writeText('{text}')">Copy code</button> {cl["classification_id"]} - {cl["name"]}<br />"""
+                    search_content += f"""<button class="classification_copy_code" onclick="navigator.clipboard.writeText('{text}')">Copy code</button> {cl["classification_id"]} - {cl["name"]}<br />"""
             else:
                 search_content = "Found no matching classifications."
         except Exception as e:
@@ -64,12 +64,14 @@ def search_classification(no_dupes=True):
     )
     search_button = widgets.Button(description="Search")
     search_button.on_click(do_search)
-
+    html_header = widgets.HTML(
+        value="<style>button.classification_copy_code:active {opacity: 30%;} button.classification_copy_code:hover {opacity: 80%;}</style>"
+    )
     search_result = widgets.Output()
 
     return widgets.VBox(
         [
-            widgets.HBox([search_term, section_dropdown, search_button]),
+            widgets.HBox([html_header, search_term, section_dropdown, search_button]),
             widgets.HBox([search_result]),
         ]
     )
