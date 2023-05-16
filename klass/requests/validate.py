@@ -77,7 +77,7 @@ def validate_presentation_name_patterns(pattern: str) -> str:
 
 def validate_alnum_spaces(variant_name: str) -> str:
     check = variant_name.replace(" ", "")
-    print(f"{check=}")
+    #print(f"{check=}")
     if not check in ["", " "] and not check.isalnum() :
         raise ValueError(
             "Expecting variant name to only include numbers, characters and spaces..."

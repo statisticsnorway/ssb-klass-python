@@ -16,3 +16,4 @@ class KlassConfig(Singleton):
             "Accept": 'application/json',
         }
         self.TESTING = False
+        self.MOCKING = False
