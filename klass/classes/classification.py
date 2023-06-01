@@ -84,6 +84,9 @@ class KlassClassification:
         self,
         from_date: str = "",
         to_date: str = "",
+        select_codes: str = "",
+        select_level: str = "",
+        presentation_name_pattern: str = "",
         language: str = "",
         include_future: bool = None,
     ) -> KlassCodes:
@@ -97,6 +100,9 @@ class KlassClassification:
             classification_id=self.classification_id,
             from_date=from_date,
             to_date=to_date,
+            select_codes=select_codes,
+            select_level=select_level,
+            presentation_name_pattern=presentation_name_pattern,
             language=language,
             include_future=include_future,
         )
