@@ -20,4 +20,4 @@ def klass_classification_success(test_classification_by_id):
 @mock.patch("klass.classes.search.classification_search")
 def klass_classification_search_success(test_classification_search):
     test_classification_search.return_value = classification_search_success()
-    return klass.KlassSearchClassification("Nus")
+    return klass.KlassSearchClassifications("Nus")

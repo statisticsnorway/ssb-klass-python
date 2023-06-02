@@ -37,7 +37,7 @@ def classification_search_fake_content():
         """{"_embedded": {"searchResults": [{"name": "Standard for mocking tests",
     "snippet": "<strong>1</strong> - Mann 2 - Kvinne",
     "searchScore": 1.1026883125305176,
-    "_links": {"self": {"href": "https://data.ssb.no/api/klass/v1/classifications/0"}}},]},
+    "_links": {"self": {"href": "https://data.ssb.no/api/klass/v1/classifications/0"}}}]},
  "_links": {"first": {"href": "https://data.ssb.no/api/klass/v1/classifications/search?query=1&includeCodelists=false&page=0&size=20"},
   "self": {"href": "https://data.ssb.no/api/klass/v1/classifications/search?query=1&includeCodelists=false"},
   "next": {"href": "https://data.ssb.no/api/klass/v1/classifications/search?query=1&includeCodelists=false&page=0&size=20"},
