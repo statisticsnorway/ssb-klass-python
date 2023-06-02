@@ -1,3 +1,4 @@
+from collections import defaultdict
 from datetime import datetime
 
 from ..requests.klass_requests import codes, codes_at
@@ -105,6 +106,23 @@ class KlassCodes:
                 language=self.language,
                 include_future=self.include_future,
             )
+
+    def to_dict(
+        self,
+        key: str = "code",
+        value: str = "",  # default is "name" if not set
+        other: str = "",
+    ) -> dict | defaultdict:
+        if not value:
+            # If you bothered specifying a pattern, we assume you want it
+            if self.presentation_name_pattern:
+                value = "presentationName"
+            else:
+                value = "name"
+        mapping = dict(zip(self.data[key], self.data[value]))
+        if other:
+            mapping = defaultdict(lambda: other, mapping)
+        return mapping
 
     def wide_data(self):
         return self.data.pivot_table("level")

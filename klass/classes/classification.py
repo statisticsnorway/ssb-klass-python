@@ -1,4 +1,6 @@
-from ..requests.klass_requests import classification_by_id
+import pandas as pd
+
+from ..requests.klass_requests import changes, classification_by_id
 from .codes import KlassCodes
 from .correspondance import KlassCorrespondance
 from .variant import KlassVariant
@@ -103,6 +105,21 @@ class KlassClassification:
             select_codes=select_codes,
             select_level=select_level,
             presentation_name_pattern=presentation_name_pattern,
+            language=language,
+            include_future=include_future,
+        )
+
+    def get_changes(
+        self,
+        from_date: str,
+        to_date: str = "",
+        language: str = "nb",
+        include_future: bool = False,
+    ) -> pd.DataFrame:
+        return changes(
+            classification_id=self.classification_id,
+            from_date=from_date,
+            to_date=from_date,
             language=language,
             include_future=include_future,
         )

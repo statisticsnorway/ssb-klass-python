@@ -21,7 +21,7 @@ class KlassVariant:
         return df
 
 
-class KlassVariantCodes:
+class KlassVariantsSearch:
     def __init__(
         self,
         classification_id: str,
@@ -65,3 +65,13 @@ class KlassVariantCodes:
             )
         for key, value in result.items():
             setattr(self, key, value)
+
+        @staticmethod
+        def get_variant(
+            variant_id: str,
+            language: str = "nb",
+        ) -> KlassVariant:
+            return KlassVariant(
+                variant_id=variant_id,
+                language=language,
+            )
