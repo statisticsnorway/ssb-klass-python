@@ -119,7 +119,7 @@ class KlassClassification:
         return changes(
             classification_id=self.classification_id,
             from_date=from_date,
-            to_date=from_date,
+            to_date=to_date,
             language=language,
             include_future=include_future,
         )

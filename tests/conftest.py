@@ -8,11 +8,14 @@ import tests.mock_request_functions as mock_returns
 
 @pytest.fixture
 @mock.patch("klass.classes.classification.classification_by_id")
-@mock.patch("klass.classes.classification.changes")
+@mock.patch.object(klass.KlassClassification, "get_changes")
 def klass_classification_success(test_changes, test_classification_by_id):
     test_changes.return_value = mock_returns.changes_success()
     test_classification_by_id.return_value = mock_returns.classification_by_id_success()
-    return klass.KlassClassification("0")
+    result = klass.KlassClassification("0")
+    # Why do I have to hack it like this :( IM SORRY OK
+    result.get_changes = test_changes
+    return result
 
 
 @pytest.fixture

@@ -141,7 +141,7 @@ def correspondance_table_by_id_fake_content():
 
 def changes_fake_content():
     return base_request(
-        '"oldCode","oldName","oldShortName","newCode","newName","newShortName","changeOccurred"\n"355112","Elektrofag, Vg1","","355112","Elektro og datateknologi, Vg1","","2022-05-01"\n"355113","Elektrofag, Vg1, grunnkompetanse","","355113","Elektro og datateknologi, Vg1, grunnkompetanse","","2022-05-01"\n"355901","Teknikk og industriell produksjon, Vg1","","355901","Teknologi- og industrifag, Vg1","","2022-05-01"\n"355902","Teknikk og industriell produksjon med studiespesialisering, Vg2","","355902","Teknologi- og industrifag med studiespesialisering, Vg2","","2022-05-01"\n,,,"737910","Master of Laws (LL.M.) Programme in EU and EEA Law","","2022-10-01"\n"741154","Master in Sustainability Management (MBA), 1½-årig","","741154","Master, Sustainability Management, toårig","","2022-10-01"\n'
+        '{"codeChanges": [{"oldCode": "1942","oldName": "Nordreisa","oldShortName": "","newCode": "1942","newName": "Nordreisa - Ráisa - Raisi","newShortName": "","changeOccurred": "2019-01-01"},{"oldCode": "5025","oldName": "Røros","oldShortName": "","newCode": "5025","newName": "Røros - Rossen","newShortName": "","changeOccurred": "2023-01-01"}]}'
     )
 
 
