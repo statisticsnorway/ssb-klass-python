@@ -87,14 +87,12 @@ def classification_by_id_fake_content():
 
 def codes_fake_content():
     return base_request(
-        '"code","parentCode","level","name","shortName","presentationName","validFrom","validTo","validFromInRequestedRange","validToInRequestedRange","notes"\n"1",,"1","Mann","","",,,"2023-01-01",,""\n"2",,"1","Kvinne","","",,,"2023-01-01",,""\n'
+        '{"codes":[{"code":"1","parentCode":null,"level":"1","name":"Mann","shortName":"","presentationName":"","validFrom":null,"validTo":null,"notes":""}]}'
     )
 
 
 def codes_at_fake_content():
-    return base_request(
-        '"code","parentCode","level","name","shortName","presentationName","validFrom","validTo","notes"\n"1",,"1","Mann","","",,,""\n"2",,"1","Kvinne","","",,,""\n'
-    )
+    return codes_fake_content()
 
 
 def version_by_id_fake_content():
@@ -105,14 +103,12 @@ def version_by_id_fake_content():
 
 def variant_fake_content():
     return base_request(
-        '"code","parentCode","level","name","shortName","presentationName","validFrom","validTo","validFromInRequestedRange","validToInRequestedRange","notes"\n"05",,"1","05","","",,,"2023-01-01",,""\n"05",,"1","05","","",,,"2023-01-01",,""\n"10",,"1","10","","",,,"2023-01-01",,""\n"10",,"1","10","","",,,"2023-01-01",,""\n"10",,"1","10","","",,,"2023-01-01",,""\n"10",,"1","Fagskolepoeng","","",,,"2023-01-01",,""\n"12",,"1","12","","",,,"2023-01-01",,""\n"12",,"1","12","","",,,"2023-01-01",,""\n"120",,"1","120","","",,,"2023-01-01",,""\n"120",,"1","120","","",,,"2023-01-01",,""\n"120",,"1","120","","",,,"2023-01-01",,""\n"120",,"1","120","","",,,"2023-01-01",,""\n"15",,"1","15","","",,,"2023-01-01",,""\n"15",,"1","15","","",,,"2023-01-01",,""\n"15",,"1","15","","",,,"2023-01-01",,""\n"15",,"1","15","","",,,"2023-01-01",,""\n"24",,"1","24","","",,,"2023-01-01",,""\n"24",,"1","24","","",,,"2023-01-01",,""\n"30",,"1","30","","",,,"2023-01-01",,""\n"30",,"1","30","","",,,"2023-01-01",,""\n"30",,"1","30","","",,,"2023-01-01",,""\n"30",,"1","30","","",,,"2023-01-01",,""\n"36",,"1","36","","",,,"2023-01-01",,""\n"36",,"1","36","","",,,"2023-01-01",,""\n"36",,"1","36","","",,,"2023-01-01",,""\n"36",,"1","36","","",,,"2023-01-01",,""\n"40",,"1","40","","",,,"2023-01-01",,""\n"40",,"1","40","","",,,"2023-01-01",,""\n"40",,"1","40","","",,,"2023-01-01",,""\n"40",,"1","40","","",,,"2023-01-01",,""\n"45",,"1","45","","",,,"2023-01-01",,""\n"45",,"1","45","","",,,"2023-01-01",,""\n"45",,"1","45","","",,,"2023-01-01",,""\n"45",,"1","45","","",,,"2023-01-01",,""\n"5",,"1","5","","",,,"2023-01-01",,""\n"514110","120","2","Fagskoleutdanning, Frelsesarmeens offiserutdanning, toårig","","",,,"2023-01-01",,'
+        '{"codes":[{"code":"05","parentCode":null,"level":"1","name":"05","shortName":"","presentationName":"","validFrom":null,"validTo":null,"validFromInRequestedRange":"2021-02-01","validToInRequestedRange":null,"notes":""},{"code":"514110","parentCode":"120","level":"2","name":"Fagskoleutdanning, Frelsesarmeens offiserutdanning, toårig","shortName":"","presentationName":"","validFrom":null,"validTo":null,"validFromInRequestedRange":"2019-05-01","validToInRequestedRange":null,"notes":""}]}'
     )
 
 
 def variant_at_fake_content():
-    return base_request(
-        '"code","parentCode","level","name","shortName","presentationName","validFrom","validTo","notes"\n"05",,"1","05","","",,,""\n"05",,"1","05","","",,,""\n"10",,"1","10","","",,,""\n"10",,"1","10","","",,,""\n"10",,"1","10","","",,,""\n"10",,"1","Fagskolepoeng","","",,,""\n"12",,"1","12","","",,,""\n"12",,"1","12","","",,,""\n"120",,"1","120","","",,,""\n"120",,"1","120","","",,,""\n"120",,"1","120","","",,,""\n"120",,"1","120","","",,,""\n"15",,"1","15","","",,,""\n"15",,"1","15","","",,,""\n"15",,"1","15","","",,,""\n"15",,"1","15","","",,,""\n"24",,"1","24","","",,,""\n"24",,"1","24","","",,,""\n"30",,"1","30","","",,,""\n"30",,"1","30","","",,,""\n"30",,"1","30","","",,,""\n"30",,"1","30","","",,,""\n"36",,"1","36","","",,,""\n"36",,"1","36","","",,,""\n"36",,"1","36","","",,,""\n"36",,"1","36","","",,,""\n"40",,"1","40","","",,,""\n"40",,"1","40","","",,,""\n"40",,"1","40","","",,,""\n"40",,"1","40","","",,,""\n"45",,"1","45","","",,,""\n"45",,"1","45","","",,,""\n"45",,"1","45","","",,,""\n"45",,"1","45","","",,,""\n"5",,"1","5","","",,,""\n"514110","120","2","Fagskoleutdanning, Frelsesarmeens offiserutdanning, toårig","","",,,""'
-    )
+    return variant_fake_content()
 
 
 def variants_by_id_fake_content():
@@ -123,14 +119,12 @@ def variants_by_id_fake_content():
 
 def corresponds_fake_content():
     return base_request(
-        '"sourceCode","sourceName","sourceShortName","targetCode","targetName","targetShortName","validFrom","validTo"\n"03","Oslo","","03001","Oslo","","2023-01-01",\n"11","Rogaland","","11001","Dalane","","2023-01-01",\n"11","Rogaland","","11002","Stavanger/Sandnes","","2023-01-01",\n"11","Rogaland","","11003","Jæren","","2023-01-01",\n"11","Rogaland","","11004","Indre Ryfylke","","2023-01-01",\n"11","Rogaland","","11005","Haugaland","","2023-01-01",\n"15","Møre og Romsdal","","15001","Ørsta/Volda","","2023-01-01",\n"15","Møre og Romsdal","","15002","Søre Sunnmøre","","2023-01-01",\n"15","Møre og Romsdal","","15003","Ålesund","","2023-01-01"'
+        '{"correspondenceItems":[{"sourceCode":"0300","sourceName":"Oslo fylkeskommune","sourceShortName":"","targetCode":"0301","targetName":"Oslo","targetShortName":"","validFrom":"2020-01-01","validTo":"2022-01-01"},{"sourceCode":"0300","sourceName":"Oslo kommune","sourceShortName":"","targetCode":"0301","targetName":"Oslo","targetShortName":"","validFrom":"2022-01-01","validTo":null},{"sourceCode":"1100","sourceName":"Rogaland fylkeskommune","sourceShortName":"","targetCode":"1101","targetName":"Eigersund","targetShortName":"","validFrom":"2020-01-01","validTo":null}]}'
     )
 
 
 def corresponds_at_fake_content():
-    return base_request(
-        '"sourceCode","sourceName","sourceShortName","targetCode","targetName","targetShortName"\n"03","Oslo","","03001","Oslo",""\n"11","Rogaland","","11001","Dalane",""\n"11","Rogaland","","11002","Stavanger/Sandnes",""\n"11","Rogaland","","11003","Jæren",""\n"11","Rogaland","","11004","Indre Ryfylke",""\n"11","Rogaland","","11005","Haugaland",""\n"15","Møre og Romsdal","","15001","Ørsta/Volda",""\n"15","Møre og Romsdal","","15002","Søre Sunnmøre",""\n"15","Møre og Romsdal","","15003","Ålesund",""\n"15","Møre og Romsdal","","15004","Ålesund omland",""\n"15","Møre og Romsdal","","15005","Molde",""'
-    )
+    return corresponds_fake_content()
 
 
 def correspondance_table_by_id_fake_content():
