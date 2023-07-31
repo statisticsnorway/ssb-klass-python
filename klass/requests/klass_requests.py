@@ -234,7 +234,7 @@ def variant_at(
         "language": language,
         "includeFuture": include_future,
     }
-    params = validate_params({k: v for k, v in params.items() if v != ""})
+    params = validate_params({k: v for k, v in params.items() if v not in ["", ("",)]})
     return convert_return_type(get_json(url, params)["codes"], return_type)
 
 
@@ -251,7 +251,7 @@ def corresponds(
     to_date: str = "",
     language: str = "nb",
     include_future: bool = False,
-    return_type: str = "pandas",
+    return_type: str = "json",
 ):
     url = (
         KlassConfig().BASE_URL
@@ -270,9 +270,7 @@ def corresponds(
         params["to"] = convert_datestring(to_date, "yyyy-mm-dd")
     params = validate_params({k: v for k, v in params.items() if v != ""})
 
-    return convert_return_type(
-        get_json(url, params)["correspondenceItems"], return_type
-    )
+    return convert_return_type(get_json(url, params), return_type)
 
 
 def corresponds_at(
@@ -281,7 +279,7 @@ def corresponds_at(
     date: str,
     language: str = "nb",
     include_future: bool = False,
-    return_type: str = "pandas",
+    return_type: str = "json",
 ):
     url = (
         KlassConfig().BASE_URL
@@ -297,9 +295,7 @@ def corresponds_at(
         "includeFuture": include_future,
     }
     params = validate_params({k: v for k, v in params.items() if v != ""})
-    return convert_return_type(
-        get_json(url, params)["correspondenceItems"], return_type
-    )
+    return convert_return_type(get_json(url, params), return_type)
 
 
 def correspondance_table_by_id(

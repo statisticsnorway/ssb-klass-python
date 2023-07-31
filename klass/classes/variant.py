@@ -21,13 +21,15 @@ class KlassVariant:
         return df
 
 
-class KlassVariantsSearch:
+class KlassVariantSearch:
     def __init__(
         self,
         classification_id: str,
         variant_name: str,
         from_date: str,
         to_date: str = "",
+        select_codes: str = "",
+        select_level: str = "",
         presentation_name_pattern: str = "",
         language: str = "nb",
         include_future: bool = False,
@@ -36,12 +38,14 @@ class KlassVariantsSearch:
         self.variant_name = variant_name
         self.from_date = from_date
         self.to_date = to_date
+        self.select_codes = (select_codes,)
+        self.select_level = (select_level,)
         self.presentation_name_pattern = presentation_name_pattern
         self.language = language
         self.include_future = include_future
 
         if self.to_date:
-            result = variant(
+            self.data = variant(
                 classification_id=self.classification_id,
                 variant_name=self.variant_name,
                 from_date=self.from_date,
@@ -53,7 +57,7 @@ class KlassVariantsSearch:
                 include_future=self.include_future,
             )
         else:
-            result = variant_at(
+            self.data = variant_at(
                 classification_id=self.classification_id,
                 variant_name=self.variant_name,
                 date=self.from_date,
@@ -63,8 +67,6 @@ class KlassVariantsSearch:
                 language=self.language,
                 include_future=self.include_future,
             )
-        for key, value in result.items():
-            setattr(self, key, value)
 
         @staticmethod
         def get_variant(

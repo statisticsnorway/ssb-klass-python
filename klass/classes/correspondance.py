@@ -1,5 +1,6 @@
-from ..requests.klass_requests import correspondance_table_by_id, corresponds
 import pandas as pd
+
+from ..requests.klass_requests import correspondance_table_by_id, corresponds
 
 
 class KlassCorrespondance:
@@ -22,11 +23,13 @@ class KlassCorrespondance:
         self.include_future = include_future
 
         if correspondance_id:
-            self.data = correspondance_table_by_id(
-                correspondance_id, language=language
-            )
+            result = correspondance_table_by_id(correspondance_id, language=language)
+            for key, value in result.items():
+                setattr(self, key, value)
+            self.correspondence = result["correspondenceMaps"]
+            del self.correspondenceMaps
         elif source_classification_id and target_classification_id and from_date:
-            self.data = corresponds(
+            result = corresponds(
                 source_classification_id=source_classification_id,
                 target_classification_id=target_classification_id,
                 from_date=from_date,
@@ -34,10 +37,12 @@ class KlassCorrespondance:
                 language=language,
                 include_future=include_future,
             )
+            self.correspondence = result["correspondenceItems"]
         else:
             raise ValueError(
                 "Please set correspondance ID, or source and target classification IDs + from_date"
             )
+        self.data = pd.json_normalize(self.correspondence)
 
     def __str__(self):
         return str(self.__dict__)

@@ -29,7 +29,7 @@ local_imports = {
     "classes.family": ["KlassFamily"],
     "classes.search": ["KlassSearchClassifications", "KlassSearchFamilies"],
     "requests.sections": ["sections_list", "sections_dict"],
-    "classes.variant": ["KlassVariant", "KlassVariantsSearch"],
+    "classes.variant": ["KlassVariant", "KlassVariantSearch"],
     "classes.version": ["KlassVersion"],
     "utility.codes": ["get_codes"],
     "utility.classification": ["get_classification"],
