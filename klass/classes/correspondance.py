@@ -30,7 +30,10 @@ class KlassCorrespondance:
         self.get_correspondance()
 
     def last_date_of_quarter(self) -> str:
-        year = dateutil.parser.parse(self.from_date).year
+        if isinstance(self.from_date, str):
+            year = dateutil.parser.parse(self.from_date).year
+        else:
+            year = self.from_date.year
         last_month_of_quarter = 3 * self.contain_quarter
         date_of_last_day_of_quarter = date(
             year, last_month_of_quarter, monthrange(year, last_month_of_quarter)[1]

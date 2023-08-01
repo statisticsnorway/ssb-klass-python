@@ -8,12 +8,14 @@ Where data is possible to fit into pandas DataFrames, this will be preferred, bu
 ## Example usages
 
 
+### Getting started
 ```python
 from klass import search_classification
 # Opens a ipywidget in notebooks for searching for classifications and copying code, to get started
 search_classification(no_dupes=True)
 ```
 
+### Getting a classification directly
 ```python
 from klass import get_classification # Import the utility-function
 nus = get_classification(36)
@@ -23,6 +25,10 @@ nus = get_classification(36)
 # Does the same as the code above, but does not shy away from using the class directly
 from klass import KlassClassification # Import the class for KlassClassifications
 nus = KlassClassification(36)  # Use ID for classification
+```
+
+When you have the classification stored in an object, you can "dig into" the API from there.
+```python
 codes = nus.get_codes() # codes from current date
 print(codes)
 codes.data  # Pandas dataframe available under the .data attribute

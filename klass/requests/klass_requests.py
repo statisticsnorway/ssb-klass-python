@@ -39,7 +39,8 @@ def convert_return_type(data, return_type="pandas"):
 
 
 def convert_datestring(date: str, return_type="isoklass") -> str:
-    date = dateutil.parser.parse(date)
+    if isinstance(date, str):
+        date = dateutil.parser.parse(date)
     date = date.replace(tzinfo=timezone(timedelta(hours=1)))
     if return_type == "isoklass":
         return date.strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + date.strftime("%z")
