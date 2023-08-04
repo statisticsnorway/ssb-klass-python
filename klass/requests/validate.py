@@ -39,7 +39,9 @@ def validate_date(date: str) -> str:
 def validate_language(language: str) -> str:
     language = language.lower()
     if language not in KlassConfig().LANGUAGES:
-        raise ValueError(f"Specify one of the valid languages: {', '.join(LANGUAGES)}")
+        raise ValueError(
+            f"Specify one of the valid languages: {', '.join(KlassConfig().LANGUAGES)}"
+        )
     return language
 
 
@@ -76,9 +78,10 @@ def validate_presentation_name_patterns(pattern: str) -> str:
 
 
 def validate_alnum_spaces(variant_name: str) -> str:
-    check = variant_name.replace(" ", "")
-    #print(f"{check=}")
-    if not check in ["", " "] and not check.isalnum() :
+    check = (
+        variant_name.replace(" ", "").replace("(", "").replace(")", "").replace("-", "")
+    )
+    if check not in ["", " "] and not check.isalnum():
         raise ValueError(
             "Expecting variant name to only include numbers, characters and spaces..."
         )
