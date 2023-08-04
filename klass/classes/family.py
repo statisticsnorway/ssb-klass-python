@@ -14,15 +14,21 @@ class KlassFamily:
             )
         self.classifications = new_classifications
 
-    @staticmethod
-    def get_classification(classification_id: str) -> KlassClassification:
+    def get_classification(self, classification_id: str = "") -> KlassClassification:
+        if not classification_id:
+            classification_id = self.classifications[0]["classification_id"]
         return KlassClassification(classification_id)
 
     def __str__(self):
-        classifications_string = "\n".join(self.classifications)
-        return f"""Klass Family with id {self.family_id}.
-        Containing the classifications:
-        {classifications_string}
+        classifications_string = "\n\t".join(
+            [
+                ": ".join([c["classification_id"], c["name"]])
+                for c in self.classifications
+            ]
+        )
+        return f"""The Klass Family "{self.name}" has id {self.family_id}.
+And contains the following classifications:
+\t{classifications_string}
         """
 
     def __repr__(self):
