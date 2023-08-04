@@ -1,6 +1,8 @@
 from collections import defaultdict
 from datetime import datetime
 
+import pandas as pd
+
 from ..requests.klass_requests import codes, codes_at
 
 
@@ -124,5 +126,42 @@ class KlassCodes:
             mapping = defaultdict(lambda: other, mapping)
         return mapping
 
-    def wide_data(self):
-        return self.data.pivot_table("level")
+    def wide_data(self, keep: list[str] = None) -> pd.DataFrame:
+        """Pivots levels into seperate columns, and numbers columns based on levels.
+
+        Parameters
+        ---
+        keep: list[str]
+            The start of the names of the columns you want to keep when done.
+            Default is ["code", "name"], but other possibilites are "presentationName",
+            "level", "shortName", "validTo", "validFrom" and "notes"
+
+        Returns
+        ---
+        pd.DataFrame
+
+        """
+        if keep is None:
+            keep = ["code", "name"]
+        df = pd.DataFrame()
+        lev_previous = 1
+        for lev in self.data["level"].unique():
+            temp = self.data[self.data["level"] == lev].copy()
+            temp.columns = [f"{c}_{lev}" for c in temp.columns]
+            if len(df):
+                df = df.merge(
+                    temp,
+                    how="right",
+                    left_on=f"code_{lev_previous}",
+                    right_on=f"parentCode_{lev}",
+                )
+            else:
+                df = temp
+            lev_previous = lev
+        keep_cols = []
+        for col in df.columns:
+            for keep_col in keep:
+                if col.lower().startswith(keep_col.lower()):
+                    keep_cols += [col]
+        df = df[keep_cols]
+        return df
