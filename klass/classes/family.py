@@ -4,10 +4,26 @@ from .classification import KlassClassification
 
 class KlassFamily:
     """
-    A class to represent a classification family.
-    This class is used to represent a classification family.
-    It is used to get information about a classification family.
+    Families represent "general statistical areas" like "Education".
+    Families in Klass "own" / "has" several classifications.
+    Families are owned by sections (a part of Statistics Norway who is responsible for the family).
     
+    Parameters
+    ----------
+    family_id : str
+        The id of the family.
+
+    Attributes
+    ----------
+    family_id : str
+        The id of the family.
+    classifications : list
+        A list of classifications in the family.
+    name : str
+        The name of the family.
+    _links : dict
+        A dictionary of api-links referencing itself.
+
     """
     def __init__(self, family_id: str):
         self.family_id = family_id

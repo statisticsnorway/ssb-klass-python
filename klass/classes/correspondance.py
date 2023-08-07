@@ -9,6 +9,34 @@ from ..requests.klass_requests import correspondance_table_by_id, corresponds
 
 
 class KlassCorrespondance:
+    """Correspondances in Klass exist between two classifications at a specific time.
+    They are used to translate data between two classifications. 
+    For example from geographical municipality up to county level.
+
+    You can identify the correspondance by their id, 
+    or by the source classification + the target classification + a specific time.
+
+    Parameters
+    ----------
+    correspondance_id : str
+        The id of the correspondance.
+    source_classification_id : str
+        The id of the source classification.
+    target_classification_id : str
+        The id of the target classification.
+    from_date : str
+        The start date of the correspondance.
+    to_date : str (optional)
+        The end date of the correspondance.
+    contain_quarter : int
+        The number of quarters the correspondance should contain,
+        this replaces the to_date during initialization.
+    language : str
+        The language of the correspondance. "nb", "nn" or "en".
+    include_future : bool
+        If the correspondance should include future correspondances.
+    """
+
     def __init__(
         self,
         correspondance_id: str = "",

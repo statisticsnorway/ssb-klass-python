@@ -6,6 +6,49 @@ from .variant import KlassVariant
 
 
 class KlassVersion:
+    """A version of a classification, is set in time.
+    For example the ID of NUS valid in 2023 is 1954, while the ID of NUS without being time-specific is 36.
+
+    Parameters
+    ----------
+    version_id : str
+        The id of the version.
+    select_level : int, optional
+        The level in the codelist-data to keep. Defaults to 0.
+    language : str, optional
+        The language of the version. Defaults to "nb", can be set to "en", or "nn".
+    include_future : bool, optional
+        If the version should include future versions. Defaults to False.
+
+    Attributes
+    ----------
+    data : pd.DataFrame
+        The codelist of the classification-version as a pandas dataframe
+    name : str
+        The name of the version.
+    validFrom : str
+        The date the version is valid from.
+    validTo : str
+        The date the version is valid to (if any).
+    lastModified : str
+        The date the version was last modified.
+    published: list
+        A list of languages that the version is published in.
+    introduction : str
+        A longer description of the version.
+    contactPerson : dict
+        A dictionary of the contact person of the version.
+    owningSection : str
+        The name of the section that owns the version.
+    legalBase: str
+        The basis in law for the classification.
+    publications : str (url)
+        Where the classification is published.
+    derivedFrom : str
+        Notes on where the classification was derived from.
+    correspondenceTables : list
+        A list of correspondance-tables of the version.
+    """
     def __init__(
         self,
         version_id: str,
