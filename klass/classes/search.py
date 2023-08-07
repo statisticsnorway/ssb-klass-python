@@ -3,6 +3,17 @@ from .classification import KlassClassification
 
 
 class KlassSearchClassifications:
+    """Used to search for classifications.
+
+    Parameters
+    ---
+    query: str
+        The search query.
+    include_codelists: bool
+        Whether to include codelists in the search results.
+    ssbsection: str
+        The SSB section to search.
+    """
     def __init__(
         self, query: str = "", include_codelists: bool = False, ssbsection: str = ""
     ):

@@ -6,6 +6,28 @@ from .version import KlassVersion
 
 
 class KlassClassification:
+    """"In Klass a Classification can contain codes, versions and variants.
+    Between Classifications Correspondances may exist.
+    Classifications are identified by their classification_id.
+    Print the Classification to see extensive information.
+
+    Parameters
+    ----------
+    classification_id : str
+        The classification_id of the classification.
+        For example: '36'
+    language : str
+        The language of the classification. "nb", "nn" or "en".
+    include_future : bool
+        Whether to include future versions of the classification.
+        Default: False.
+
+    Raises
+    ------
+    ValueError 
+        If the language is not "no", "nb" or "en".
+        If the include_future is not a bool.
+    """
     def __init__(
         self, classification_id: str, language: str = "nb", include_future: bool = False
     ):
