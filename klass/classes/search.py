@@ -107,17 +107,18 @@ class KlassSearchFamilies:
     def __str__(self):
         result = ""
         for fam in self.families:
-            result += f"Family ID: {fam['family_id']} - {fam['name']} - Number of classifications: {fam['numberOfClassifications']}\n"
+            result += f"Family ID: {fam['family_id']} - {fam['name']} - "
+            result += f"Number of classifications: {fam['numberOfClassifications']}\n"
         return result
 
     def __repr__(self):
-        result = "KlassSearchFamilies( "
+        result = "KlassSearchFamilies("
         if self.ssbsection:
-            result += f"ssbsection={self.ssbsection}, "
+            result += f'ssbsection="{self.ssbsection}", '
         if self.include_codelists:
             result += f"include_codelists={self.include_codelists}, "
         if self.language != "nb":
-            result += f"language={self.language}, "
+            result += f'language="{self.language}"'
         result += ")"
         return result
 
@@ -143,5 +144,6 @@ class KlassSearchFamilies:
     def simple_search_result(self):
         result = ""
         for fl in self.families:
-            result += f'ID {fl["family_id"]} - {fl["name"]}: Contains {fl["numberOfClassifications"]} Classifications\n'
+            result += f'ID {fl["family_id"]} - {fl["name"]}: '
+            result += f'Contains {fl["numberOfClassifications"]} Classifications\n'
         return result
