@@ -26,10 +26,12 @@ class KlassSearchClassifications:
         self.include_codelists = include_codelists
         self.ssbsection = ssbsection
         self.no_dupes = no_dupes
+        self.get_search()
 
+    def get_search(self) -> None:
         # If you enter a number, replace with name of the classification
-        if query.isdigit() and query != "":
-            result = KlassClassification(query)
+        if self.query.isdigit() and self.query != "":
+            result = KlassClassification(self.query)
             print(result.name)
             self.query = "".join([c for c in result.name if c.isalnum() or c == " "])
         elif not self.query and self.ssbsection:
@@ -59,7 +61,7 @@ class KlassSearchClassifications:
                 }
                 classification_replace.append(cl)
             self.classifications = classification_replace
-            if no_dupes:
+            if self.no_dupes:
                 classification_replace = []
                 seen = []
                 for cl in self.classifications:
@@ -67,10 +69,6 @@ class KlassSearchClassifications:
                         classification_replace.append(cl)
                         seen.append(cl["classification_id"])
                 self.classifications = classification_replace
-
-    @staticmethod
-    def get_classification(classification_id: str) -> KlassClassification:
-        return KlassClassification(classification_id)
 
     def __str__(self):
         classifications_string = "\n\t".join(
@@ -92,6 +90,10 @@ class KlassSearchClassifications:
             result += f"no_dupes={self.no_dupes}"
         result += ")"
         return result
+
+    @staticmethod
+    def get_classification(classification_id: str) -> KlassClassification:
+        return KlassClassification(classification_id)
 
     def simple_search_result(self):
         result = ""

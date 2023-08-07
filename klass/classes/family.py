@@ -36,11 +36,6 @@ class KlassFamily:
             )
         self.classifications = new_classifications
 
-    def get_classification(self, classification_id: str = "") -> KlassClassification:
-        if not classification_id:
-            classification_id = self.classifications[0]["classification_id"]
-        return KlassClassification(classification_id)
-
     def __str__(self):
         classifications_string = "\n\t".join(
             [
@@ -55,3 +50,23 @@ And contains the following classifications:
 
     def __repr__(self):
         return f"KlassFamily({self.family_id})"
+    
+    def get_classification(self, classification_id: str = "") -> KlassClassification:
+        """
+        Get a classification from the family.
+
+        Parameters
+        ----------
+        classification_id : str
+            The id of the classification. If not given, the first classification in the family is returned based on its ID.
+
+        Returns
+        -------
+        KlassClassification
+            The classification.
+
+        """
+        
+        if not classification_id:
+            classification_id = self.classifications[0]["classification_id"]
+        return KlassClassification(classification_id)

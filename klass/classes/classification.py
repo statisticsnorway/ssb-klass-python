@@ -197,9 +197,9 @@ class KlassClassification:
         name : str
             The start of the name of the variant.
         from_date : str
-            The start date of the time period.
+            The start date of the time period. "YYYY-MM-DD"
         to_date : str
-            The end date of the time period.
+            The end date of the time period. "YYYY-MM-DD"
         select_codes : str
             Limit the result to codes matching this pattern. See rules: https://data.ssb.no/api/klass/v1/api-guide.html#_selectcodes
         select_level : str
@@ -249,9 +249,9 @@ class KlassClassification:
         target_classification_id : str
             The classification ID of the target classification.
         from_date : str
-            The start date of the time period.
+            The start date of the time period. "YYYY-MM-DD"
         to_date : str
-            The end date of the time period.
+            The end date of the time period. "YYYY-MM-DD"
         language : str
             The language of the correspondances. "nn", "nb" or "en".
         include_future : bool
@@ -297,9 +297,9 @@ class KlassClassification:
         Parameters
         ----------
         from_date : str
-            The start date of the time period.
+            The start date of the time period. "YYYY-MM-DD"
         to_date : str
-            The end date of the time period.
+            The end date of the time period. "YYYY-MM-DD"
         select_codes : str
             Limit the result to codes matching this pattern. See rules: https://data.ssb.no/api/klass/v1/api-guide.html#_selectcodes
         select_level : str
@@ -348,9 +348,9 @@ class KlassClassification:
         Parameters
         ----------
         from_date : str
-            The start date of the time period.
+            The start date of the time period. "YYYY-MM-DD"
         to_date : str
-            The end date of the time period.
+            The end date of the time period. "YYYY-MM-DD"
         language : str
             The language of the version. "nn", "nb" or "en".
         include_future : bool

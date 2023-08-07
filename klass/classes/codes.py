@@ -11,11 +11,7 @@ class KlassCodes:
     The codelist is owned by the classification, and will be valid for a time-period, 
     specifying the time period will be considered best practice.
 
-    Methods
-    --------
-    get_codes()
-        Gets the codes from Klass. Gets called during initialization, so usually unnecessary to run manually.
-
+    First envisioned by @mfmssb
 
     Parameters
     ----------
@@ -35,6 +31,32 @@ class KlassCodes:
         The language of the code names. Defaults to "nb".
     include_future : bool
         Whether to include future codes. Defaults to False.
+
+    Methods
+    --------
+    get_codes()
+        Gets the codes from Klass, assigns a pandas dataframe to the .data attribute. Gets called during initialization, so usually unnecessary to run manually.
+    change_dates()
+        Change the dates of the codes. Runs get_codes() again after changing the dates.
+    to_dict()
+        Extracts two columns from the data, turning them into a dict.
+        If you specify a value for "other", returns a defaultdict instead
+    pivot_level()
+        Pivots the data, adding the levels as suffixes to the column-names,
+        Joining children codes onto their parentCodes.
+        For example instead of "code", gives you "code_1", "code_2" etc.
+
+    Attributes
+    ----------
+    data : pd.DataFrame
+        The pandas dataframe of the codes.
+
+    classification_id : str
+        The classification id.
+    from_date : str
+        The start date of the time period. "YYYY-MM-DD"
+    to_date : str
+        The end date of the time period. "YYYY-MM-DD"
 
     Raises 
     ------
@@ -104,9 +126,9 @@ class KlassCodes:
     def change_dates(self, 
                      from_date: str = None,
                      to_date: str = None,
-                     include_future: bool = None):
+                     include_future: bool = None) -> None:
         """
-        Change the dates of the codelist.
+        Change the dates of the codelist, and gets the data again based on new dates.
 
         Parameters
         ----------
@@ -116,6 +138,11 @@ class KlassCodes:
             The end date of the time period.
         include_future : bool
             Whether to include future codes.
+
+        Returns
+        -------
+        None
+            Changes the dates on the class, and swaps out the data on the .data-attribute.
 
         Raises
         ------
@@ -131,31 +158,18 @@ class KlassCodes:
         self.get_codes()
 
 
-    def get_codes(self):
+    def get_codes(self) -> None:
         """
-        Retrieve codes from the classification specified by self.classification_id.
+        Retrieve codes from the classification specified by self.classification_id at a specific time.
 
         If self.to_date is not None, codes will be retrieved from the date range specified
         by self.from_date and self.to_date. Otherwise, codes will be retrieved only for
         the date specified by self.from_date.
 
-        Parameters
-        ----------
-        self : object
-            Instance of a class containing classification_id, from_date, to_date,
-            select_codes, select_level, presentation_name_pattern, language,
-            and include_future attributes.
-
         Returns
         -------
-        data : object
-            Object containing retrieved codes, with properties dependent on the API
-            used to retrieve them.
-
-        Raises
-        ------
-        Any exceptions raised by the codes() or codes_at() functions called within
-        this method.
+        None
+            Changes the data on the .data-attribute.
         """
         if self.to_date:
             self.data = codes(
@@ -185,6 +199,29 @@ class KlassCodes:
         value: str = "",  # default is "name" if not set
         other: str = "",
     ) -> dict | defaultdict:
+        """Extracts two columns from the data, turning them into a dict.
+        If you specify a value for "other", returns a defaultdict instead
+        
+        Parameters
+        ----------
+        key : str
+            The name of the column with the values you want as keys.
+        value : str
+            The name of the column with the values you want as values in your dict.
+        other : str
+            If key is missing from dict, return this value instead, if you specify a OTHER-value.
+
+        Returns
+        -------
+        dict | defaultdict
+            The extracted columns as a dict or defaultdict.
+
+        Raises
+        ------
+        ValueError
+            If the value is not specified and the pattern is not specified.
+        
+        """
         if not value:
             # If you bothered specifying a pattern, we assume you want it
             if self.presentation_name_pattern:
@@ -196,8 +233,10 @@ class KlassCodes:
             mapping = defaultdict(lambda: other, mapping)
         return mapping
 
-    def wide_data(self, keep: list[str] = None) -> pd.DataFrame:
-        """Pivots levels into seperate columns, and numbers columns based on levels.
+    def pivot_level(self, keep: list[str] = None) -> pd.DataFrame:
+        """Pivots levels into seperate columns, and numbers columns based on levels as suffixes.
+        Joining children codes onto their parentCodes.
+        For example instead of "code", gives you "code_1", "code_2" etc.
 
         Parameters
         ---
