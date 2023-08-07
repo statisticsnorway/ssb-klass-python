@@ -17,7 +17,7 @@ class KlassVariant:
             setattr(self, key, value)
         self.get_classification_codes()
 
-    def get_classification_codes(self, select_level: int = 0) -> pd.DataFrame:
+    def get_classification_codes(self, select_level: int = 0) -> None:
         df = pd.json_normalize(self.classificationItems)
         if not select_level:
             if self.select_level:
@@ -41,7 +41,7 @@ class KlassVariant:
         return result
 
 
-class KlassVariantSearch:
+class KlassVariantSearchByName:
     def __init__(
         self,
         classification_id: str,
@@ -58,8 +58,8 @@ class KlassVariantSearch:
         self.variant_name = variant_name
         self.from_date = from_date
         self.to_date = to_date
-        self.select_codes = (select_codes,)
-        self.select_level = (select_level,)
+        self.select_codes = select_codes
+        self.select_level = select_level
         self.presentation_name_pattern = presentation_name_pattern
         self.language = language
         self.include_future = include_future
@@ -89,7 +89,9 @@ class KlassVariantSearch:
             )
 
     def __repr__(self):
-        result = f'KlassVariantSearch(classification_id="{self.classification_id}", '
+        result = (
+            f'KlassVariantSearchByName(classification_id="{self.classification_id}", '
+        )
         result += f'variant_name="{self.variant_name}", from_date="{self.from_date}", '
         if self.to_date:
             result += f'to_date="{self.to_date}", '
@@ -107,7 +109,7 @@ class KlassVariantSearch:
         return result
 
     def __str__(self):
-        result = f"A search for variants on classification ID {self.classification_id} on the name {self.variant_name}.\n"
+        result = f'A search for variants on classification ID "{self.classification_id}" on the name "{self.variant_name}".\n'
         result += f"From the date {self.from_date}"
         if self.to_date:
             result += f", to the date {self.to_date}"
@@ -115,13 +117,3 @@ class KlassVariantSearch:
             f".\nPreview of the .data:\n{self.data[self.data.columns[:5]].head(5)}"
         )
         return result
-
-    @staticmethod
-    def get_variant(
-        variant_id: str,
-        language: str = "nb",
-    ) -> KlassVariant:
-        return KlassVariant(
-            variant_id=variant_id,
-            language=language,
-        )

@@ -1,4 +1,5 @@
 from calendar import monthrange
+from collections import defaultdict
 from datetime import date
 
 import dateutil.parser
@@ -99,3 +100,14 @@ class KlassCorrespondance:
             result += f"language={self.language}, "
         result += ")"
         return result
+
+    def to_dict(
+        self,
+        key: str = "sourceCode",
+        value: str = "targetCode",
+        other: str = "",
+    ) -> dict | defaultdict:
+        mapping = dict(zip(self.data[key], self.data[value]))
+        if other:
+            mapping = defaultdict(lambda: other, mapping)
+        return mapping
