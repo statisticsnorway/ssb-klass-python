@@ -7,6 +7,45 @@ from ..requests.klass_requests import codes, codes_at
 
 
 class KlassCodes:
+    """Class for getting codes from Klass.
+    The codelist is owned by the classification, and will be valid for a time-period, 
+    specifying the time period will be considered best practice.
+
+    Methods
+    --------
+    get_codes()
+        Gets the codes from Klass. Gets called during initialization, so usually unnecessary to run manually.
+
+
+    Parameters
+    ----------
+    classification_id : str
+        The classification id.
+    from_date : str
+        The start date of the time period.
+    to_date : str
+        The end date of the time period.
+    select_codes : str
+        A list of codes to be selected.
+    select_level : str
+        A list of levels to be selected.
+    presentation_name_pattern : str
+        A pattern for filtering the code names.
+    language : str
+        The language of the code names. Defaults to "nb".
+    include_future : bool
+        Whether to include future codes. Defaults to False.
+
+    Raises 
+    ------
+    ValueError
+        if from_date or to_date is not a valid date or date-string YYYY-MM-DD.
+        if select_codes contains anything except numbers and the special characters *-,
+        if select_level is anything except a whole number,
+        if presentation_name_pattern is not a valid pattern.
+        if language is not "nb", "nn" or "en".
+        if include_future is not a bool.
+    """
     def __init__(
         self,
         classification_id: str = "",
@@ -60,6 +99,37 @@ class KlassCodes:
         Take a look at the .data attribute for the DataFrame containing the codes.
         """
         return result
+
+
+    def change_dates(self, 
+                     from_date: str = None,
+                     to_date: str = None,
+                     include_future: bool = None):
+        """
+        Change the dates of the codelist.
+
+        Parameters
+        ----------
+        from_date : str
+            The start date of the time period.
+        to_date : str
+            The end date of the time period.
+        include_future : bool
+            Whether to include future codes.
+
+        Raises
+        ------
+        ValueError
+            if from_date or to_date is not a valid date or date-string YYYY-MM-DD.
+        """
+        if not from_date:
+            from_date = datetime.now().strftime("%Y-%m-%d")
+        if not include_future is None:
+            self.include_future = include_future
+        self.from_date = from_date
+        self.to_date = to_date
+        self.get_codes()
+
 
     def get_codes(self):
         """

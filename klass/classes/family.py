@@ -3,6 +3,12 @@ from .classification import KlassClassification
 
 
 class KlassFamily:
+    """
+    A class to represent a classification family.
+    This class is used to represent a classification family.
+    It is used to get information about a classification family.
+    
+    """
     def __init__(self, family_id: str):
         self.family_id = family_id
         for key, value in classificationfamilies_by_id(self.family_id).items():
