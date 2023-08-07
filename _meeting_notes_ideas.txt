@@ -22,8 +22,6 @@
 # Kombinere over-rader i hierarkier til ulike nivåer (se punkt 2)
 "output-style" i Rklass, programmert selv?
 
-# https - automatisk putte inn s
-
 # validate_date smartere henting av år
 - hente ut på bare år, eller bare år og måned
 - bare sette til 01.01 og gi varsel?

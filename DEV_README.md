@@ -22,7 +22,7 @@ pflake8 has its config in pyproject.toml, not in .flake8
 ```bash
 poetry run pre-commit run --all-files
 ```
-Several of the pre-commit hooks will try to modify the files on a fail. Re-running the command might therefore result in a different result the second time.
+Several of the pre-commit hooks will "fail" when they modify files. Re-running the commit after it fails might therefore result in a different result the second time.
 
 ## Pytest suites
 ```bash

@@ -1,5 +1,11 @@
-from ..requests.klass_requests import correspondance_table_by_id, corresponds
+from calendar import monthrange
+from collections import defaultdict
+from datetime import date
+
+import dateutil.parser
 import pandas as pd
+
+from ..requests.klass_requests import correspondance_table_by_id, corresponds
 
 
 class KlassCorrespondance:
@@ -10,6 +16,7 @@ class KlassCorrespondance:
         target_classification_id: str = "",
         from_date: str = "",
         to_date: str = "",
+        contain_quarter: int = 0,
         language: str = "nb",
         include_future: bool = False,
     ):
@@ -18,29 +25,64 @@ class KlassCorrespondance:
         self.target_classification_id = target_classification_id
         self.from_date = from_date
         self.to_date = to_date
+        self.contain_quarter = contain_quarter
         self.language = language
         self.include_future = include_future
+        self.get_correspondance()
 
-        if correspondance_id:
-            self.data = correspondance_table_by_id(
-                correspondance_id, language=language
+    def last_date_of_quarter(self) -> str:
+        if isinstance(self.from_date, str):
+            year = dateutil.parser.parse(self.from_date).year
+        else:
+            year = self.from_date.year
+        last_month_of_quarter = 3 * self.contain_quarter
+        date_of_last_day_of_quarter = date(
+            year, last_month_of_quarter, monthrange(year, last_month_of_quarter)[1]
+        )
+        return str(date_of_last_day_of_quarter)
+
+    def get_correspondance(self):
+        if self.correspondance_id:
+            result = correspondance_table_by_id(
+                self.correspondance_id, language=self.language
             )
-        elif source_classification_id and target_classification_id and from_date:
-            self.data = corresponds(
-                source_classification_id=source_classification_id,
-                target_classification_id=target_classification_id,
-                from_date=from_date,
-                to_date=to_date,
-                language=language,
-                include_future=include_future,
+            for key, value in result.items():
+                setattr(self, key, value)
+            self.correspondence = result["correspondenceMaps"]
+            del self.correspondenceMaps
+        elif (
+            self.source_classification_id
+            and self.target_classification_id
+            and self.from_date
+        ):
+            if self.contain_quarter:
+                self.to_date = self.last_date_of_quarter()
+            result = corresponds(
+                source_classification_id=self.source_classification_id,
+                target_classification_id=self.target_classification_id,
+                from_date=self.from_date,
+                to_date=self.to_date,
+                language=self.language,
+                include_future=self.include_future,
             )
+            self.correspondence = result["correspondenceItems"]
         else:
             raise ValueError(
                 "Please set correspondance ID, or source and target classification IDs + from_date"
             )
+        self.data = pd.json_normalize(self.correspondence)
 
     def __str__(self):
-        return str(self.__dict__)
+        return f"""Klass Correspondance
+        id: {self.correspondance_id}
+        source id: {self.source_classification_id}
+        target id: {self.target_classification_id}
+        from date: {self.from_date}
+        to date: {self.to_date}
+
+        Data preview (get the dataframe from the .data attribute):
+        {self.data[self.data.columns[:5]].head(5)}
+        """
 
     def __repr__(self):
         result = "KlassCorrespondance("
@@ -58,3 +100,14 @@ class KlassCorrespondance:
             result += f"language={self.language}, "
         result += ")"
         return result
+
+    def to_dict(
+        self,
+        key: str = "sourceCode",
+        value: str = "targetCode",
+        other: str = "",
+    ) -> dict | defaultdict:
+        mapping = dict(zip(self.data[key], self.data[value]))
+        if other:
+            mapping = defaultdict(lambda: other, mapping)
+        return mapping
