@@ -47,7 +47,7 @@ def klass_variant_success(test_variants_by_id):
 def klass_variant_search_success(test_variant, test_variant_at):
     test_variant.return_value = mock_returns.variant_success()
     test_variant_at.return_value = mock_returns.variant_at_success()
-    return klass.KlassVariantSearch("0", "Variant name", "2023-01-01")
+    return klass.KlassVariantSearchByName("0", "Variant name", "2023-01-01")
 
 
 @pytest.fixture
