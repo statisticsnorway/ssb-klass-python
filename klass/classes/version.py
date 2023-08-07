@@ -20,6 +20,21 @@ class KlassVersion:
     include_future : bool, optional
         If the version should include future versions. Defaults to False.
 
+    Methods
+    -------
+    variants_simple() -> dict:
+        Simplify the variants of the version into a dict with IDs as keys.
+    get_variant() -> KlassVariant:
+        Get a specific variant.
+    correspondances_simple() -> dict:
+        Simplify the correspondances of the version into a dict with IDs as keys. 
+    get_correspondance() -> KlassCorrespondance:
+        Get a specific correspondance.
+    get_classification_codes()
+        Get the codelists of the version. Inserts the result into the KlassVersions .data attribute, instead of returning it.
+        Run as a part of the class initialization.
+    
+
     Attributes
     ----------
     data : pd.DataFrame

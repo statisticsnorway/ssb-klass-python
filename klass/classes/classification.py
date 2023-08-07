@@ -3,7 +3,7 @@ import pandas as pd
 from ..requests.klass_requests import changes, classification_by_id
 from .codes import KlassCodes
 from .correspondance import KlassCorrespondance
-from .variant import KlassVariant
+from .variant import KlassVariant, KlassVariantSearchByName
 from .version import KlassVersion
 
 
@@ -12,6 +12,9 @@ class KlassClassification:
     Between Classifications Correspondances may exist.
     Classifications are identified by their classification_id.
     Print the Classification to see extensive information.
+
+    To get at all the Classification's Variants (different aggregations of codelists), 
+    you first need to get the classification at a specific time (a KlassVersion.)
 
     Parameters
     ----------
@@ -31,7 +34,9 @@ class KlassClassification:
         If the include_future is not a bool.
     """
     def __init__(
-        self, classification_id: str, language: str = "nb", include_future: bool = False
+        self, classification_id: str, 
+        language: str = "nb", 
+        include_future: bool = False
     ):
         self.classification_id = classification_id
         self.language = language
@@ -73,15 +78,39 @@ class KlassClassification:
         result += ")"
         return result
 
-    @staticmethod
-    def get_version(version_id) -> KlassVersion:
-        return KlassVersion(version_id)
+    def get_version(self, version_id: int = 0, select_level: int = 0, 
+                    language: str = "", 
+                    include_future: bool = None) -> KlassVersion:
+        if not version_id:
+            version_id = self.versions[0]["version_id"]
+        if language == "":
+            language = self.language
+        if include_future is None:
+            include_future = self.include_future
+        return KlassVersion(version_id, 
+                            select_level=select_level, 
+                            language=language, 
+                            include_future=include_future)
 
-    def get_variants() -> list[KlassVariant]:
-        pass
 
-    def get_variant() -> KlassVariant:
-        pass
+    def get_variant_by_name(name: str,
+                            from_date: str,
+                            to_date: str = "",
+                            select_codes: str = "",
+                            select_level: str = "",
+                            presentation_name_pattern: str = "",
+                            language: str = "nb",
+                            include_future: bool = False) -> KlassVariant:
+        return KlassVariantSearchByName(classification_id=self.classification_id
+                                        variant_name=name,
+                                        from_date=from_date,
+                                        to_date=to_date,
+                                        select_codes=select_codes,
+                                        select_level=select_level,
+                                        presentation_name_pattern=presentation_name_pattern,
+                                        language=language,
+                                        include_future=include_future,
+                                        )
 
     def get_correspondance_to(
         self,
