@@ -222,7 +222,7 @@ class KlassClassification:
             If the language is not "nn", "nb" or "en".
             If the include_future is not a bool.
         """
-        return KlassVariantSearchByName(classification_id=self.classification_id
+        return KlassVariantSearchByName(classification_id=self.classification_id,
                                         variant_name=name,
                                         from_date=from_date,
                                         to_date=to_date,
