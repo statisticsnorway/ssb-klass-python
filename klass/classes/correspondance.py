@@ -1,4 +1,5 @@
 from calendar import monthrange
+from collections import defaultdict
 from datetime import date
 
 import dateutil.parser
@@ -72,7 +73,16 @@ class KlassCorrespondance:
         self.data = pd.json_normalize(self.correspondence)
 
     def __str__(self):
-        return str(self.__dict__)
+        return f"""Klass Correspondance
+        id: {self.correspondance_id}
+        source id: {self.source_classification_id}
+        target id: {self.target_classification_id}
+        from date: {self.from_date}
+        to date: {self.to_date}
+
+        Data preview (get the dataframe from the .data attribute):
+        {self.data[self.data.columns[:5]].head(5)}
+        """
 
     def __repr__(self):
         result = "KlassCorrespondance("
@@ -90,3 +100,14 @@ class KlassCorrespondance:
             result += f"language={self.language}, "
         result += ")"
         return result
+
+    def to_dict(
+        self,
+        key: str = "sourceCode",
+        value: str = "targetCode",
+        other: str = "",
+    ) -> dict | defaultdict:
+        mapping = dict(zip(self.data[key], self.data[value]))
+        if other:
+            mapping = defaultdict(lambda: other, mapping)
+        return mapping

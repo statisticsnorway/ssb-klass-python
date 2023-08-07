@@ -1,5 +1,6 @@
 from ..requests.klass_requests import classification_search, classificationfamilies
 from .classification import KlassClassification
+from .family import KlassFamily
 
 
 class KlassSearchClassifications:
@@ -13,6 +14,7 @@ class KlassSearchClassifications:
         self.query = query
         self.include_codelists = include_codelists
         self.ssbsection = ssbsection
+        self.no_dupes = no_dupes
 
         # If you enter a number, replace with name of the classification
         if query.isdigit() and query != "":
@@ -35,7 +37,6 @@ class KlassSearchClassifications:
             self.classifications = []
 
         self.links = result["_links"]
-        print(self.classifications)
         if len(self.classifications):
             classification_replace = []
             for cl in self.classifications:
@@ -61,7 +62,25 @@ class KlassSearchClassifications:
         return KlassClassification(classification_id)
 
     def __str__(self):
-        return str(self.__dict__)
+        classifications_string = "\n\t".join(
+            [
+                ": ".join([str(c["classification_id"]), c["name"]])
+                for c in self.classifications
+            ]
+        )
+        return f"""The Search returned the following classifications:
+        {classifications_string}"""
+
+    def __repr__(self):
+        result = f'KlassSearchClassifications(query="{self.query}", '
+        if not self.include_codelists:
+            result += f'include_codelists="{self.include_codelists}", '
+        if self.ssbsection:
+            result += f'ssbsection="{self.ssbsection}", '
+        if self.no_dupes:
+            result += f"no_dupes={self.no_dupes}"
+        result += ")"
+        return result
 
     def simple_search_result(self):
         result = ""
@@ -80,10 +99,34 @@ class KlassSearchFamilies:
         include_codelists: bool = False,
         language: str = "nb",
     ):
+        self.ssbsection = ssbsection
+        self.include_codelists = include_codelists
+        self.language = language
+        self.get_search()
+
+    def __str__(self):
+        result = ""
+        for fam in self.families:
+            result += f"Family ID: {fam['family_id']} - {fam['name']} - "
+            result += f"Number of classifications: {fam['numberOfClassifications']}\n"
+        return result
+
+    def __repr__(self):
+        result = "KlassSearchFamilies("
+        if self.ssbsection:
+            result += f'ssbsection="{self.ssbsection}", '
+        if self.include_codelists:
+            result += f"include_codelists={self.include_codelists}, "
+        if self.language != "nb":
+            result += f'language="{self.language}"'
+        result += ")"
+        return result
+
+    def get_search(self):
         result = classificationfamilies(
-            ssbsection=ssbsection,
-            include_codelists=include_codelists,
-            language=language,
+            ssbsection=self.ssbsection,
+            include_codelists=self.include_codelists,
+            language=self.language,
         )
         self.families = result["_embedded"]["classificationFamilies"]
         self.links = result["_links"]
@@ -93,14 +136,14 @@ class KlassSearchFamilies:
             families_replace.append(fam)
         self.families = families_replace
 
-    def __str__(self):
-        result = ""
-        for fam in self.families:
-            result += f"{fam['family_id']} - {fam['name']} - Number of classifications: {fam['numberOfClassifications']}\n"
-        return result
+    def get_family(self, family_id=0):
+        if not family_id:
+            family_id = self.families[0]["family_id"]
+        return KlassFamily(family_id)
 
     def simple_search_result(self):
         result = ""
         for fl in self.families:
-            result += f'ID {fl["family_id"]} - {fl["name"]}: Contains {fl["numberOfClassifications"]} Classifications\n'
+            result += f'ID {fl["family_id"]} - {fl["name"]}: '
+            result += f'Contains {fl["numberOfClassifications"]} Classifications\n'
         return result
