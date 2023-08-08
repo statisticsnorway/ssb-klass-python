@@ -5,6 +5,13 @@ The package aims to make Klass's API for retrieving data easier to use by re-rep
 Where data is possible to fit into pandas DataFrames, this will be preferred, but hirerachical data will be kept as json / dict structure.
 
 
+## Installing
+The package is available on Pypi, and can be installed by for example poetry like this:
+```bash
+poetry add ssb-klass-python
+```
+
+
 ## Example usages
 
 
@@ -14,6 +21,9 @@ from klass import search_classification
 # Opens a ipywidget in notebooks for searching for classifications and copying code, to get started
 search_classification(no_dupes=True)
 ```
+![The GUI available through the search_classification function](GUI.png)
+
+
 
 ### Getting a classification directly
 ```python
@@ -33,6 +43,31 @@ codes = nus.get_codes() # codes from current date
 print(codes)
 codes.data  # Pandas dataframe available under the .data attribute
 ```
+
+
+From searching through "families", down to a specific codelist
+```python
+from klass import KlassSearchFamilies
+search = KlassSearchFamilies(360)
+print(search)
+>>> "Family ID: 20 - Utdanning - Number of classifications: 5"
+utdanning = search.get_family(20)
+print(utdanning)
+>>> "The Klass Family "Utdanning" has id 20."
+>>> "And contains the following classifications:"
+>>>  "36: Standard for utdanningsgruppering (NUS)"
+nus = utdanning.get_classification(36)
+print(nus)
+>>> "Classification 36: Standard for utdanningsgruppering (NUS)..."
+nus_codes = nus.get_codes("2023-01-01")
+print(nus_codes)
+>>> "Codelist for classification: 36"
+>>> " From date: 2023-01-01"
+nus_codes.data  # A pandas dataframe
+```
+
+
+For more examples check out the demo-notebooks in the demo/ folder in the repo.
 
 
 

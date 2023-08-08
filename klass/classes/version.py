@@ -6,6 +6,64 @@ from .variant import KlassVariant
 
 
 class KlassVersion:
+    """A version of a classification, is set in time.
+    For example the ID of NUS valid in 2023 is 1954, while the ID of NUS without being time-specific is 36.
+
+    Parameters
+    ----------
+    version_id : str
+        The id of the version.
+    select_level : int, optional
+        The level in the codelist-data to keep. Defaults to 0.
+    language : str, optional
+        The language of the version. Defaults to "nb", can be set to "en", or "nn".
+    include_future : bool, optional
+        If the version should include future versions. Defaults to False.
+
+    Methods
+    -------
+    variants_simple() -> dict:
+        Simplify the variants of the version into a dict with IDs as keys.
+    get_variant() -> KlassVariant:
+        Get a specific variant.
+    correspondances_simple() -> dict:
+        Simplify the correspondances of the version into a dict with IDs as keys. 
+    get_correspondance() -> KlassCorrespondance:
+        Get a specific correspondance.
+    get_classification_codes()
+        Get the codelists of the version. Inserts the result into the KlassVersions .data attribute, instead of returning it.
+        Run as a part of the class initialization.
+    
+
+    Attributes
+    ----------
+    data : pd.DataFrame
+        The codelist of the classification-version as a pandas dataframe
+    name : str
+        The name of the version.
+    validFrom : str
+        The date the version is valid from.
+    validTo : str
+        The date the version is valid to (if any).
+    lastModified : str
+        The date the version was last modified.
+    published: list
+        A list of languages that the version is published in.
+    introduction : str
+        A longer description of the version.
+    contactPerson : dict
+        A dictionary of the contact person of the version.
+    owningSection : str
+        The name of the section that owns the version.
+    legalBase: str
+        The basis in law for the classification.
+    publications : str (url)
+        Where the classification is published.
+    derivedFrom : str
+        Notes on where the classification was derived from.
+    correspondenceTables : list
+        A list of correspondance-tables of the version.
+    """
     def __init__(
         self,
         version_id: str,
@@ -25,7 +83,7 @@ class KlassVersion:
             setattr(self, key, value)
         self.get_classification_codes()
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         result = f'KlassVersion(version_id="{self.version_id}", '
         if self.select_level:
             result += f"select_level={self.select_level}, "
@@ -36,7 +94,7 @@ class KlassVersion:
         result += ")"
         return result
 
-    def __str__(self):
+    def __str__(self) -> str:
         contact = "Contact Person:\n"
         for k, v in self.contactPerson.items():
             contact += f"\t{k}: {v}\n"
@@ -60,6 +118,20 @@ class KlassVersion:
         return result
 
     def get_classification_codes(self, select_level: int = 0) -> None:
+        """Get the codelists of the version. Inserts the result into the KlassVersions .data attribute, instead of returning it.
+        Run as a part of the class initialization.
+        
+        Parameters
+        ----------
+        select_level : int
+            The level of the version to keep in the data. Setting to 0 keeps all levels.
+        
+        Returns
+        -------
+        None
+            Sets .data attribute based on the attributes of the class
+        
+        """
         if not select_level:
             if self.select_level:
                 select_level = self.select_level
@@ -89,9 +161,35 @@ class KlassVersion:
     def get_variant(
         variant_id: str, select_level: int = 0, language: str = "nb"
     ) -> KlassVariant:
+        """Get a specific variant.
+        
+        Parameters
+        ----------
+        variant_id : str
+            The ID of the variant.
+        select_level : int
+            The level of the variant to keep in the data. Setting to 0 keeps all levels.
+        language : str
+            The language of the variant.
+        
+        Returns
+        -------
+        KlassVariant
+            A variant object with the specified ID and language.
+
+        """
         return KlassVariant(variant_id, select_level, language)
 
-    def correspondances_simple(self) -> dict:
+    def correspondances_simple(self) -> dict[dict]:
+        """Get a simple dictionary of the correspondances.
+        With the IDs as keys.
+        
+        Returns
+        -------
+        dict
+            A nested dictionary of the available correspondances.
+        
+        """
         tables = {}
         for tab in self.correspondenceTables:
             corr_id = tab["_links"]["self"]["href"].split("/")[-1]
@@ -115,6 +213,33 @@ class KlassVersion:
         language: str = "nb",
         include_future: bool = False,
     ) -> KlassCorrespondance:
+        """Get a specific correspondance.
+        
+        Parameters
+        ----------
+        correspondance_id : str
+            The ID of the correspondance.
+        source_classification_id : str
+            The ID of the source classification.
+        target_classification_id : str
+            The ID of the target classification.
+        from_date : str
+            The start date of the correspondance.
+        to_date : str
+            The end date of the correspondance.
+        contain_quarter : int
+            The number of quarters the correspondance should contain.
+        language : str
+            The language of the correspondance. "nb", "nn" or "en".
+        include_future : bool
+            If the correspondance should include future correspondances.
+        
+        Returns
+        -------
+        KlassCorrespondance
+            A correspondance object with the specified ID, language and dates.
+
+        """
         return KlassCorrespondance(
             correspondance_id=correspondance_id,
             source_classification_id=source_classification_id,
