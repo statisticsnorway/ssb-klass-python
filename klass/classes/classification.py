@@ -8,7 +8,7 @@ from .version import KlassVersion
 
 
 class KlassClassification:
-    """"In Klass a Classification:
+    """ "In Klass a Classification:
     - is the main level people are used to "think about things in Klass".
     they represent "groupings of general, official codelists".
     - can have many Versions, versions are the classification placed in time.
@@ -16,13 +16,13 @@ class KlassClassification:
     - has Codes, actually owned by the Versions (placed in time),
     but they are directly available under the classification as well, by adding time-parameters.
     - has Variants, which are differently grouped aggregations of codelists.
-    - can Correspond with other Classifications and their codelists. 
+    - can Correspond with other Classifications and their codelists.
     - belongs undera Family, a general statistical group, like "Education".
-    
+
     Print an initialized Classification object to see extensive information.
 
-    To see all the Classification's Variants (different aggregations of codelists), 
-    you first need to get the classification at a specific time (a KlassVersion) 
+    To see all the Classification's Variants (different aggregations of codelists),
+    you first need to get the classification at a specific time (a KlassVersion)
     by using get_version() for example.
 
     Parameters
@@ -39,7 +39,7 @@ class KlassClassification:
     Methods
     -------
     get_version()
-        Returns a KlassVersion object of the classification based on ID. 
+        Returns a KlassVersion object of the classification based on ID.
         If no ID is specified, will get the first version under the attribute .versions on this class.
     get_variant_by_name()
         Returns a KlassVariantSearchByName object by using this classification's classification_id,
@@ -51,13 +51,13 @@ class KlassClassification:
         Returns a KlassCodes object of the classification at a specific time, or in a specific time range.
     get_changes()
         Returns a KlassChanges object of the classification at a specific time, or in a specific time range.
-        Different from get_codes() this method does not return all codes, 
+        Different from get_codes() this method does not return all codes,
         but only whats changed since last update, or within the time range.
 
     Attributes
     ----------
     versions : list
-        A list of the data the Classifications has on its versions. 
+        A list of the data the Classifications has on its versions.
         Versions represent the changes to the classifications codelists placed in time.
     name : str
         The name of the classification.
@@ -92,15 +92,13 @@ class KlassClassification:
 
     Raises
     ------
-    ValueError 
+    ValueError
         If the language is not "no", "nb" or "en".
         If the include_future is not a bool.
     """
+
     def __init__(
-        self, 
-        classification_id: str, 
-        language: str = "nb", 
-        include_future: bool = False
+        self, classification_id: str, language: str = "nb", include_future: bool = False
     ):
         self.classification_id = classification_id
         self.language = language
@@ -142,15 +140,17 @@ class KlassClassification:
         result += ")"
         return result
 
-    def get_version(self,
-                    version_id: int = 0,
-                    select_level: int = 0, 
-                    language: str = "", 
-                    include_future: bool = None) -> KlassVersion:
+    def get_version(
+        self,
+        version_id: int = 0,
+        select_level: int = 0,
+        language: str = "",
+        include_future: bool = None,
+    ) -> KlassVersion:
         """Returns a KlassVersion object of the classification based on ID.
         A Version in Klass is a Classification placed in time.
         If no ID is specified, will get the first version under the attribute .versions on this class.
-        
+
         Parameters
         ----------
         version_id : int
@@ -161,18 +161,18 @@ class KlassClassification:
             The language of the version. "nn", "nb" or "en".
         include_future : bool
             Whether to include future versions of the version.
-        
+
         Returns
         -------
         KlassVersion
             A KlassVersion object of the specified ID.
-        
+
         Raises
         ------
         ValueError
             If the language is not "nn", "nb" or "en".
             If the include_future is not a bool.
-        
+
         """
         if not version_id:
             version_id = self.versions[0]["version_id"]
@@ -180,23 +180,36 @@ class KlassClassification:
             language = self.language
         if include_future is None:
             include_future = self.include_future
-        return KlassVersion(version_id, 
-                            select_level=select_level, 
-                            language=language, 
-                            include_future=include_future)
+        return KlassVersion(
+            version_id,
+            select_level=select_level,
+            language=language,
+            include_future=include_future,
+        )
 
+    def versions_dict(self) -> dict:
+        """Reformats the versions into a simple dict with just the IDs as keys, and name as values.
 
-    def get_variant_by_name(self,
-                            name: str,
-                            from_date: str,
-                            to_date: str = "",
-                            select_codes: str = "",
-                            select_level: str = "",
-                            presentation_name_pattern: str = "",
-                            language: str = "nb",
-                            include_future: bool = False) -> KlassVariantSearchByName:
+        Returns
+        -------
+        dict
+            Version ids as keys, and version names as values.
+        """
+        return {v["version_id"]: v["name"] for v in self.versions[::-1]}
+
+    def get_variant_by_name(
+        self,
+        name: str,
+        from_date: str,
+        to_date: str = "",
+        select_codes: str = "",
+        select_level: str = "",
+        presentation_name_pattern: str = "",
+        language: str = "nb",
+        include_future: bool = False,
+    ) -> KlassVariantSearchByName:
         """Gets a KlassVariant by searching for its name, under the Variants owned by the current classification.
-        
+
         In Klass a Variant is a different way of aggregating an existing codelist.
         It does not have to be extensive (all filled out), but can for example
         redefine upper levels, for some lower-level codes.
@@ -231,16 +244,17 @@ class KlassClassification:
             If the language is not "nn", "nb" or "en".
             If the include_future is not a bool.
         """
-        return KlassVariantSearchByName(classification_id=self.classification_id,
-                                        variant_name=name,
-                                        from_date=from_date,
-                                        to_date=to_date,
-                                        select_codes=select_codes,
-                                        select_level=select_level,
-                                        presentation_name_pattern=presentation_name_pattern,
-                                        language=language,
-                                        include_future=include_future,
-                                        )
+        return KlassVariantSearchByName(
+            classification_id=self.classification_id,
+            variant_name=name,
+            from_date=from_date,
+            to_date=to_date,
+            select_codes=select_codes,
+            select_level=select_level,
+            presentation_name_pattern=presentation_name_pattern,
+            language=language,
+            include_future=include_future,
+        )
 
     def get_correspondance_to(
         self,
@@ -252,7 +266,7 @@ class KlassClassification:
     ) -> KlassCorrespondance:
         """Treats the current classification as a source of correspondances, you must specify the targets ID and a date.
         Returns a KlassCorrespondance object of the correspondances.
-        
+
         Parameters
         ----------
         target_classification_id : str
@@ -276,7 +290,7 @@ class KlassClassification:
         ValueError
             If the language is not "nn", "nb" or "en".
             If the include_future is not a bool.
-        
+
         """
         if language == "":
             language = self.language
@@ -302,7 +316,7 @@ class KlassClassification:
         include_future: bool = None,
     ) -> KlassCodes:
         """Returns a KlassCodes object of the classification at a specific time, or in a specific time range.
-        
+
         Parameters
         ----------
         from_date : str
@@ -351,9 +365,9 @@ class KlassClassification:
         include_future: bool = False,
     ) -> pd.DataFrame:
         """Returns a KlassChanges object of the classification at a specific time, or in a specific time range.
-        Different from get_codes() this method does not return all codes, 
+        Different from get_codes() this method does not return all codes,
         but only whats changed since last update, or within the time range.
-        
+
         Parameters
         ----------
         from_date : str
@@ -368,7 +382,7 @@ class KlassClassification:
         Returns
         -------
         pd.DataFrame
-            A pandas dataframe of the changes in the classification at a specific time (from last time it changed), 
+            A pandas dataframe of the changes in the classification at a specific time (from last time it changed),
             or within the specific time range.
 
         Raises

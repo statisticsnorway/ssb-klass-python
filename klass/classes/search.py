@@ -44,6 +44,7 @@ class KlassSearchClassifications:
     get_classification()
         Convenience-method for getting a Classification from the search object.
     """
+
     def __init__(
         self,
         query: str = "",
@@ -106,7 +107,7 @@ class KlassSearchClassifications:
                 for c in self.classifications
             ]
         )
-        return f"""The Search returned the following classifications:
+        return f"""The search for "{self.query}" returned the following classifications:
         {classifications_string}"""
 
     def __repr__(self) -> str:
@@ -121,9 +122,9 @@ class KlassSearchClassifications:
         return result
 
     @staticmethod
-    def get_classification(classification_id: str,
-                           language: str = "nb", 
-                           include_future: bool = False) -> KlassClassification:
+    def get_classification(
+        classification_id: str, language: str = "nb", include_future: bool = False
+    ) -> KlassClassification:
         """Convenience-method for getting a Classification from the search object.
 
         Parameters
@@ -131,7 +132,7 @@ class KlassSearchClassifications:
         classification_id : str
             The classification ID to get.
         language : str
-            The language to get the classification in. 
+            The language to get the classification in.
             Default: "nb" for Norwegian, "nn" for Nynorsk, "en" for English.
         include_future : bool
             Whether to include future codelists.
@@ -164,7 +165,7 @@ class KlassSearchClassifications:
 
 class KlassSearchFamilies:
     """Used for searching for families in the Klass API.
-    
+
     Parameters
     ----------
     ssbsection : str
@@ -172,7 +173,7 @@ class KlassSearchFamilies:
     include_codelists : bool
         Whether to include codelists in the search.
     language : str
-        The language to use in the search. 
+        The language to use in the search.
         Default: "nb" for Norwegian, "nn" for Nynorsk, "en" for English.
 
     Methods
@@ -184,6 +185,7 @@ class KlassSearchFamilies:
     simple_search_result()
         Returns a simple string of the search results.
     """
+
     def __init__(
         self,
         ssbsection: str = "",
@@ -222,7 +224,7 @@ class KlassSearchFamilies:
         -------
         None
             Sets .families and .links attributes.
-        
+
         """
         result = classificationfamilies(
             ssbsection=self.ssbsection,
@@ -251,7 +253,7 @@ class KlassSearchFamilies:
         KlassFamily
             The family object.
 
-       """
+        """
         if not family_id:
             family_id = self.families[0]["family_id"]
         return KlassFamily(family_id)
