@@ -5,6 +5,17 @@ from klass import KlassSearchClassifications, sections_dict
 
 
 def search_classification(no_dupes=True):
+    """Opens a GUI in Jupyter Notebooks using ipywidgets,
+    lets you search for terms and copy sample code out,
+    that'll let you get data from the classification.
+
+    Parameters
+    ----------
+    no_dupes : bool
+        To include duplicate results or not in the result.
+        Dupes are caused by multiple languages being returned?
+    """
+
     def do_search(btn):
         nonlocal search_term
         nonlocal section_dropdown
