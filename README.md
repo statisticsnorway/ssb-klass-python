@@ -50,19 +50,19 @@ From searching through "families", down to a specific codelist
 from klass import KlassSearchFamilies
 search = KlassSearchFamilies(360)
 print(search)
->>> Family ID: 20 - Utdanning - Number of classifications: 5
+>>> "Family ID: 20 - Utdanning - Number of classifications: 5"
 utdanning = search.get_family(20)
 print(utdanning)
->>>The Klass Family "Utdanning" has id 20.
->>>And contains the following classifications:
->>> 36: Standard for utdanningsgruppering (NUS)
+>>> "The Klass Family "Utdanning" has id 20."
+>>> "And contains the following classifications:"
+>>>  "36: Standard for utdanningsgruppering (NUS)"
 nus = utdanning.get_classification(36)
 print(nus)
->>>Classification 36: Standard for utdanningsgruppering (NUS)...
+>>> "Classification 36: Standard for utdanningsgruppering (NUS)..."
 nus_codes = nus.get_codes("2023-01-01")
 print(nus_codes)
->>>Codelist for classification: 36
->>>        From date: 2023-01-01
+>>> "Codelist for classification: 36"
+>>> " From date: 2023-01-01"
 nus_codes.data  # A pandas dataframe
 ```
 
