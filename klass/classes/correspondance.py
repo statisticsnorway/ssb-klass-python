@@ -9,12 +9,13 @@ from ..requests.klass_requests import correspondance_table_by_id, corresponds
 
 
 class KlassCorrespondance:
-    """Correspondances in Klass exist between two classifications at a specific time.
+    """Correspondances in Klass exist between two classifications at a specific time,
+    (hence actually between Versions).
     They are used to translate data between two classifications. 
     For example from geographical municipality up to county level.
 
-    You can identify the correspondance by their id, 
-    or by the source classification + the target classification + a specific time.
+    You can identify the correspondance by their individual ids, 
+    or by the source classification ID + the target classification ID + a specific time.
 
     Parameters
     ----------
@@ -43,11 +44,11 @@ class KlassCorrespondance:
         If you specify a value for "other", returns a defaultdict instead.
         Columns in the data are 'sourceCode', 'sourceName', 'sourceShortName'
         'targetCode', 'targetName', 'targetShortName', 'validFrom', 'validTo'
-    last_date_of_quarter()
-        Returns the last date of the numbered quarter provided.
     get_correspondance()
         Run as last part of initialization. 
         If you reset some attributes, maybe run this after to "update" the data of the correspondance.
+    _last_date_of_quarter()
+        Returns the last date of the numbered quarter provided.
 
     Attributes
     ----------
@@ -149,7 +150,7 @@ class KlassCorrespondance:
             and self.from_date
         ):
             if self.contain_quarter:
-                self.to_date = self.last_date_of_quarter()
+                self.to_date = self._last_date_of_quarter()
             result = corresponds(
                 source_classification_id=self.source_classification_id,
                 target_classification_id=self.target_classification_id,
@@ -165,7 +166,15 @@ class KlassCorrespondance:
             )
         self.data = pd.json_normalize(self.correspondence)
 
-    def last_date_of_quarter(self) -> str:
+    def _last_date_of_quarter(self) -> str:
+        """Calculates the last date of the quarter.
+        Uses the attribute "contain_quarter" to determine which quarter to use.       
+
+        Returns
+        -------
+        str
+            The last date of the quarter.
+        """
         if isinstance(self.from_date, str):
             year = dateutil.parser.parse(self.from_date).year
         else:

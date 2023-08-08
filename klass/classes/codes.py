@@ -7,11 +7,8 @@ from ..requests.klass_requests import codes, codes_at
 
 
 class KlassCodes:
-    """Class for getting codes from Klass.
-    The codelist is owned by the classification, and will be valid for a time-period, 
-    specifying the time period will be considered best practice.
-
-    First envisioned by @mfmssb
+    """Gets codes from Klass.
+    The codelist is owned by the Classification through a Version, and will be valid for a time-period.
 
     Parameters
     ----------
@@ -159,8 +156,7 @@ class KlassCodes:
 
 
     def get_codes(self) -> None:
-        """
-        Retrieve codes from the classification specified by self.classification_id at a specific time.
+        """Retrieve codes from the classification specified by self.classification_id at a specific time.
 
         If self.to_date is not None, codes will be retrieved from the date range specified
         by self.from_date and self.to_date. Otherwise, codes will be retrieved only for
@@ -237,6 +233,8 @@ class KlassCodes:
         """Pivots levels into seperate columns, and numbers columns based on levels as suffixes.
         Joining children codes onto their parentCodes.
         For example instead of "code", gives you "code_1", "code_2" etc.
+
+        First envisioned by @mfmssb
 
         Parameters
         ---

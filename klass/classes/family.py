@@ -15,10 +15,10 @@ class KlassFamily:
 
     Attributes
     ----------
-    family_id : str
-        The id of the family.
     classifications : list
         A list of classifications in the family.
+    family_id : str
+        The id of the family.
     name : str
         The name of the family.
     _links : dict

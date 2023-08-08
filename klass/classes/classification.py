@@ -8,13 +8,22 @@ from .version import KlassVersion
 
 
 class KlassClassification:
-    """"In Klass a Classification can contain codes, versions and variants.
-    Between Classifications Correspondances may exist.
-    Classifications are identified by their classification_id.
-    Print the Classification to see extensive information.
+    """"In Klass a Classification:
+    - is the main level people are used to "think about things in Klass".
+    they represent "groupings of general, official codelists".
+    - can have many Versions, versions are the classification placed in time.
+    When the classification is updated with new codes, a new version is created.
+    - has Codes, actually owned by the Versions (placed in time),
+    but they are directly available under the classification as well, by adding time-parameters.
+    - has Variants, which are differently grouped aggregations of codelists.
+    - can Correspond with other Classifications and their codelists. 
+    - belongs undera Family, a general statistical group, like "Education".
+    
+    Print an initialized Classification object to see extensive information.
 
-    To get at all the Classification's Variants (different aggregations of codelists), 
-    you first need to get the classification at a specific time (a KlassVersion.)
+    To see all the Classification's Variants (different aggregations of codelists), 
+    you first need to get the classification at a specific time (a KlassVersion) 
+    by using get_version() for example.
 
     Parameters
     ----------

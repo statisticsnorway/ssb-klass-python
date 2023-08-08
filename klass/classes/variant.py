@@ -26,6 +26,13 @@ class KlassVariant:
         The language of the variant to select.
         For example: 'nb'
 
+    Methods
+    -------
+    get_classification_codes()
+        Gets the codes from the API. Populates the attributes, including .data.
+        Rerun the method if the orignal parameters on the object are changed.
+
+    
     Attributes
     ----------
     data : pd.DataFrame
@@ -33,6 +40,31 @@ class KlassVariant:
     variant_id : str
         The variant_id of the variant.
         For example: '36'
+
+    name : str
+        The name of the variant.
+    contactPerson : dict
+        The contact person of the variant.
+    owningSection : str
+        The owning section of the variant.
+    lastModified : str
+        Stringified iso-datetime for last modification
+    published : list[str]
+        Languages that the variant is published in.
+    validFrom : str
+        Date-string from when the version is valid
+    validTo : str (optional)
+        Date-string to when the version is valid
+    introduction : str
+        A longer description of the variant.
+    correspondanceTables : list
+        The correspondance tables of the variant.
+    changelogs : list
+        The changelogs of the variant.
+    levels : list[dict]
+        The levels contained in the codelist (items)
+    classificationItems : list[dict]
+        The codelist-elements of the variant.
     select_level : int
         The level of the dataset to keep
         For example: 0
@@ -42,6 +74,8 @@ class KlassVariant:
     classificationItems : list
         The json returned from the API, which is converted to a pandas dataframe under
         the .data attribute on initialization.
+    _links : dict
+        The links returned from the API.
     """
     def __init__(
         self,
@@ -52,11 +86,21 @@ class KlassVariant:
         self.variant_id = variant_id
         self.select_level = select_level
         self.language = language
-        for key, value in variants_by_id(self.variant_id, self.language).items():
-            setattr(self, key, value)
         self.get_classification_codes()
 
     def get_classification_codes(self, select_level: int = 0) -> None:
+        """Gets the codes from the API. 
+        The codes are put into the .data attribute.
+        Other keys are added dynamically to the object, like classificationItems.
+
+        Parameters
+        ----------
+        select_level : int
+            The level of the dataset to keep
+            For example: 0
+        """
+        for key, value in variants_by_id(self.variant_id, self.language).items():
+            setattr(self, key, value)
         df = pd.json_normalize(self.classificationItems)
         if not select_level:
             if self.select_level:
@@ -65,7 +109,7 @@ class KlassVariant:
             return df[df["level"] == str(select_level)]
         self.data = df
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         result = f"KlassVariant(variant_id={self.variant_id}, "
         if self.select_level:
             result += f"select_level={self.select_level}, "
@@ -74,7 +118,7 @@ class KlassVariant:
         result += ")"
         return result
 
-    def __str__(self):
+    def __str__(self) -> str:
         result = f"This is a Klass Variant with the ID of {self.variant_id}."
         result += f"\nPreview of the .data:\n{self.data[self.data.columns[:5]].head(5)}"
         return result
@@ -113,7 +157,12 @@ class KlassVariantSearchByName:
     include_future : bool
         Whether to include future codes. Defaults to False.
 
-
+    Methods
+    -------
+    get_variant()
+        Gets the Variant from the API. The codelist is put into the .data attribute.
+        Rerun this method if you change any of the original attributes on the object.
+        
     Attributes
     ----------
     data : pd.DataFrame
@@ -159,7 +208,9 @@ class KlassVariantSearchByName:
         self.presentation_name_pattern = presentation_name_pattern
         self.language = language
         self.include_future = include_future
+        self.get_variant()
 
+    def get_variant(self) -> None:
         if self.to_date:
             self.data = variant(
                 classification_id=self.classification_id,

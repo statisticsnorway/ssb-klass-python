@@ -83,7 +83,7 @@ class KlassVersion:
             setattr(self, key, value)
         self.get_classification_codes()
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         result = f'KlassVersion(version_id="{self.version_id}", '
         if self.select_level:
             result += f"select_level={self.select_level}, "
@@ -94,7 +94,7 @@ class KlassVersion:
         result += ")"
         return result
 
-    def __str__(self):
+    def __str__(self) -> str:
         contact = "Contact Person:\n"
         for k, v in self.contactPerson.items():
             contact += f"\t{k}: {v}\n"
@@ -118,6 +118,20 @@ class KlassVersion:
         return result
 
     def get_classification_codes(self, select_level: int = 0) -> None:
+        """Get the codelists of the version. Inserts the result into the KlassVersions .data attribute, instead of returning it.
+        Run as a part of the class initialization.
+        
+        Parameters
+        ----------
+        select_level : int
+            The level of the version to keep in the data. Setting to 0 keeps all levels.
+        
+        Returns
+        -------
+        None
+            Sets .data attribute based on the attributes of the class
+        
+        """
         if not select_level:
             if self.select_level:
                 select_level = self.select_level
@@ -147,9 +161,35 @@ class KlassVersion:
     def get_variant(
         variant_id: str, select_level: int = 0, language: str = "nb"
     ) -> KlassVariant:
+        """Get a specific variant.
+        
+        Parameters
+        ----------
+        variant_id : str
+            The ID of the variant.
+        select_level : int
+            The level of the variant to keep in the data. Setting to 0 keeps all levels.
+        language : str
+            The language of the variant.
+        
+        Returns
+        -------
+        KlassVariant
+            A variant object with the specified ID and language.
+
+        """
         return KlassVariant(variant_id, select_level, language)
 
-    def correspondances_simple(self) -> dict:
+    def correspondances_simple(self) -> dict[dict]:
+        """Get a simple dictionary of the correspondances.
+        With the IDs as keys.
+        
+        Returns
+        -------
+        dict
+            A nested dictionary of the available correspondances.
+        
+        """
         tables = {}
         for tab in self.correspondenceTables:
             corr_id = tab["_links"]["self"]["href"].split("/")[-1]
@@ -173,6 +213,33 @@ class KlassVersion:
         language: str = "nb",
         include_future: bool = False,
     ) -> KlassCorrespondance:
+        """Get a specific correspondance.
+        
+        Parameters
+        ----------
+        correspondance_id : str
+            The ID of the correspondance.
+        source_classification_id : str
+            The ID of the source classification.
+        target_classification_id : str
+            The ID of the target classification.
+        from_date : str
+            The start date of the correspondance.
+        to_date : str
+            The end date of the correspondance.
+        contain_quarter : int
+            The number of quarters the correspondance should contain.
+        language : str
+            The language of the correspondance. "nb", "nn" or "en".
+        include_future : bool
+            If the correspondance should include future correspondances.
+        
+        Returns
+        -------
+        KlassCorrespondance
+            A correspondance object with the specified ID, language and dates.
+
+        """
         return KlassCorrespondance(
             correspondance_id=correspondance_id,
             source_classification_id=source_classification_id,
