@@ -2,7 +2,7 @@ name: PyTest
 on: push
 
 jobs:
-  tests:
+  run_coverage:
     name: ${{ matrix.session }} ${{ matrix.python }}
     runs-on: ubuntu-latest
     strategy:
