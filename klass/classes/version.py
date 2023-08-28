@@ -183,7 +183,7 @@ class KlassVersion:
         """
         return KlassVariant(variant_id, select_level, language)
 
-    def correspondances_simple(self) -> Dict[dict]:
+    def correspondances_simple(self) -> Dict[str, dict]:
         """Get a simple dictionary of the correspondances.
         With the IDs as keys.
 
