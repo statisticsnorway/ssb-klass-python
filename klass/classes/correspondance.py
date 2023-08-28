@@ -1,6 +1,7 @@
 from calendar import monthrange
 from collections import defaultdict
 from datetime import date
+from typing import Union
 
 import dateutil.parser
 import pandas as pd
@@ -11,10 +12,10 @@ from ..requests.klass_requests import correspondance_table_by_id, corresponds
 class KlassCorrespondance:
     """Correspondances in Klass exist between two classifications at a specific time,
     (hence actually between Versions).
-    They are used to translate data between two classifications. 
+    They are used to translate data between two classifications.
     For example from geographical municipality up to county level.
 
-    You can identify the correspondance by their individual ids, 
+    You can identify the correspondance by their individual ids,
     or by the source classification ID + the target classification ID + a specific time.
 
     Parameters
@@ -45,7 +46,7 @@ class KlassCorrespondance:
         Columns in the data are 'sourceCode', 'sourceName', 'sourceShortName'
         'targetCode', 'targetName', 'targetShortName', 'validFrom', 'validTo'
     get_correspondance()
-        Run as last part of initialization. 
+        Run as last part of initialization.
         If you reset some attributes, maybe run this after to "update" the data of the correspondance.
     _last_date_of_quarter()
         Returns the last date of the numbered quarter provided.
@@ -72,7 +73,7 @@ class KlassCorrespondance:
     language : str
         The language of the correspondance. "nb", "nn" or "en".
     include_future : bool
-        If the correspondance should include future correspondances.    
+        If the correspondance should include future correspondances.
     """
 
     def __init__(
@@ -126,11 +127,11 @@ class KlassCorrespondance:
         return result
 
     def get_correspondance(self) -> None:
-        """Run as last part of initialization. 
+        """Run as last part of initialization.
         If you reset some attributes, maybe run this after to "update" the data of the correspondance.
 
         Gets and reshapes correspondances based on attributes on the class.
-        
+
         Returns
         -------
         None
@@ -168,7 +169,7 @@ class KlassCorrespondance:
 
     def _last_date_of_quarter(self) -> str:
         """Calculates the last date of the quarter.
-        Uses the attribute "contain_quarter" to determine which quarter to use.       
+        Uses the attribute "contain_quarter" to determine which quarter to use.
 
         Returns
         -------
@@ -190,13 +191,13 @@ class KlassCorrespondance:
         key: str = "sourceCode",
         value: str = "targetCode",
         other: str = "",
-    ) -> dict | defaultdict:
+    ) -> Union[dict, defaultdict]:
         """Extracts two columns from the data, turning them into a dict.
         If you specify a value for "other", returns a defaultdict instead.
-        
+
         Columns in the data are 'sourceCode', 'sourceName', 'sourceShortName'
         'targetCode', 'targetName', 'targetShortName', 'validFrom', 'validTo'
-        
+
         Parameters
         ----------
         key : str
@@ -205,7 +206,7 @@ class KlassCorrespondance:
             The name of the column with the values you want as values in your dict.
         other : str
             The value to use for keys that don't exist in the data.
-        
+
         Returns
         -------
         dict | defaultdict
