@@ -1,3 +1,5 @@
+from typing import Dict
+
 import pandas as pd
 
 from ..requests.klass_requests import version_by_id
@@ -27,13 +29,13 @@ class KlassVersion:
     get_variant() -> KlassVariant:
         Get a specific variant.
     correspondances_simple() -> dict:
-        Simplify the correspondances of the version into a dict with IDs as keys. 
+        Simplify the correspondances of the version into a dict with IDs as keys.
     get_correspondance() -> KlassCorrespondance:
         Get a specific correspondance.
     get_classification_codes()
         Get the codelists of the version. Inserts the result into the KlassVersions .data attribute, instead of returning it.
         Run as a part of the class initialization.
-    
+
 
     Attributes
     ----------
@@ -64,6 +66,7 @@ class KlassVersion:
     correspondenceTables : list
         A list of correspondance-tables of the version.
     """
+
     def __init__(
         self,
         version_id: str,
@@ -120,17 +123,17 @@ class KlassVersion:
     def get_classification_codes(self, select_level: int = 0) -> None:
         """Get the codelists of the version. Inserts the result into the KlassVersions .data attribute, instead of returning it.
         Run as a part of the class initialization.
-        
+
         Parameters
         ----------
         select_level : int
             The level of the version to keep in the data. Setting to 0 keeps all levels.
-        
+
         Returns
         -------
         None
             Sets .data attribute based on the attributes of the class
-        
+
         """
         if not select_level:
             if self.select_level:
@@ -162,7 +165,7 @@ class KlassVersion:
         variant_id: str, select_level: int = 0, language: str = "nb"
     ) -> KlassVariant:
         """Get a specific variant.
-        
+
         Parameters
         ----------
         variant_id : str
@@ -171,7 +174,7 @@ class KlassVersion:
             The level of the variant to keep in the data. Setting to 0 keeps all levels.
         language : str
             The language of the variant.
-        
+
         Returns
         -------
         KlassVariant
@@ -180,15 +183,15 @@ class KlassVersion:
         """
         return KlassVariant(variant_id, select_level, language)
 
-    def correspondances_simple(self) -> dict[dict]:
+    def correspondances_simple(self) -> Dict[str, Dict[str, str]]:
         """Get a simple dictionary of the correspondances.
         With the IDs as keys.
-        
+
         Returns
         -------
         dict
             A nested dictionary of the available correspondances.
-        
+
         """
         tables = {}
         for tab in self.correspondenceTables:
@@ -214,7 +217,7 @@ class KlassVersion:
         include_future: bool = False,
     ) -> KlassCorrespondance:
         """Get a specific correspondance.
-        
+
         Parameters
         ----------
         correspondance_id : str
@@ -233,7 +236,7 @@ class KlassVersion:
             The language of the correspondance. "nb", "nn" or "en".
         include_future : bool
             If the correspondance should include future correspondances.
-        
+
         Returns
         -------
         KlassCorrespondance

@@ -1,5 +1,6 @@
 from collections import defaultdict
 from datetime import datetime
+from typing import List, Union
 
 import pandas as pd
 
@@ -55,7 +56,7 @@ class KlassCodes:
     to_date : str
         The end date of the time period. "YYYY-MM-DD"
 
-    Raises 
+    Raises
     ------
     ValueError
         if from_date or to_date is not a valid date or date-string YYYY-MM-DD.
@@ -65,6 +66,7 @@ class KlassCodes:
         if language is not "nb", "nn" or "en".
         if include_future is not a bool.
     """
+
     def __init__(
         self,
         classification_id: str = "",
@@ -119,11 +121,9 @@ class KlassCodes:
         """
         return result
 
-
-    def change_dates(self, 
-                     from_date: str = None,
-                     to_date: str = None,
-                     include_future: bool = None) -> None:
+    def change_dates(
+        self, from_date: str = None, to_date: str = None, include_future: bool = None
+    ) -> None:
         """
         Change the dates of the codelist, and gets the data again based on new dates.
 
@@ -148,12 +148,11 @@ class KlassCodes:
         """
         if not from_date:
             from_date = datetime.now().strftime("%Y-%m-%d")
-        if not include_future is None:
+        if include_future is not None:
             self.include_future = include_future
         self.from_date = from_date
         self.to_date = to_date
         self.get_codes()
-
 
     def get_codes(self) -> None:
         """Retrieve codes from the classification specified by self.classification_id at a specific time.
@@ -194,10 +193,10 @@ class KlassCodes:
         key: str = "code",
         value: str = "",  # default is "name" if not set
         other: str = "",
-    ) -> dict | defaultdict:
+    ) -> Union[dict, defaultdict]:
         """Extracts two columns from the data, turning them into a dict.
         If you specify a value for "other", returns a defaultdict instead
-        
+
         Parameters
         ----------
         key : str
@@ -216,7 +215,7 @@ class KlassCodes:
         ------
         ValueError
             If the value is not specified and the pattern is not specified.
-        
+
         """
         if not value:
             # If you bothered specifying a pattern, we assume you want it
@@ -229,7 +228,7 @@ class KlassCodes:
             mapping = defaultdict(lambda: other, mapping)
         return mapping
 
-    def pivot_level(self, keep: list[str] = None) -> pd.DataFrame:
+    def pivot_level(self, keep: List[str] = None) -> pd.DataFrame:
         """Pivots levels into seperate columns, and numbers columns based on levels as suffixes.
         Joining children codes onto their parentCodes.
         For example instead of "code", gives you "code_1", "code_2" etc.
