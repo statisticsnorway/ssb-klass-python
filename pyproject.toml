@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ssb-klass-python"
-version = "0.0.5"
+version = "0.0.6"
 description = "A Python package built on top of KLASS's API for retrieving classifications, codes, correspondances etc."
 authors = ["Carl Corneil <cfc@ssb.no>"]
 license = "MIT"
@@ -32,7 +32,7 @@ flake8-builtins = "^2.0.0"
 flake8-bugbear = "^22.9.23"
 flake8 = "^5.0.4"
 bump2version = "^1.0.1"
-coverage = {extras = ["toml"], version = "^7.3.0"}
+pytest-cov = "^4.0.0"
 mypy = "^0.982"
 pyproject-flake8 = "^5.0.4.post1"
 

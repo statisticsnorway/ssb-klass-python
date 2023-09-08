@@ -1,3 +1,5 @@
+from datetime import date
+
 import ipywidgets as widgets
 from IPython.display import HTML, display
 
@@ -47,6 +49,7 @@ def search_classification(no_dupes=True):
                         .split(":")[0]
                         .lower()
                         .replace(" ", "_")
+                        .replace("-", "_")
                         .replace("(", "")
                         .replace(")", "")
                         .replace("æ", "ae")
@@ -54,7 +57,7 @@ def search_classification(no_dupes=True):
                         .replace("å", "aa")
                         .strip()
                     )
-                    text = f"""from klass import KlassClassification\\n{var_name} = KlassClassification({cl["classification_id"]})\\n{var_name}.get_codes().data"""
+                    text = f"""from klass import KlassClassification\\n{var_name} = KlassClassification({cl["classification_id"]})\\n{var_name}.get_codes("{date.today().strftime('%Y-%m-%d')}").data"""
                     var_name = "klass" + str(cl["classification_id"])
                     search_content += f"""<button class="classification_copy_code" onclick="navigator.clipboard.writeText('{text}')">Copy code</button> {cl["classification_id"]} - {cl["name"]}<br />"""
             else:
