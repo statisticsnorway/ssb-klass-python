@@ -46,4 +46,4 @@ jobs:
 
       - name: Run coverage
         run: |
-          poetry run coverage report --fail-under=20
+          poetry run pytest --cov klass/ --cov-fail-under=20
