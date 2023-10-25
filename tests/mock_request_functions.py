@@ -67,11 +67,11 @@ def corresponds_at_success(mock_response):
 
 
 @mock.patch.object(requests.Session, "send")
-def correspondance_table_by_id_success(mock_response):
+def correspondence_table_by_id_success(mock_response):
     mock_response.return_value = (
-        mock_response_data.correspondance_table_by_id_fake_content()
+        mock_response_data.correspondence_table_by_id_fake_content()
     )
-    return klass_requests.correspondance_table_by_id("0")
+    return klass_requests.correspondence_table_by_id("0")
 
 
 @mock.patch.object(requests.Session, "send")

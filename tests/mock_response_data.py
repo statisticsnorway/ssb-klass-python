@@ -127,7 +127,7 @@ def corresponds_at_fake_content():
     return corresponds_fake_content()
 
 
-def correspondance_table_by_id_fake_content():
+def correspondence_table_by_id_fake_content():
     return base_request(
         '{"name":"Fylkesinndeling 2022 - Økonomiske regioner 2020","contactPerson":{"name":"Nordmann, Ola","email":"Ola.Nordmann@ssb.no","phone":"99999999"},"owningSection":"320 - Seksjon for befolkningsstatistikk","source":"Fylkesinndeling 2022","sourceId":2108,"target":"Økonomiske regioner 2020","targetId":1308,"changeTable":false,"lastModified":"2023-04-04T07:38:04.000+0000","published":["nb","nn","en"],"sourceLevel":null,"targetLevel":null,"description":"","changelogs":[],"correspondenceMaps":[{"sourceCode":"03","sourceName":"Oslo","targetCode":"03001","targetName":"Oslo"},{"sourceCode":"11","sourceName":"Rogaland","targetCode":"11001","targetName":"Dalane"},{"sourceCode":"11","sourceName":"Rogaland","targetCode":"11002","targetName":"Stavanger/Sandnes"},{"sourceCode":"11","sourceName":"Rogaland","targetCode":"11003","targetName":"Jæren"},{"sourceCode":"54","sourceName":"Troms og Finnmark - Romsa ja Finnmárku - Tromssa ja Finmarkku","targetCode":"54007","targetName":"Øst-Finnmark"}],"_links":{"self":{"href":"https://data.ssb.no/api/klass/v1/correspondencetables/1287"},"source":{"href":"https://data.ssb.no/api/klass/v1/versions/2108"},"target":{"href":"https://data.ssb.no/api/klass/v1/versions/1308"}}}'
     )

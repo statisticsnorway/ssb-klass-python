@@ -51,17 +51,17 @@ def klass_variant_search_success(test_variant, test_variant_at):
 
 
 @pytest.fixture
-@mock.patch("klass.classes.correspondance.correspondance_table_by_id")
-@mock.patch("klass.classes.correspondance.corresponds")
-def klass_correspondance_success(test_corresponds, test_correspondance_table_by_id):
+@mock.patch("klass.classes.correspondence.correspondence_table_by_id")
+@mock.patch("klass.classes.correspondence.corresponds")
+def klass_correspondence_success(test_corresponds, test_correspondence_table_by_id):
     test_corresponds.return_value = mock_returns.corresponds_success()
-    test_correspondance_table_by_id.return_value = (
-        mock_returns.correspondance_table_by_id_success()
+    test_correspondence_table_by_id.return_value = (
+        mock_returns.correspondence_table_by_id_success()
     )
     # Fail on not working sending in just source and target
-    klass.KlassCorrespondance(
+    klass.KlassCorrespondence(
         source_classification_id="0",
         target_classification_id="1",
         from_date="2023-01-01",
     )
-    return klass.KlassCorrespondance(correspondance_id="0")
+    return klass.KlassCorrespondence(correspondence_id="0")
