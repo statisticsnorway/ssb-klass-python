@@ -6,37 +6,37 @@ from typing import Union
 import dateutil.parser
 import pandas as pd
 
-from ..requests.klass_requests import correspondance_table_by_id, corresponds
+from ..requests.klass_requests import correspondence_table_by_id, corresponds
 
 
-class KlassCorrespondance:
-    """Correspondances in Klass exist between two classifications at a specific time,
+class KlassCorrespondence:
+    """Correspondences in Klass exist between two classifications at a specific time,
     (hence actually between Versions).
     They are used to translate data between two classifications.
     For example from geographical municipality up to county level.
 
-    You can identify the correspondance by their individual ids,
+    You can identify the correspondence by their individual ids,
     or by the source classification ID + the target classification ID + a specific time.
 
     Parameters
     ----------
-    correspondance_id : str
-        The id of the correspondance.
+    correspondence_id : str
+        The id of the correspondence.
     source_classification_id : str
         The id of the source classification.
     target_classification_id : str
         The id of the target classification.
     from_date : str
-        The start date of the correspondance.
+        The start date of the correspondence.
     to_date : str (optional)
-        The end date of the correspondance.
+        The end date of the correspondence.
     contain_quarter : int
-        The number of quarters the correspondance should contain,
+        The number of quarters the correspondence should contain,
         this replaces the to_date during initialization.
     language : str
-        The language of the correspondance. "nb", "nn" or "en".
+        The language of the correspondence. "nb", "nn" or "en".
     include_future : bool
-        If the correspondance should include future correspondances.
+        If the correspondence should include future correspondences.
 
     Methods
     -------
@@ -45,40 +45,40 @@ class KlassCorrespondance:
         If you specify a value for "other", returns a defaultdict instead.
         Columns in the data are 'sourceCode', 'sourceName', 'sourceShortName'
         'targetCode', 'targetName', 'targetShortName', 'validFrom', 'validTo'
-    get_correspondance()
+    get_correspondence()
         Run as last part of initialization.
-        If you reset some attributes, maybe run this after to "update" the data of the correspondance.
+        If you reset some attributes, maybe run this after to "update" the data of the correspondence.
     _last_date_of_quarter()
         Returns the last date of the numbered quarter provided.
 
     Attributes
     ----------
     data : pd.DataFrame
-        The pandas dataframe of the correspondances.
-    correspondance : list
-        The list of the correspondances returned by the API.
-    correspondance_id : str
-        The id of the correspondance.
+        The pandas dataframe of the correspondences.
+    correspondence : list
+        The list of the correspondences returned by the API.
+    correspondence_id : str
+        The id of the correspondence.
     source_classification_id : str
         The id of the source classification.
     target_classification_id : str
         The id of the target classification.
     from_date : str
-        The start date of the correspondance.
+        The start date of the correspondence.
     to_date : str (optional)
-        The end date of the correspondance.
+        The end date of the correspondence.
     contain_quarter : int
-        The number of quarters the correspondance should contain,
+        The number of quarters the correspondence should contain,
         this replaces the to_date during initialization.
     language : str
-        The language of the correspondance. "nb", "nn" or "en".
+        The language of the correspondence. "nb", "nn" or "en".
     include_future : bool
-        If the correspondance should include future correspondances.
+        If the correspondence should include future correspondences.
     """
 
     def __init__(
         self,
-        correspondance_id: str = "",
+        correspondence_id: str = "",
         source_classification_id: str = "",
         target_classification_id: str = "",
         from_date: str = "",
@@ -87,7 +87,7 @@ class KlassCorrespondance:
         language: str = "nb",
         include_future: bool = False,
     ):
-        self.correspondance_id = correspondance_id
+        self.correspondence_id = correspondence_id
         self.source_classification_id = source_classification_id
         self.target_classification_id = target_classification_id
         self.from_date = from_date
@@ -95,11 +95,11 @@ class KlassCorrespondance:
         self.contain_quarter = contain_quarter
         self.language = language
         self.include_future = include_future
-        self.get_correspondance()
+        self.get_correspondence()
 
     def __str__(self):
-        return f"""Klass Correspondance
-        id: {self.correspondance_id}
+        return f"""Klass Correspondence
+        id: {self.correspondence_id}
         source id: {self.source_classification_id}
         target id: {self.target_classification_id}
         from date: {self.from_date}
@@ -110,9 +110,9 @@ class KlassCorrespondance:
         """
 
     def __repr__(self):
-        result = "KlassCorrespondance("
-        if self.correspondance_id:
-            result += f"correspondance_id={self.correspondance_id}, "
+        result = "KlassCorrespondence("
+        if self.correspondence_id:
+            result += f"correspondence_id={self.correspondence_id}, "
         if self.source_classification_id:
             result += f"source_classification_id={self.source_classification_id}, "
         if self.target_classification_id:
@@ -126,20 +126,20 @@ class KlassCorrespondance:
         result += ")"
         return result
 
-    def get_correspondance(self) -> None:
+    def get_correspondence(self) -> None:
         """Run as last part of initialization.
-        If you reset some attributes, maybe run this after to "update" the data of the correspondance.
+        If you reset some attributes, maybe run this after to "update" the data of the correspondence.
 
-        Gets and reshapes correspondances based on attributes on the class.
+        Gets and reshapes correspondences based on attributes on the class.
 
         Returns
         -------
         None
             Sets .data attribute based on the attributes of the class
         """
-        if self.correspondance_id:
-            result = correspondance_table_by_id(
-                self.correspondance_id, language=self.language
+        if self.correspondence_id:
+            result = correspondence_table_by_id(
+                self.correspondence_id, language=self.language
             )
             for key, value in result.items():
                 setattr(self, key, value)
@@ -163,7 +163,7 @@ class KlassCorrespondance:
             self.correspondence = result["correspondenceItems"]
         else:
             raise ValueError(
-                "Please set correspondance ID, or source and target classification IDs + from_date"
+                "Please set correspondence ID, or source and target classification IDs + from_date"
             )
         self.data = pd.json_normalize(self.correspondence)
 
@@ -210,7 +210,7 @@ class KlassCorrespondance:
         Returns
         -------
         dict | defaultdict
-            The dictionary of the correspondance.
+            The dictionary of the correspondence.
         """
         mapping = dict(zip(self.data[key], self.data[value]))
         if other:
