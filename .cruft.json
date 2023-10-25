@@ -7,7 +7,7 @@
       "full_name": "Carl Corneil",
       "email": "cfc@ssb.no",
       "project_name": "ssb-klass-python",
-      "description": "A Python package built on top of KLASS's API for retrieving classifications, codes, correspondances etc.",
+      "description": "A Python package built on top of KLASS's API for retrieving classifications, codes, correspondences etc.",
       "license_year": "2023",
       "_template": "https://github.com/statisticsnorway/ssb-project-template-stat"
     }
