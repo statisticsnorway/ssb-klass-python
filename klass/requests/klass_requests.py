@@ -299,10 +299,10 @@ def corresponds_at(
     return convert_return_type(get_json(url, params), return_type)
 
 
-def correspondance_table_by_id(
-    correspondance_id: str, language: str = "nb", return_type: str = "json"
+def correspondence_table_by_id(
+    correspondence_id: str, language: str = "nb", return_type: str = "json"
 ):
-    url = KlassConfig().BASE_URL + "correspondencetables/" + str(correspondance_id)
+    url = KlassConfig().BASE_URL + "correspondencetables/" + str(correspondence_id)
     params = validate_params({"language": language})
     return convert_return_type(get_json(url, params), return_type)
 
