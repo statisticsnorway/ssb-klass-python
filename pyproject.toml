@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "ssb-klass-python"
 version = "0.0.6"
-description = "A Python package built on top of KLASS's API for retrieving classifications, codes, correspondances etc."
+description = "A Python package built on top of KLASS's API for retrieving classifications, codes, correspondences etc."
 authors = ["Carl Corneil <cfc@ssb.no>"]
 license = "MIT"
 readme = "README.md"

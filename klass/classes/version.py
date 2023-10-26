@@ -3,7 +3,7 @@ from typing import Dict
 import pandas as pd
 
 from ..requests.klass_requests import version_by_id
-from .correspondance import KlassCorrespondance
+from .correspondence import KlassCorrespondence
 from .variant import KlassVariant
 
 
@@ -28,10 +28,10 @@ class KlassVersion:
         Simplify the variants of the version into a dict with IDs as keys.
     get_variant() -> KlassVariant:
         Get a specific variant.
-    correspondances_simple() -> dict:
-        Simplify the correspondances of the version into a dict with IDs as keys.
-    get_correspondance() -> KlassCorrespondance:
-        Get a specific correspondance.
+    correspondences_simple() -> dict:
+        Simplify the correspondences of the version into a dict with IDs as keys.
+    get_correspondence() -> KlassCorrespondence:
+        Get a specific correspondence.
     get_classification_codes()
         Get the codelists of the version. Inserts the result into the KlassVersions .data attribute, instead of returning it.
         Run as a part of the class initialization.
@@ -64,7 +64,7 @@ class KlassVersion:
     derivedFrom : str
         Notes on where the classification was derived from.
     correspondenceTables : list
-        A list of correspondance-tables of the version.
+        A list of correspondence-tables of the version.
     """
 
     def __init__(
@@ -110,7 +110,7 @@ class KlassVersion:
         result += f"""\nLast modified: {self.lastModified}
         {contact}
 
-        Number of correspondances: {len(self.correspondenceTables)}
+        Number of correspondences: {len(self.correspondenceTables)}
         Number of classification variants: {len(self.classificationVariants)}
         Number of classification items: {len(self.classificationItems)}
         Number of levels: {len(self.levels)}
@@ -183,14 +183,14 @@ class KlassVersion:
         """
         return KlassVariant(variant_id, select_level, language)
 
-    def correspondances_simple(self) -> Dict[str, Dict[str, str]]:
-        """Get a simple dictionary of the correspondances.
+    def correspondences_simple(self) -> Dict[str, Dict[str, str]]:
+        """Get a simple dictionary of the correspondences.
         With the IDs as keys.
 
         Returns
         -------
         dict
-            A nested dictionary of the available correspondances.
+            A nested dictionary of the available correspondences.
 
         """
         tables = {}
@@ -206,8 +206,8 @@ class KlassVersion:
         return tables
 
     @staticmethod
-    def get_correspondance(
-        correspondance_id: str = "",
+    def get_correspondence(
+        correspondence_id: str = "",
         source_classification_id: str = "",
         target_classification_id: str = "",
         from_date: str = "",
@@ -215,36 +215,36 @@ class KlassVersion:
         contain_quarter: int = 0,
         language: str = "nb",
         include_future: bool = False,
-    ) -> KlassCorrespondance:
-        """Get a specific correspondance.
+    ) -> KlassCorrespondence:
+        """Get a specific correspondence.
 
         Parameters
         ----------
-        correspondance_id : str
-            The ID of the correspondance.
+        correspondence_id : str
+            The ID of the correspondence.
         source_classification_id : str
             The ID of the source classification.
         target_classification_id : str
             The ID of the target classification.
         from_date : str
-            The start date of the correspondance.
+            The start date of the correspondence.
         to_date : str
-            The end date of the correspondance.
+            The end date of the correspondence.
         contain_quarter : int
-            The number of quarters the correspondance should contain.
+            The number of quarters the correspondence should contain.
         language : str
-            The language of the correspondance. "nb", "nn" or "en".
+            The language of the correspondence. "nb", "nn" or "en".
         include_future : bool
-            If the correspondance should include future correspondances.
+            If the correspondence should include future correspondences.
 
         Returns
         -------
-        KlassCorrespondance
-            A correspondance object with the specified ID, language and dates.
+        KlassCorrespondence
+            A correspondence object with the specified ID, language and dates.
 
         """
-        return KlassCorrespondance(
-            correspondance_id=correspondance_id,
+        return KlassCorrespondence(
+            correspondence_id=correspondence_id,
             source_classification_id=source_classification_id,
             target_classification_id=target_classification_id,
             from_date=from_date,

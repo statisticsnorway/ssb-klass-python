@@ -2,7 +2,7 @@ import pandas as pd
 
 from ..requests.klass_requests import changes, classification_by_id
 from .codes import KlassCodes
-from .correspondance import KlassCorrespondance
+from .correspondence import KlassCorrespondence
 from .variant import KlassVariantSearchByName
 from .version import KlassVersion
 
@@ -44,9 +44,9 @@ class KlassClassification:
     get_variant_by_name()
         Returns a KlassVariantSearchByName object by using this classification's classification_id,
         and a the start of a variant_name you specify.
-    get_correspondance_to()
-        Treats the current classification as a source of correspondances, you must specify the targets ID.
-        Returns a KlassCorrespondance object of the correspondances.
+    get_correspondence_to()
+        Treats the current classification as a source of correspondences, you must specify the targets ID.
+        Returns a KlassCorrespondence object of the correspondences.
     get_codes()
         Returns a KlassCodes object of the classification at a specific time, or in a specific time range.
     get_changes()
@@ -256,16 +256,16 @@ class KlassClassification:
             include_future=include_future,
         )
 
-    def get_correspondance_to(
+    def get_correspondence_to(
         self,
         target_classification_id: str,
         from_date: str,
         to_date: str = "",
         language: str = "",
         include_future: bool = None,
-    ) -> KlassCorrespondance:
-        """Treats the current classification as a source of correspondances, you must specify the targets ID and a date.
-        Returns a KlassCorrespondance object of the correspondances.
+    ) -> KlassCorrespondence:
+        """Treats the current classification as a source of correspondences, you must specify the targets ID and a date.
+        Returns a KlassCorrespondence object of the correspondences.
 
         Parameters
         ----------
@@ -276,14 +276,14 @@ class KlassClassification:
         to_date : str
             The end date of the time period. "YYYY-MM-DD"
         language : str
-            The language of the correspondances. "nn", "nb" or "en".
+            The language of the correspondences. "nn", "nb" or "en".
         include_future : bool
-            Whether to include future correspondances.
+            Whether to include future correspondences.
 
         Returns
         -------
-        KlassCorrespondance
-            A KlassCorrespondance object of the correspondances between the current classification and the target classification.
+        KlassCorrespondence
+            A KlassCorrespondence object of the correspondences between the current classification and the target classification.
 
         Raises
         ------
@@ -296,7 +296,7 @@ class KlassClassification:
             language = self.language
         if include_future is None:
             include_future = self.include_future
-        return KlassCorrespondance(
+        return KlassCorrespondence(
             source_classification_id=self.classification_id,
             target_classification_id=target_classification_id,
             from_date=from_date,

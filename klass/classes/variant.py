@@ -57,8 +57,8 @@ class KlassVariant:
         Date-string to when the version is valid
     introduction : str
         A longer description of the variant.
-    correspondanceTables : list
-        The correspondance tables of the variant.
+    correspondenceTables : list
+        The correspondence tables of the variant.
     changelogs : list
         The changelogs of the variant.
     levels : list[dict]
