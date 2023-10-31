@@ -1,7 +1,7 @@
 from importlib import import_module
 
 
-__version__ = "0.0.6"
+__version__ = "0.0.7"
 __all__ = []
 
 # Everything we want to be directly importable from under "klass"-package
