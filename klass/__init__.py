@@ -1,7 +1,9 @@
-from importlib import import_module
+import importlib
 
 
-__version__ = "0.0.7"
+# Gets the installed version from pyproject.toml, no need to update this file
+__version__ = importlib.metadata.version("ssb-klass-python")
+
 __all__ = []
 
 # Everything we want to be directly importable from under "klass"-package
@@ -40,5 +42,5 @@ local_imports = {
 # Loop that imports local files into this namespace and appends to __all__ for star imports
 for file, funcs in local_imports.items():
     for func in funcs:
-        globals()[func] = getattr(import_module(f"klass.{file}", func), func)
+        globals()[func] = getattr(importlib.import_module(f"klass.{file}", func), func)
         __all__.append(func)
