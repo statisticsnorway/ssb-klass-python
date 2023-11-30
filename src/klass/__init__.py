@@ -1,5 +1,11 @@
-import importlib
+"""A Python package built on top of Statistics Norway's code- and classification-system "KLASS".
 
+The package aims to make Klass's API for retrieving data easier to use by re-representing Klass's internal hierarchy as python-classes.
+Containing methods for easier traversal down, search classes and widgets, reasonable defaults to parameters etc.
+Where data is possible to fit into pandas DataFrames, this will be preferred, but hirerachical data will be kept as json / dict structure.
+"""
+
+import importlib
 
 # Gets the installed version from pyproject.toml, no need to update this file
 __version__ = importlib.metadata.version("ssb-klass-python")
