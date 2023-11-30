@@ -1,15 +1,29 @@
 {
-  "template": "https://github.com/statisticsnorway/ssb-project-template-stat",
-  "commit": "15546f2c4f8e89eaec7afce10b7b674ff35a33bc",
-  "checkout": null,
+  "template": "https://github.com/statisticsnorway/ssb-pypitemplate.git",
+  "commit": "c2aa8500502801d19a2b4213db6f44ebfcc874f1",
+  "checkout": "2023.11.17",
   "context": {
     "cookiecutter": {
-      "full_name": "Carl Corneil",
-      "email": "cfc@ssb.no",
       "project_name": "ssb-klass-python",
-      "description": "A Python package built on top of KLASS's API for retrieving classifications, codes, correspondences etc.",
-      "license_year": "2023",
-      "_template": "https://github.com/statisticsnorway/ssb-project-template-stat"
+      "package_name": "klass",
+      "friendly_name": "KLASS",
+      "copyright_owner": "Statistics Norway",
+      "copyright_year": "2023",
+      "author": "Carl Corneil, ssb-pythonistas",
+      "email": "ssb-pythonistas@ssb.no",
+      "github_organization": "statisticsnorway",
+      "version": "0.0.7",
+      "license": "MIT",
+      "development_status": "Development Status :: 4 - Beta",
+      "code_quality_level": "Medium",
+      "_copy_without_render": [
+        "*.rst_t"
+      ],
+      "_jinja2_env_vars": {
+        "lstrip_blocks": true,
+        "trim_blocks": true
+      },
+      "_template": "https://github.com/statisticsnorway/ssb-pypitemplate.git"
     }
   },
   "directory": null

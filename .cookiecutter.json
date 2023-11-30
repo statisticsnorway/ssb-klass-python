@@ -1,0 +1,22 @@
+{
+  "_copy_without_render": [
+    "*.rst_t"
+  ],
+  "_jinja2_env_vars": {
+    "lstrip_blocks": true,
+    "trim_blocks": true
+  },
+  "_template": "https://github.com/statisticsnorway/ssb-pypitemplate.git",
+  "author": "Carl Corneil, ssb-pythonistas",
+  "code_quality_level": "Medium",
+  "copyright_owner": "Statistics Norway",
+  "copyright_year": "2023",
+  "development_status": "Development Status :: 4 - Beta",
+  "email": "ssb-pythonistas@ssb.no",
+  "friendly_name": "KLASS",
+  "github_organization": "statisticsnorway",
+  "license": "MIT",
+  "package_name": "klass",
+  "project_name": "ssb-klass-python-new-template",
+  "version": "0.0.7"
+}
