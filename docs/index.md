@@ -18,5 +18,5 @@ reference
 contributing
 Code of Conduct <codeofconduct>
 License <license>
-Changelog <https://github.com/statisticsnorway/ssb-klass-python-new-template/releases>
+Changelog <https://github.com/statisticsnorway/ssb-klass-python/releases>
 ```

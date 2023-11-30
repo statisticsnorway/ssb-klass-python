@@ -12,9 +12,9 @@ Here is a list of important resources for contributors:
 - [Code of Conduct]
 
 [mit license]: https://opensource.org/licenses/MIT
-[source code]: https://github.com/statisticsnorway/ssb-klass-python-new-template
-[documentation]: https://ssb-klass-python-new-template.readthedocs.io/
-[issue tracker]: https://github.com/statisticsnorway/ssb-klass-python-new-template/issues
+[source code]: https://github.com/statisticsnorway/ssb-klass-python
+[documentation]: https://ssb-klass-python.readthedocs.io/
+[issue tracker]: https://github.com/statisticsnorway/ssb-klass-python/issues
 
 ## How to report a bug
 
@@ -54,7 +54,7 @@ or the command-line interface:
 
 ```console
 $ poetry run python
-$ poetry run ssb-klass-python-new-template
+$ poetry run ssb-klass-python
 ```
 
 [poetry]: https://python-poetry.org/
@@ -108,7 +108,7 @@ $ nox --session=pre-commit -- install
 It is recommended to open an issue before starting work on anything.
 This will allow a chance to talk it over with the owners and validate your approach.
 
-[pull request]: https://github.com/statisticsnorway/ssb-klass-python-new-template/pulls
+[pull request]: https://github.com/statisticsnorway/ssb-klass-python/pulls
 
 <!-- github-only -->
 
