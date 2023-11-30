@@ -112,4 +112,3 @@ This project was generated from [Statistics Norway]'s [SSB PyPI Template].
 [license]: https://github.com/statisticsnorway/ssb-klass-python/blob/main/LICENSE
 [contributor guide]: https://github.com/statisticsnorway/ssb-klass-python/blob/main/CONTRIBUTING.md
 [reference guide]: https://statisticsnorway.github.io/ssb-klass-python/reference.html
-
