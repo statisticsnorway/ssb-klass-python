@@ -22,6 +22,10 @@ toml = ">=0.10.2"
 ipywidgets = ">=8.0.6"
 pandas = ">=1.5.3"
 requests = ">=2.31.0"
+# Stubs for Mypy
+pandas-stubs = ">=2.1.1.230928"
+types-requests = ">=2.31.0.10"
+types-python-dateutil = ">=2.8.19.14"
 
 [tool.poetry.group.dev.dependencies]
 pygments = ">=2.10.0"
@@ -68,6 +72,12 @@ warn_unreachable = true
 pretty = true
 show_column_numbers = true
 show_error_context = true
+
+[[tool.mypy.overrides]]
+module = [
+    "ipywidgets.*",
+]
+ignore_missing_imports = true
 
 [tool.ruff]
 force-exclude = true  # Apply excludes to pre-commit
