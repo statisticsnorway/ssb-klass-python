@@ -110,6 +110,8 @@ extend-exclude = [
     ".ipynb_checkpoints",
     "noxfile.py",
     "docs/conf.py",
+    ".ipynb",  # Custom ignore for klass-package, notebooks are only for "demo", waiting for a B018 ignore on notebooks in ruff
+    # https://github.com/astral-sh/ruff/pull/8872 <- has been merged in main, but not yet released?
 ]
 
 [tool.ruff.isort]
