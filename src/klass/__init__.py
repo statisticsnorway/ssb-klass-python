@@ -48,7 +48,6 @@ local_imports = {
     "utility.codes": ["get_codes"],
     "utility.classification": ["get_classification"],
     "widgets.search_ipywidget": ["search_classification"],
-    "config": ["KlassConfig"],
 }
 
 # Loop that imports local files into this namespace and appends to __all__ for star imports
