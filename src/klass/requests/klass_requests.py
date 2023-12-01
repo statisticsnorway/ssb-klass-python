@@ -1,21 +1,26 @@
+from datetime import datetime
 from datetime import timedelta
 from datetime import timezone
+from typing import Any
 
 import dateutil.parser
 import pandas as pd
 import requests
 
 import klass.config as config
-
-from .sections import sections_dict
-from .validate import validate_params
+from klass.requests.sections import sections_dict
+from klass.requests.validate import params_after
+from klass.requests.validate import params_before
+from klass.requests.validate import validate_params
 
 # ##########
 # GENERAL #
 # ##########
 
+json_type = Any
 
-def get_json(url: str, params: dict) -> dict:
+
+def get_json(url: str, params: params_after) -> json_type:
     """Simplifies getting the json out of a get-request to the KLASS-api.
 
     Used in most of the following functions.
@@ -49,22 +54,24 @@ def get_json(url: str, params: dict) -> dict:
     return response.json()
 
 
-def convert_return_type(data: dict, return_type: str = "pandas") -> pd.DataFrame:
+def convert_return_type(
+    data: json_type, return_type: str = "pandas"
+) -> Any | pd.DataFrame:
     """Differentiates between returning as raw json or convert to DataFrame."""
     if return_type == "json":
         return data
     return pd.json_normalize(data)
 
 
-def convert_datestring(date: str, return_type: str = "isoklass") -> str:
+def convert_datestring(date: str | datetime, return_type: str = "isoklass") -> str:
     """Uses dateutil to guess the format of a time sent in, and convert it to the expected string format of the API."""
     if isinstance(date, str):
         date = dateutil.parser.parse(date)
-    date = date.replace(tzinfo=timezone(timedelta(hours=1)))
+    date_time = date.replace(tzinfo=timezone(timedelta(hours=1)))
     if return_type == "isoklass":
-        return date.strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + date.strftime("%z")
+        return date_time.strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + date.strftime("%z")
     elif return_type == "yyyy-mm-dd":
-        return date.strftime("%Y-%m-%d")
+        return date_time.strftime("%Y-%m-%d")
     raise ValueError("Unrecognized datetimestring return type")
 
 
@@ -80,33 +87,37 @@ def convert_section(section: str) -> str:
 # ############
 
 
-def classifications(include_codelists: bool = False, changed_since: str = "") -> dict:
+def classifications(
+    include_codelists: bool = False, changed_since: str = ""
+) -> json_type:
     """Gets from the classifications-endpoint."""
     url = config.BASE_URL + "classifications"
-    params = {
+    params: params_before = {
         "includeCodelists": include_codelists,
     }
-    if changed_since:
-        params["changedSince"] = convert_datestring(changed_since, "isoklass")
-    params = validate_params(params)
-    return get_json(url, params)
+    if changed_since == "":
+        params["changedSince"] = convert_datestring(
+            date=changed_since, return_type="isoklass"
+        )
+    params_final: params_after = validate_params(params)
+    return get_json(url, params_final)
 
 
 def classification_search(
     query: str = "", include_codelists: bool = False, ssbsection: str = ""
-) -> dict:
+) -> json_type:
     """Gets from the classification/search-endpoint."""
     url = config.BASE_URL + "classifications/search"
     if not query:
         raise ValueError("Please specify a query")
-    params = {
+    params: params_before = {
         "query": query,
         "includeCodelists": include_codelists,
     }
     if ssbsection:
         params["ssbSection"] = convert_section(ssbsection)
-    params = validate_params(params)
-    return get_json(url, params)
+    params_final: params_after = validate_params(params)
+    return get_json(url, params_final)
 
 
 def classification_by_id(
@@ -114,10 +125,12 @@ def classification_by_id(
     language: str = "nb",
     include_future: bool = False,
     return_type: str = "json",
-) -> dict | pd.DataFrame:
+) -> json_type | pd.DataFrame:
     """Gets from the classification-by-id-endpoint."""
     url = config.BASE_URL + "classifications/" + str(classification_id)
-    params = validate_params({"language": language, "includeFuture": include_future})
+    params: params_after = validate_params(
+        {"language": language, "includeFuture": include_future}
+    )
     return convert_return_type(get_json(url, params), return_type)
 
 
@@ -131,23 +144,28 @@ def codes(
     language: str = "nb",
     include_future: bool = False,
     return_type: str = "pandas",
-) -> pd.DataFrame | dict:
+) -> pd.DataFrame | json_type:
     """Gets from the codes-endpoint."""
     url = config.BASE_URL + "classifications/" + str(classification_id) + "/codes"
     from_date = convert_datestring(from_date, "yyyy-mm-dd")
-    params = {
+    params: params_before = {
         "from": from_date,
-        "selectCodes": select_codes,
-        "selectLevel": select_level,
-        "presentationNamePattern": presentation_name_pattern,
-        "language": language,
-        "includeFuture": include_future,
     }
     if to_date:
         params["to"] = convert_datestring(to_date)
         params["to"] = to_date
-    params = validate_params({k: v for k, v in params.items() if v != ""})
-    return convert_return_type(get_json(url, params)["codes"], return_type)
+    if select_codes:
+        params["selectCodes"] = select_codes
+    if select_level:
+        params["selectLevel"] = select_level
+    if presentation_name_pattern:
+        params["presentationNamePattern"] = presentation_name_pattern
+    if language:
+        params["language"] = language
+    if include_future:
+        params["includeFuture"] = include_future
+    params_final: params_after = validate_params(params)
+    return convert_return_type(get_json(url, params_final)["codes"], return_type)
 
 
 def codes_at(
@@ -159,20 +177,23 @@ def codes_at(
     language: str = "nb",
     include_future: bool = False,
     return_type: str = "pandas",
-) -> pd.DataFrame | dict:
+) -> pd.DataFrame | json_type:
     """Gets from the codesAt-endpoint."""
     url = config.BASE_URL + "classifications/" + str(classification_id) + "/codesAt"
     date = convert_datestring(date, "yyyy-mm-dd")
-    params = {
-        "date": date,
-        "selectCodes": select_codes,
-        "selectLevel": select_level,
-        "presentationNamePattern": presentation_name_pattern,
-        "language": language,
-        "includeFuture": include_future,
-    }
-    params = validate_params({k: v for k, v in params.items() if v != ""})
-    return convert_return_type(get_json(url, params)["codes"], return_type)
+    params: params_before = {"date": date}
+    if select_codes:
+        params["selectCodes"] = select_codes
+    if select_level:
+        params["selectLevel"] = select_level
+    if presentation_name_pattern:
+        params["presentationNamePattern"] = presentation_name_pattern
+    if language:
+        params["language"] = language
+    if include_future:
+        params["includeFuture"] = include_future
+    params_final: params_after = validate_params(params)
+    return convert_return_type(get_json(url, params_final)["codes"], return_type)
 
 
 def version_by_id(
@@ -180,10 +201,10 @@ def version_by_id(
     language: str = "nb",
     include_future: bool = False,
     return_type: str = "json",
-) -> dict | pd.DataFrame:
+) -> json_type | pd.DataFrame:
     """Gets from the version-by-id-endpoint."""
     url = config.BASE_URL + "versions/" + str(version_id)
-    params = validate_params(
+    params: params_after = validate_params(
         {
             "language": language,
             "includeFuture": include_future,
@@ -203,24 +224,28 @@ def variant(
     language: str = "nb",
     include_future: bool = False,
     return_type: str = "pandas",
-) -> pd.DataFrame | dict:
+) -> pd.DataFrame | json_type:
     """Gets from the variant-endpoint."""
     url = config.BASE_URL + "classifications/" + str(classification_id) + "/variant"
     from_date = convert_datestring(from_date, "yyyy-mm-dd")
-    params = {
+    params: params_before = {
         "variantName": variant_name,
         "from": from_date,
-        "selectCodes": select_codes,
-        "selectLevel": select_level,
-        "presentationNamePattern": presentation_name_pattern,
-        "language": language,
-        "includeFuture": include_future,
     }
     if to_date:
         params["to"] = convert_datestring(to_date, "yyyy-mm-dd")
-    params = validate_params({k: v for k, v in params.items() if v != ""})
-    print(params)
-    return convert_return_type(get_json(url, params)["codes"], return_type)
+    if select_codes:
+        params["selectCodes"] = select_codes
+    if select_level:
+        params["selectLevel"] = select_level
+    if presentation_name_pattern:
+        params["presentationNamePattern"] = presentation_name_pattern
+    if language:
+        params["language"] = language
+    if include_future:
+        params["includeFuture"] = include_future
+    params_final: params_after = validate_params(params)
+    return convert_return_type(get_json(url, params_final)["codes"], return_type)
 
 
 def variant_at(
@@ -233,29 +258,35 @@ def variant_at(
     language: str = "nb",
     include_future: bool = False,
     return_type: str = "pandas",
-) -> pd.DataFrame | dict:
+) -> pd.DataFrame | json_type:
     """Gets from the variantAt-endpoint."""
     url = config.BASE_URL + "classifications/" + str(classification_id) + "/variantAt"
     date = convert_datestring(date, "yyyy-mm-dd")
-    params = {
+    params: params_before = {
         "variantName": variant_name,
         "date": date,
-        "selectCodes": select_codes,
-        "selectLevel": select_level,
-        "presentationNamePattern": presentation_name_pattern,
-        "language": language,
-        "includeFuture": include_future,
     }
-    params = validate_params({k: v for k, v in params.items() if v not in ["", ("",)]})
-    return convert_return_type(get_json(url, params)["codes"], return_type)
+    if select_codes:
+        params["selectCodes"] = select_codes
+    if select_level:
+        params["selectLevel"] = select_level
+    if presentation_name_pattern:
+        params["presentationNamePattern"] = presentation_name_pattern
+    if language:
+        params["language"] = language
+    if include_future:
+        params["includeFuture"] = include_future
+
+    params_final: params_after = validate_params(params)
+    return convert_return_type(get_json(url, params_final)["codes"], return_type)
 
 
 def variants_by_id(
     variant_id: str, language: str = "nb", return_type: str = "json"
-) -> dict | pd.DataFrame:
+) -> json_type | pd.DataFrame:
     """Gets from the variants-endpoint."""
     url = config.BASE_URL + "variants/" + str(variant_id)
-    params = validate_params({"language": language})
+    params: params_after = validate_params({"language": language})
     return convert_return_type(get_json(url, params), return_type)
 
 
@@ -267,7 +298,7 @@ def corresponds(
     language: str = "nb",
     include_future: bool = False,
     return_type: str = "json",
-) -> dict | pd.DataFrame:
+) -> json_type | pd.DataFrame:
     """Gets from the classifications/corresponds-endpoint."""
     url = (
         config.BASE_URL
@@ -276,17 +307,18 @@ def corresponds(
         + "/corresponds"
     )
     from_date = convert_datestring(from_date, "yyyy-mm-dd")
-    params = {
+    params: params_before = {
         "targetClassificationId": target_classification_id,
         "from": from_date,
-        "language": language,
-        "includeFuture": include_future,
     }
     if to_date:
         params["to"] = convert_datestring(to_date, "yyyy-mm-dd")
-    params = validate_params({k: v for k, v in params.items() if v != ""})
-
-    return convert_return_type(get_json(url, params), return_type)
+    if language:
+        params["language"] = language
+    if include_future:
+        params["includeFuture"] = include_future
+    params_final: params_after = validate_params(params)
+    return convert_return_type(get_json(url, params_final), return_type)
 
 
 def corresponds_at(
@@ -296,7 +328,7 @@ def corresponds_at(
     language: str = "nb",
     include_future: bool = False,
     return_type: str = "json",
-) -> dict | pd.DataFrame:
+) -> json_type | pd.DataFrame:
     """Gets from the classificatins/correspondsAt-endpoint."""
     url = (
         config.BASE_URL
@@ -305,22 +337,24 @@ def corresponds_at(
         + "/correspondsAt"
     )
     date = convert_datestring(date, "yyyy-mm-dd")
-    params = {
+    params: params_before = {
         "targetClassificationId": target_classification_id,
         "date": date,
-        "language": language,
-        "includeFuture": include_future,
     }
-    params = validate_params({k: v for k, v in params.items() if v != ""})
-    return convert_return_type(get_json(url, params), return_type)
+    if language:
+        params["language"] = language
+    if include_future:
+        params["includeFuture"] = include_future
+    params_final: params_after = validate_params(params)
+    return convert_return_type(get_json(url, params_final), return_type)
 
 
 def correspondence_table_by_id(
     correspondence_id: str, language: str = "nb", return_type: str = "json"
-) -> dict | pd.DataFrame:
+) -> json_type | pd.DataFrame:
     """Gets from the correspondence-table-by-id-endpoint."""
     url = config.BASE_URL + "correspondencetables/" + str(correspondence_id)
-    params = validate_params({"language": language})
+    params: params_after = validate_params({"language": language})
     return convert_return_type(get_json(url, params), return_type)
 
 
@@ -331,7 +365,7 @@ def changes(
     language: str = "nb",
     include_future: bool = False,
     return_type: str = "pandas",
-) -> pd.DataFrame | dict:
+) -> pd.DataFrame | json_type:
     """Gets from the classifications/changes-endpoint."""
     url = (
         config.BASE_URL + "classifications/" + str(classification_id) + "/changes.json"
@@ -339,28 +373,34 @@ def changes(
     from_date = convert_datestring(from_date, "yyyy-mm-dd")
     if to_date:
         to_date = convert_datestring(to_date, "yyyy-mm-dd")
-    params = {
+    params: params_before = {
         "from": from_date,
-        "to": to_date,
-        "language": language,
-        "includeFuture": include_future,
     }
-    params = validate_params({k: v for k, v in params.items() if v != ""})
-    return convert_return_type(get_json(url, params)["codeChanges"], return_type)
+    if to_date:
+        params["to"] = to_date
+    if language:
+        params["language"] = language
+    if include_future:
+        params["includeFuture"] = include_future
+    params_final: params_after = validate_params(params)
+    return convert_return_type(get_json(url, params_final)["codeChanges"], return_type)
 
 
 def classificationfamilies(
     ssbsection: str = "",
     include_codelists: bool = False,
     language: str = "nb",
-) -> dict:
+) -> json_type:
     """Gets from the classificationfamilies-endpoint."""
     url = config.BASE_URL + "classificationfamilies"
-    params = {"includeCodelists": include_codelists, "language": language}
+    params: params_before = {
+        "includeCodelists": include_codelists,
+        "language": language,
+    }
     if ssbsection:
         params["ssbSection"] = convert_section(ssbsection)
-    params = validate_params(params)
-    return get_json(url, params)
+    params_final: params_after = validate_params(params)
+    return get_json(url, params_final)
 
 
 def classificationfamilies_by_id(
@@ -368,11 +408,14 @@ def classificationfamilies_by_id(
     ssbsection: str = "",
     include_codelists: bool = False,
     language: str = "nb",
-) -> dict:
+) -> json_type:
     """Gets from the classificationsfamilies-endpoint with id."""
     url = config.BASE_URL + "classificationfamilies/" + str(classificationfamily_id)
-    params = {"includeCodelists": include_codelists, "language": language}
+    params: params_before = {
+        "includeCodelists": include_codelists,
+        "language": language,
+    }
     if ssbsection:
         params["ssbSection"] = convert_section(ssbsection)
-    params = validate_params(params)
-    return get_json(url, params)
+    params_final: params_after = validate_params(params)
+    return get_json(url, params_final)
