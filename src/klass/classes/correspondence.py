@@ -81,7 +81,7 @@ class KlassCorrespondence:
         correspondence_id: str = "",
         source_classification_id: str = "",
         target_classification_id: str = "",
-        from_date: str | date = "",
+        from_date: str = "",
         to_date: str = "",
         contain_quarter: int = 0,
         language: str = "nb",
@@ -91,14 +91,14 @@ class KlassCorrespondence:
         self.correspondence_id = correspondence_id
         self.source_classification_id = source_classification_id
         self.target_classification_id = target_classification_id
-        self.from_date: str | date = from_date
+        self.from_date: str = from_date
         self.to_date = to_date
         self.contain_quarter = contain_quarter
         self.language = language
         self.include_future = include_future
         # Will be reset by get_correspondance, included for mypy
-        self.correspondanceMaps: list = []
-
+        self.correspondenceMaps: list[dict[str, str | None]] = []
+        self.correspondenceItems: list[dict[str, str | None]] = []
         self.get_correspondence()
 
     def __str__(self) -> str:
@@ -150,7 +150,7 @@ class KlassCorrespondence:
             )
             for key, value in result.items():
                 setattr(self, key, value)
-            self.correspondence = result["correspondenceMaps"]
+            self.correspondence: list[dict[str, str]] = result["correspondenceMaps"]
             del self.correspondenceMaps
         elif (
             self.source_classification_id
@@ -184,10 +184,8 @@ class KlassCorrespondence:
         str
             The last date of the quarter.
         """
-        if isinstance(self.from_date, str):
-            year = dateutil.parser.parse(self.from_date).year
-        else:
-            year = self.from_date.year
+        from_date = dateutil.parser.parse(self.from_date)
+        year = from_date.year
         last_month_of_quarter = 3 * self.contain_quarter
         date_of_last_day_of_quarter = date(
             year, last_month_of_quarter, monthrange(year, last_month_of_quarter)[1]
@@ -199,7 +197,7 @@ class KlassCorrespondence:
         key: str = "sourceCode",
         value: str = "targetCode",
         other: str = "",
-    ) -> dict | defaultdict:
+    ) -> dict[str, str | None] | defaultdict[str, str | None]:
         """Extracts two columns from the data, turning them into a dict.
 
         If you specify a value for "other", returns a defaultdict instead.
