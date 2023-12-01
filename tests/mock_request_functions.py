@@ -2,7 +2,8 @@ from unittest import mock
 
 import requests
 
-from klass.requests import klass_requests, sections
+from klass.requests import klass_requests
+from klass.requests import sections
 from tests import mock_response_data
 
 
