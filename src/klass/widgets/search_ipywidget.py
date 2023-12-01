@@ -1,14 +1,17 @@
 from datetime import date
 
 import ipywidgets as widgets
-from IPython.display import HTML, display
+from IPython.display import HTML
+from IPython.display import display
 
-from klass import KlassSearchClassifications, sections_dict
+from klass import KlassSearchClassifications
+from klass import sections_dict
 
 
 def search_classification(no_dupes=True):
-    """Opens a GUI in Jupyter Notebooks using ipywidgets,
-    lets you search for terms and copy sample code out,
+    """Opens a GUI in Jupyter Notebooks using ipywidgets.
+
+    Lets you search for terms and copy sample code out,
     that'll let you get data from the classification.
 
     Parameters
@@ -73,7 +76,7 @@ def search_classification(no_dupes=True):
     search_term = widgets.Text(
         value="", placeholder="Searchterm", description="Type searchterm:"
     )
-    sections = ["Choose..."] + list(sections_dict().keys())
+    sections = ["Choose...", *list(sections_dict().keys())]
     section_dropdown = widgets.Dropdown(
         options=sections, value=sections[0], description="Section:", disabled=False
     )
