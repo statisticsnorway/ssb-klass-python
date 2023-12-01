@@ -1,5 +1,3 @@
-from typing import Dict
-
 import pandas as pd
 
 from ..requests.klass_requests import version_by_id
@@ -9,6 +7,7 @@ from .variant import KlassVariant
 
 class KlassVersion:
     """A version of a classification, is set in time.
+
     For example the ID of NUS valid in 2023 is 1954, while the ID of NUS without being time-specific is 36.
 
     Parameters
@@ -22,7 +21,7 @@ class KlassVersion:
     include_future : bool, optional
         If the version should include future versions. Defaults to False.
 
-    Methods
+    Methods:
     -------
     variants_simple() -> dict:
         Simplify the variants of the version into a dict with IDs as keys.
@@ -37,7 +36,7 @@ class KlassVersion:
         Run as a part of the class initialization.
 
 
-    Attributes
+    Attributes:
     ----------
     data : pd.DataFrame
         The codelist of the classification-version as a pandas dataframe
@@ -74,6 +73,7 @@ class KlassVersion:
         language: str = "nb",
         include_future: bool = False,
     ):
+        """Sets up the object with data from the KLASS-API."""
         self.version_id = version_id
         self.select_level = select_level
         self.language = language.lower()
@@ -84,9 +84,22 @@ class KlassVersion:
             include_future=include_future,
         ).items():
             setattr(self, key, value)
+
+        # Will be replaced by get_classifiaction_codes, here for mypy
+        self.contactPerson: dict = {}
+        self.name: str = ""
+        self.owningSection: str = ""
+        self.validFrom: str = ""
+        self.lastModified: str = ""
+        self.correspondenceTables: list[dict] = []
+        self.classificationVariants: list[dict] = []
+        self.classificationItems: list[dict] = []
+        self.levels: list[dict] = []
+
         self.get_classification_codes()
 
     def __repr__(self) -> str:
+        """A string representation of how to recreate the object, including its set parameters."""
         result = f'KlassVersion(version_id="{self.version_id}", '
         if self.select_level:
             result += f"select_level={self.select_level}, "
@@ -98,6 +111,7 @@ class KlassVersion:
         return result
 
     def __str__(self) -> str:
+        """A human-readable string of the object, includes many of its attributes or their sizes."""
         contact = "Contact Person:\n"
         for k, v in self.contactPerson.items():
             contact += f"\t{k}: {v}\n"
@@ -122,6 +136,7 @@ class KlassVersion:
 
     def get_classification_codes(self, select_level: int = 0) -> None:
         """Get the codelists of the version. Inserts the result into the KlassVersions .data attribute, instead of returning it.
+
         Run as a part of the class initialization.
 
         Parameters
@@ -129,7 +144,7 @@ class KlassVersion:
         select_level : int
             The level of the version to keep in the data. Setting to 0 keeps all levels.
 
-        Returns
+        Returns:
         -------
         None
             Sets .data attribute based on the attributes of the class
@@ -154,7 +169,8 @@ class KlassVersion:
             data = data[data["level"].astype(str) == str(select_level)]
         self.data = data
 
-    def variants_simple(self) -> dict:
+    def variants_simple(self) -> dict[str, str]:
+        """A simplifed dictionary of the variants, ids as keys, names as values."""
         return {
             v["_links"]["self"]["href"].split("/")[-1]: v["name"]
             for v in self.classificationVariants
@@ -175,7 +191,7 @@ class KlassVersion:
         language : str
             The language of the variant.
 
-        Returns
+        Returns:
         -------
         KlassVariant
             A variant object with the specified ID and language.
@@ -183,11 +199,12 @@ class KlassVersion:
         """
         return KlassVariant(variant_id, select_level, language)
 
-    def correspondences_simple(self) -> Dict[str, Dict[str, str]]:
+    def correspondences_simple(self) -> dict[str, dict[str, str]]:
         """Get a simple dictionary of the correspondences.
+
         With the IDs as keys.
 
-        Returns
+        Returns:
         -------
         dict
             A nested dictionary of the available correspondences.
@@ -237,7 +254,7 @@ class KlassVersion:
         include_future : bool
             If the correspondence should include future correspondences.
 
-        Returns
+        Returns:
         -------
         KlassCorrespondence
             A correspondence object with the specified ID, language and dates.
