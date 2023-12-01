@@ -1,17 +1,17 @@
 from calendar import monthrange
 from collections import defaultdict
 from datetime import date
-from typing import Union
 
 import dateutil.parser
 import pandas as pd
 
-from ..requests.klass_requests import correspondence_table_by_id, corresponds
+from ..requests.klass_requests import correspondence_table_by_id
+from ..requests.klass_requests import corresponds
 
 
 class KlassCorrespondence:
-    """Correspondences in Klass exist between two classifications at a specific time,
-    (hence actually between Versions).
+    """Correspondences in Klass exist between two classifications at a specific time (hence actually between Versions).
+
     They are used to translate data between two classifications.
     For example from geographical municipality up to county level.
 
@@ -38,7 +38,7 @@ class KlassCorrespondence:
     include_future : bool
         If the correspondence should include future correspondences.
 
-    Methods
+    Methods:
     -------
     to_dict()
         Extracts two columns from the data, turning them into a dict.
@@ -51,7 +51,7 @@ class KlassCorrespondence:
     _last_date_of_quarter()
         Returns the last date of the numbered quarter provided.
 
-    Attributes
+    Attributes:
     ----------
     data : pd.DataFrame
         The pandas dataframe of the correspondences.
@@ -81,23 +81,28 @@ class KlassCorrespondence:
         correspondence_id: str = "",
         source_classification_id: str = "",
         target_classification_id: str = "",
-        from_date: str = "",
+        from_date: str | date = "",
         to_date: str = "",
         contain_quarter: int = 0,
         language: str = "nb",
         include_future: bool = False,
     ):
+        """Gets the correspondence-data from the API."""
         self.correspondence_id = correspondence_id
         self.source_classification_id = source_classification_id
         self.target_classification_id = target_classification_id
-        self.from_date = from_date
+        self.from_date: str | date = from_date
         self.to_date = to_date
         self.contain_quarter = contain_quarter
         self.language = language
         self.include_future = include_future
+        # Will be reset by get_correspondance, included for mypy
+        self.correspondanceMaps: list = []
+
         self.get_correspondence()
 
-    def __str__(self):
+    def __str__(self) -> str:
+        """Prints the correspondence in a human readable format, including some attributes/metadata."""
         return f"""Klass Correspondence
         id: {self.correspondence_id}
         source id: {self.source_classification_id}
@@ -109,7 +114,8 @@ class KlassCorrespondence:
         {self.data[self.data.columns[:5]].head(5)}
         """
 
-    def __repr__(self):
+    def __repr__(self) -> str:
+        """Returns a string representation of the correspondence-object, including the parameters used to recreate it."""
         result = "KlassCorrespondence("
         if self.correspondence_id:
             result += f"correspondence_id={self.correspondence_id}, "
@@ -127,12 +133,13 @@ class KlassCorrespondence:
         return result
 
     def get_correspondence(self) -> None:
-        """Run as last part of initialization.
+        """Run as last part of initialization. Actually setting the data from the API as attributes.
+
         If you reset some attributes, maybe run this after to "update" the data of the correspondence.
 
         Gets and reshapes correspondences based on attributes on the class.
 
-        Returns
+        Returns:
         -------
         None
             Sets .data attribute based on the attributes of the class
@@ -169,9 +176,10 @@ class KlassCorrespondence:
 
     def _last_date_of_quarter(self) -> str:
         """Calculates the last date of the quarter.
+
         Uses the attribute "contain_quarter" to determine which quarter to use.
 
-        Returns
+        Returns:
         -------
         str
             The last date of the quarter.
@@ -191,8 +199,9 @@ class KlassCorrespondence:
         key: str = "sourceCode",
         value: str = "targetCode",
         other: str = "",
-    ) -> Union[dict, defaultdict]:
+    ) -> dict | defaultdict:
         """Extracts two columns from the data, turning them into a dict.
+
         If you specify a value for "other", returns a defaultdict instead.
 
         Columns in the data are 'sourceCode', 'sourceName', 'sourceShortName'
@@ -207,7 +216,7 @@ class KlassCorrespondence:
         other : str
             The value to use for keys that don't exist in the data.
 
-        Returns
+        Returns:
         -------
         dict | defaultdict
             The dictionary of the correspondence.
