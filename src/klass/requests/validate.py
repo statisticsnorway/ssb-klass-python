@@ -1,6 +1,6 @@
 from datetime import datetime
 
-import klass.klass_config as klass_config
+import klass.config as config
 
 from .sections import sections_dict
 
@@ -42,16 +42,16 @@ def validate_date(date: str) -> str:
 def validate_language(language: str) -> str:
     """Validates the language-string against possible languages from the config."""
     language = language.lower()
-    if language not in klass_config.LANGUAGES:
+    if language not in config.LANGUAGES:
         raise ValueError(
-            f"Specify one of the valid languages: {', '.join(klass_config.LANGUAGES)}"
+            f"Specify one of the valid languages: {', '.join(config.LANGUAGES)}"
         )
     return language
 
 
 def validate_bool(val: bool) -> bool:
     """Validates as a bool, then converts it to a lowercase string (required by API)."""
-    if isinstance(val, bool):
+    if not isinstance(val, bool):
         raise TypeError(f"{val} needs to be a bool")
     val = str(val).lower()
     return val  # For some reason the parameters follow json-small-letter-bools

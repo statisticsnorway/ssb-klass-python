@@ -1,6 +1,6 @@
 import requests
 
-import klass.klass_config as klass_config
+import klass.config as config
 
 
 def base_request(content: str, status_code: int = 200) -> requests.Response:
@@ -11,7 +11,7 @@ def base_request(content: str, status_code: int = 200) -> requests.Response:
         "utf8",
     )
     response.request = requests.PreparedRequest()
-    response.request.headers = klass_config.HEADERS
+    response.request.headers = config.HEADERS
     return response
 
 

@@ -2,7 +2,7 @@ from functools import lru_cache
 
 import requests
 
-import klass.klass_config as klass_config
+import klass.config as config
 
 # As these functions are used by the validate functions also,
 # they are in their own file to avoid circular imports
@@ -11,7 +11,7 @@ import klass.klass_config as klass_config
 @lru_cache(maxsize=1)
 def sections_list() -> list[str]:
     """Gets the sections that are registered in KLASS-api. Unlikely to change often, so we cache this."""
-    url: str = klass_config.BASE_URL + "/ssbsections"
+    url: str = config.BASE_URL + "/ssbsections"
     response = requests.get(url).json()
     sections = [x["name"] for x in response["_embedded"]["ssbSections"]]
     return sections
