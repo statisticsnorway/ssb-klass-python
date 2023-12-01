@@ -8,7 +8,13 @@ Where data is possible to fit into pandas DataFrames, this will be preferred, bu
 import importlib
 
 # Gets the installed version from pyproject.toml, no need to update this file
-__version__ = importlib.metadata.version("ssb-klass-python")
+try:
+    __version__ = importlib.metadata.version("ssb-klass-python")
+except importlib.metadata.PackageNotFoundError as e:
+    __version__ = "0.0.0"
+    print(
+        f"ssb-klass-python not installed correctly(?) version unknown, setting it to {__version__}: {e}"
+    )
 
 __all__ = []
 

@@ -25,7 +25,7 @@
 [poetry]: https://python-poetry.org/
 A Python package built on top of Statistics Norway's code- and classification-system "KLASS". \
 The package aims to make Klass's API for retrieving data easier to use by re-representing Klass's internal hierarchy as python-classes. Containing methods for easier traversal down, search classes and widgets, reasonable defaults to parameters etc.
-Where data is possible to fit into pandas DataFrames, this will be preferred, but hirerachical data will be kept as json / dict structure.
+Where data is possible to fit into pandas DataFrames, this will be preferred, but hiererachical data / objects containing metadata will be kept as json / dict structure.
 
 
 ## Installing
@@ -99,7 +99,7 @@ Documentation for the [endpoints we are using can be found on Statistics Norways
 
 Technical architecture of the API we are interacting with is detailed in [Statistics Norway's **internal** wiki](https://wiki.ssb.no/display/KP/Teknisk+arkitektur#Tekniskarkitektur-GSIM).
 
-This project was generated from [Statistics Norway]'s [SSB PyPI Template].
+This project has been migrated to follow the [SSB PyPI Template] from [Statistics Norway].
 
 [statistics norway]: https://www.ssb.no/en
 [pypi]: https://pypi.org/
