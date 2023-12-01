@@ -1,33 +1,88 @@
 from datetime import datetime
+from typing import TypedDict
+
+from typing_extensions import NotRequired
 
 import klass.config as config
+from klass.requests.sections import sections_dict
 
-from .sections import sections_dict
+params_before = TypedDict(
+    "params_before",
+    {
+        "language": NotRequired[str],
+        "includeFuture": NotRequired[bool],  # Will be converted to lowercase string
+        "from": NotRequired[str],
+        "to": NotRequired[str],
+        "date": NotRequired[str],
+        "selectCodes": NotRequired[str],
+        "selectLevel": NotRequired[str],
+        "presentationNamePattern": NotRequired[str],
+        "variantName": NotRequired[str],
+        "targetClassificationId": NotRequired[str],
+        "ssbSection": NotRequired[str],
+        "includeCodelists": NotRequired[bool],  # Will be converted to lowercase string
+        "changedSince": NotRequired[str],
+        "query": NotRequired[str],
+    },
+)
+params_after = TypedDict(
+    "params_after",
+    {
+        "language": NotRequired[str],
+        "includeFuture": NotRequired[str],
+        "from": NotRequired[str],
+        "to": NotRequired[str],
+        "date": NotRequired[str],
+        "selectCodes": NotRequired[str],
+        "selectLevel": NotRequired[str],
+        "presentationNamePattern": NotRequired[str],
+        "variantName": NotRequired[str],
+        "targetClassificationId": NotRequired[str],
+        "ssbSection": NotRequired[str],
+        "includeCodelists": NotRequired[str],
+        "changedSince": NotRequired[str],
+        "query": NotRequired[str],
+    },
+)
 
 
-def validate_params(params: dict) -> dict:
+def validate_params(params: params_before) -> params_after:
     """Links parameters to their validate-functions."""
-    validations = {
-        "language": validate_language,
-        "includeFuture": validate_bool,
-        "from": validate_date,
-        "to": validate_date,
-        "date": validate_date,
-        "selectCodes": validate_select_codes,
-        "selectLevel": validate_whole_number,
-        "presentationNamePattern": validate_presentation_name_patterns,
-        "variantName": validate_alnum_spaces,
-        "targetClassificationId": validate_whole_number,
-        "ssbSection": validate_ssb_section,
-        "includeCodelists": validate_bool,
-        "changedSince": validate_time_iso8601,
-        "query": validate_alnum_spaces,
-    }
+    new_params: params_after = {}
+    if "language" in params:
+        new_params["language"] = validate_language(params["language"])
+    if "includeFuture" in params:
+        new_params["includeFuture"] = validate_bool(params["includeFuture"])
+    if "from" in params:
+        new_params["from"] = validate_date(params["from"])
+    if "to" in params:
+        new_params["to"] = validate_date(params["to"])
+    if "date" in params:
+        new_params["date"] = validate_date(params["date"])
+    if "selectCodes" in params:
+        new_params["selectCodes"] = validate_select_codes(params["selectCodes"])
+    if "selectLevel" in params:
+        new_params["selectLevel"] = validate_whole_number(params["selectLevel"])
+    if "presentationNamePattern" in params:
+        new_params["presentationNamePattern"] = validate_presentation_name_patterns(
+            params["presentationNamePattern"]
+        )
+    if "variantName" in params:
+        new_params["variantName"] = validate_alnum_spaces(params["variantName"])
+    if "targetClassificationId" in params:
+        new_params["targetClassificationId"] = validate_whole_number(
+            params["targetClassificationId"]
+        )
+    if "ssbSection" in params:
+        new_params["ssbSection"] = validate_ssb_section(params["ssbSection"])
+    if "includeCodelists" in params:
+        new_params["includeCodelists"] = validate_bool(params["includeCodelists"])
+    if "changedSince" in params:
+        new_params["changedSince"] = validate_time_iso8601(params["changedSince"])
+    if "query" in params:
+        new_params["query"] = validate_alnum_spaces(params["query"])
 
-    for param_key, param_value in params.items():
-        params[param_key] = validations[param_key](param_value)
-
-    return params
+    return new_params
 
 
 def validate_date(date: str) -> str:
@@ -49,12 +104,12 @@ def validate_language(language: str) -> str:
     return language
 
 
-def validate_bool(val: bool) -> bool:
+def validate_bool(val: bool) -> str:
     """Validates as a bool, then converts it to a lowercase string (required by API)."""
     if not isinstance(val, bool):
         raise TypeError(f"{val} needs to be a bool")
-    val = str(val).lower()
-    return val  # For some reason the parameters follow json-small-letter-bools
+    val_return: str = str(val).lower()
+    return val_return  # For some reason the parameters follow json-small-letter-bools
 
 
 def validate_select_codes(codestring: str) -> str:
