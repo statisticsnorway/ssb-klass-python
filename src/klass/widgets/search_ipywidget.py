@@ -8,7 +8,7 @@ from klass import KlassSearchClassifications
 from klass import sections_dict
 
 
-def search_classification(no_dupes=True):
+def search_classification(no_dupes: bool = True) -> widgets.VBox:
     """Opens a GUI in Jupyter Notebooks using ipywidgets.
 
     Lets you search for terms and copy sample code out,
@@ -20,8 +20,13 @@ def search_classification(no_dupes=True):
         To include duplicate results or not in the result.
         Dupes are caused by multiple languages being returned?
     """
+    search_result: widgets.output = widgets.Output()
+    search_term: widgets.Text = widgets.Text(
+        value="", placeholder="Searchterm", description="Type searchterm:"
+    )
+    search_result: HTML = HTML()
 
-    def do_search(btn):
+    def do_search(btn: widgets.Button) -> None:
         nonlocal search_term
         nonlocal section_dropdown
         nonlocal search_result
@@ -73,9 +78,6 @@ def search_classification(no_dupes=True):
             search_result.clear_output()
             display(HTML(search_content))
 
-    search_term = widgets.Text(
-        value="", placeholder="Searchterm", description="Type searchterm:"
-    )
     sections = ["Choose...", *list(sections_dict().keys())]
     section_dropdown = widgets.Dropdown(
         options=sections, value=sections[0], description="Section:", disabled=False
@@ -85,7 +87,6 @@ def search_classification(no_dupes=True):
     html_header = widgets.HTML(
         value="<style>button.classification_copy_code:active {opacity: 30%;} button.classification_copy_code:hover {opacity: 80%;}</style>"
     )
-    search_result = widgets.Output()
 
     return widgets.VBox(
         [

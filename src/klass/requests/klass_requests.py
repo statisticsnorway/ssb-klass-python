@@ -5,7 +5,8 @@ import dateutil.parser
 import pandas as pd
 import requests
 
-from ..klass_config import KlassConfig
+import klass.klass_config as klass_config
+
 from .sections import sections_dict
 from .validate import validate_params
 
@@ -40,8 +41,8 @@ def get_json(url: str, params: dict) -> dict:
     ValueError
         If the response has no json.
     """
-    req = requests.Request("GET", url=url, headers=KlassConfig().HEADERS, params=params)
-    if KlassConfig().TESTING:
+    req = requests.Request("GET", url=url, headers=klass_config.HEADERS, params=params)
+    if klass_config.TESTING:
         print("Full URL, check during testing:", req.prepare().url)
     response = requests.Session().send(req.prepare())
     response.raise_for_status()
@@ -81,7 +82,7 @@ def convert_section(section: str) -> str:
 
 def classifications(include_codelists: bool = False, changed_since: str = "") -> dict:
     """Gets from the classifications-endpoint."""
-    url = KlassConfig().BASE_URL + "classifications"
+    url = klass_config.BASE_URL + "classifications"
     params = {
         "includeCodelists": include_codelists,
     }
@@ -95,7 +96,7 @@ def classification_search(
     query: str = "", include_codelists: bool = False, ssbsection: str = ""
 ) -> dict:
     """Gets from the classification/search-endpoint."""
-    url = KlassConfig().BASE_URL + "classifications/search"
+    url = klass_config.BASE_URL + "classifications/search"
     if not query:
         raise ValueError("Please specify a query")
     params = {
@@ -115,7 +116,7 @@ def classification_by_id(
     return_type: str = "json",
 ) -> dict | pd.DataFrame:
     """Gets from the classification-by-id-endpoint."""
-    url = KlassConfig().BASE_URL + "classifications/" + str(classification_id)
+    url = klass_config.BASE_URL + "classifications/" + str(classification_id)
     params = validate_params({"language": language, "includeFuture": include_future})
     return convert_return_type(get_json(url, params), return_type)
 
@@ -132,9 +133,7 @@ def codes(
     return_type: str = "pandas",
 ) -> pd.DataFrame | dict:
     """Gets from the codes-endpoint."""
-    url = (
-        KlassConfig().BASE_URL + "classifications/" + str(classification_id) + "/codes"
-    )
+    url = klass_config.BASE_URL + "classifications/" + str(classification_id) + "/codes"
     from_date = convert_datestring(from_date, "yyyy-mm-dd")
     params = {
         "from": from_date,
@@ -163,10 +162,7 @@ def codes_at(
 ) -> pd.DataFrame | dict:
     """Gets from the codesAt-endpoint."""
     url = (
-        KlassConfig().BASE_URL
-        + "classifications/"
-        + str(classification_id)
-        + "/codesAt"
+        klass_config.BASE_URL + "classifications/" + str(classification_id) + "/codesAt"
     )
     date = convert_datestring(date, "yyyy-mm-dd")
     params = {
@@ -188,7 +184,7 @@ def version_by_id(
     return_type: str = "json",
 ) -> dict | pd.DataFrame:
     """Gets from the version-by-id-endpoint."""
-    url = KlassConfig().BASE_URL + "versions/" + str(version_id)
+    url = klass_config.BASE_URL + "versions/" + str(version_id)
     params = validate_params(
         {
             "language": language,
@@ -212,10 +208,7 @@ def variant(
 ) -> pd.DataFrame | dict:
     """Gets from the variant-endpoint."""
     url = (
-        KlassConfig().BASE_URL
-        + "classifications/"
-        + str(classification_id)
-        + "/variant"
+        klass_config.BASE_URL + "classifications/" + str(classification_id) + "/variant"
     )
     from_date = convert_datestring(from_date, "yyyy-mm-dd")
     params = {
@@ -247,7 +240,7 @@ def variant_at(
 ) -> pd.DataFrame | dict:
     """Gets from the variantAt-endpoint."""
     url = (
-        KlassConfig().BASE_URL
+        klass_config.BASE_URL
         + "classifications/"
         + str(classification_id)
         + "/variantAt"
@@ -270,7 +263,7 @@ def variants_by_id(
     variant_id: str, language: str = "nb", return_type: str = "json"
 ) -> dict | pd.DataFrame:
     """Gets from the variants-endpoint."""
-    url = KlassConfig().BASE_URL + "variants/" + str(variant_id)
+    url = klass_config.BASE_URL + "variants/" + str(variant_id)
     params = validate_params({"language": language})
     return convert_return_type(get_json(url, params), return_type)
 
@@ -286,7 +279,7 @@ def corresponds(
 ) -> dict | pd.DataFrame:
     """Gets from the classifications/corresponds-endpoint."""
     url = (
-        KlassConfig().BASE_URL
+        klass_config.BASE_URL
         + "classifications/"
         + str(source_classification_id)
         + "/corresponds"
@@ -315,7 +308,7 @@ def corresponds_at(
 ) -> dict | pd.DataFrame:
     """Gets from the classificatins/correspondsAt-endpoint."""
     url = (
-        KlassConfig().BASE_URL
+        klass_config.BASE_URL
         + "classifications/"
         + str(source_classification_id)
         + "/correspondsAt"
@@ -335,7 +328,7 @@ def correspondence_table_by_id(
     correspondence_id: str, language: str = "nb", return_type: str = "json"
 ) -> dict | pd.DataFrame:
     """Gets from the correspondence-table-by-id-endpoint."""
-    url = KlassConfig().BASE_URL + "correspondencetables/" + str(correspondence_id)
+    url = klass_config.BASE_URL + "correspondencetables/" + str(correspondence_id)
     params = validate_params({"language": language})
     return convert_return_type(get_json(url, params), return_type)
 
@@ -350,7 +343,7 @@ def changes(
 ) -> pd.DataFrame | dict:
     """Gets from the classifications/changes-endpoint."""
     url = (
-        KlassConfig().BASE_URL
+        klass_config.BASE_URL
         + "classifications/"
         + str(classification_id)
         + "/changes.json"
@@ -374,7 +367,7 @@ def classificationfamilies(
     language: str = "nb",
 ) -> dict:
     """Gets from the classificationfamilies-endpoint."""
-    url = KlassConfig().BASE_URL + "classificationfamilies"
+    url = klass_config.BASE_URL + "classificationfamilies"
     params = {"includeCodelists": include_codelists, "language": language}
     if ssbsection:
         params["ssbSection"] = convert_section(ssbsection)
@@ -390,9 +383,7 @@ def classificationfamilies_by_id(
 ) -> dict:
     """Gets from the classificationsfamilies-endpoint with id."""
     url = (
-        KlassConfig().BASE_URL
-        + "classificationfamilies/"
-        + str(classificationfamily_id)
+        klass_config.BASE_URL + "classificationfamilies/" + str(classificationfamily_id)
     )
     params = {"includeCodelists": include_codelists, "language": language}
     if ssbsection:
