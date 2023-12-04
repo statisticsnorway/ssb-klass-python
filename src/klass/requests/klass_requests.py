@@ -7,6 +7,7 @@ from typing import TypedDict
 import dateutil.parser
 import pandas as pd
 import requests
+from typing_extensions import NotRequired
 
 import klass.config as config
 from klass.requests.sections import sections_dict
@@ -144,8 +145,7 @@ def codes(
     presentation_name_pattern: str = "",
     language: str = "nb",
     include_future: bool = False,
-    return_type: str = "pandas",
-) -> pd.DataFrame | json_type:
+) -> pd.DataFrame:
     """Gets from the codes-endpoint."""
     url = config.BASE_URL + "classifications/" + str(classification_id) + "/codes"
     from_date = convert_datestring(from_date, "yyyy-mm-dd")
@@ -166,7 +166,7 @@ def codes(
     if include_future:
         params["includeFuture"] = include_future
     params_final: params_after = validate_params(params)
-    return convert_return_type(get_json(url, params_final)["codes"], return_type)
+    return convert_return_type(get_json(url, params_final)["codes"], "pandas")
 
 
 def codes_at(
@@ -177,8 +177,7 @@ def codes_at(
     presentation_name_pattern: str = "",
     language: str = "nb",
     include_future: bool = False,
-    return_type: str = "pandas",
-) -> pd.DataFrame | json_type:
+) -> pd.DataFrame:
     """Gets from the codesAt-endpoint."""
     url = config.BASE_URL + "classifications/" + str(classification_id) + "/codesAt"
     date = convert_datestring(date, "yyyy-mm-dd")
@@ -194,14 +193,45 @@ def codes_at(
     if include_future:
         params["includeFuture"] = include_future
     params_final: params_after = validate_params(params)
-    return convert_return_type(get_json(url, params_final)["codes"], return_type)
+    return convert_return_type(get_json(url, params_final)["codes"], "pandas")
+
+
+class type_correspondenceTables(TypedDict):
+    """The type returned by the version_by_id function."""
+
+    name: str
+    contactPerson: dict[str, str]
+    owningSection: str
+    lastModified: str
+    published: list[str]
+    _links: dict[str, dict[str, str]]
+
+
+class type_json_version_by_id(TypedDict):
+    """The type returned by the version_by_id function."""
+
+    name: str
+    validFrom: str
+    validTo: NotRequired[str]
+    lastModified: str
+    published: list[str]
+    introduction: str
+    contactPerson: dict[str, str]
+    owningSection: str
+    legalBase: NotRequired[str]
+    publications: NotRequired[str]
+    derivedFrom: NotRequired[str]
+    correspondenceTables: type_correspondenceTables
+    changelogs: list[dict[str, str]]
+    levels: list[dict[str, int | str]]
+    classificationItems: list[dict[str, str | None]]
+    _links: dict[str, dict[str, str]]
 
 
 def version_by_id(
     version_id: str,
     language: str = "nb",
     include_future: bool = False,
-    return_type: str = "json",
 ) -> json_type | pd.DataFrame:
     """Gets from the version-by-id-endpoint."""
     url = config.BASE_URL + "versions/" + str(version_id)
@@ -211,7 +241,8 @@ def version_by_id(
             "includeFuture": include_future,
         }
     )
-    return convert_return_type(get_json(url, params), return_type)
+    result: type_json_version_by_id = get_json(url, params)
+    return result
 
 
 def variant(
@@ -282,13 +313,11 @@ def variant_at(
     return convert_return_type(get_json(url, params_final)["codes"], return_type)
 
 
-def variants_by_id(
-    variant_id: str, language: str = "nb", return_type: str = "json"
-) -> json_type | pd.DataFrame:
+def variants_by_id(variant_id: str, language: str = "nb") -> json_type:
     """Gets from the variants-endpoint."""
     url = config.BASE_URL + "variants/" + str(variant_id)
     params: params_after = validate_params({"language": language})
-    return convert_return_type(get_json(url, params), return_type)
+    return get_json(url, params)
 
 
 correspondanceItems_type = dict[str, str]

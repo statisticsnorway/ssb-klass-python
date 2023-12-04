@@ -199,7 +199,7 @@ class KlassCodes:
         key: str = "code",
         value: str = "",  # default is "name" if not set
         other: str = "",
-    ) -> dict | defaultdict:
+    ) -> dict[str, str] | defaultdict[str, str]:
         """Extracts two columns from the data, turning them into a dict.
 
         If you specify a value for "other", returns a defaultdict instead

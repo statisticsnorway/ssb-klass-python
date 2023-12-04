@@ -1,5 +1,7 @@
 import pandas as pd
 
+from ..requests.klass_requests import type_correspondenceTables
+from ..requests.klass_requests import type_json_version_by_id
 from ..requests.klass_requests import variant
 from ..requests.klass_requests import variant_at
 from ..requests.klass_requests import variants_by_id
@@ -92,12 +94,9 @@ class KlassVariant:
         self.select_level = select_level
         self.language = language
 
-        # This is reset by get_classifcation_codes, but initializing it to make mypy not complain
-        self.classificationItems: list = []
-
         self.get_classification_codes()
 
-    def get_classification_codes(self, select_level: int = 0) -> None | pd.DataFrame:
+    def get_classification_codes(self, select_level: int = 0) -> None:
         """Actually gets the data from the API, setting it as attributes on the object.
 
         The codes are put into the .data attribute.
@@ -109,15 +108,40 @@ class KlassVariant:
             The level of the dataset to keep
             For example: 0
         """
-        for key, value in variants_by_id(self.variant_id, self.language).items():
-            setattr(self, key, value)
+        result: type_json_version_by_id = variants_by_id(self.variant_id, self.language)
+        self.name: str = result["name"]
+        self.validFrom: str = result["validFrom"]
+        if "validTo" in result:
+            self.validTo: str = result["validTo"]
+        self.lastModified: str = result["lastModified"]
+        self.published: list[str] = result["published"]
+        self.introduction: str = result["introduction"]
+        self.contactPerson: dict[str, str] = result["contactPerson"]
+        self.owningSection: str = result["owningSection"]
+        if "legalBase" in result:
+            self.legalBase: str = result["legalBase"]
+        if "publications" in result:
+            self.publications: str = result["publications"]
+        if "derivedFrom" in result:
+            self.derivedFrom: str = result["derivedFrom"]
+        self.correspondenceTables: type_correspondenceTables = result[
+            "correspondenceTables"
+        ]
+        self.changelogs: list[dict[str, str]] = result["changelogs"]
+        self.levels: list[dict[str, int | str]] = result["levels"]
+        self.classificationItems: list[dict[str, str | None]] = result[
+            "classificationItems"
+        ]
+        self._links: dict[str, dict[str, str]] = result["_links"]
+
         df = pd.json_normalize(self.classificationItems)
         if not select_level:
             if self.select_level:
                 select_level = self.select_level
         if select_level:
-            return df[df["level"] == str(select_level)]
-        self.data = df
+            self.data = df[df["level"] == str(select_level)]
+        else:
+            self.data = df
 
     def __repr__(self) -> str:
         """A string representation of how to recreate the current object, including set parameters."""
