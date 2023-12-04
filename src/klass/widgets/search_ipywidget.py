@@ -56,16 +56,17 @@ def search_classification(no_dupes: bool = True) -> widgets.VBox:
                         cl["name"]
                         .split(":")[0]
                         .lower()
-                        .replace(" ", "_")
-                        .replace("-", "_")
-                        .replace("(", "")
-                        .replace(")", "")
                         .replace("æ", "ae")
                         .replace("ø", "oe")
                         .replace("å", "aa")
                         .strip()
-                        .split("_")[:3]
                     )
+                    var_name = [c if c.isalnum() else "_" for c in var_name]
+                    var_name = "".join([c for c in var_name if c and c != " "])
+                    if len(var_name.split("_")) > 3:
+                        var_name = "_".join(
+                            [part for part in var_name.split("_")[:3] if part]
+                        )
                     text = f"""from klass import KlassClassification\\n{var_name} = KlassClassification({cl["classification_id"]})\\n{var_name}.get_codes(\\'{date.today().strftime('%Y-%m-%d')}\\').data"""
                     var_name = "klass" + str(cl["classification_id"])
                     search_content += f"""<button class="classification_copy_code" onclick="navigator.clipboard.writeText('{text}')">Copy code</button> {cl["classification_id"]} - {cl["name"]}<br />"""
