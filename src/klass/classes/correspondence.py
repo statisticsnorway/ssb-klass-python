@@ -7,6 +7,8 @@ import pandas as pd
 
 from ..requests.klass_requests import correspondence_table_by_id
 from ..requests.klass_requests import corresponds
+from ..requests.klass_requests import type_correspondanceMaps
+from ..requests.klass_requests import type_json_corresponds
 
 
 class KlassCorrespondence:
@@ -96,9 +98,7 @@ class KlassCorrespondence:
         self.contain_quarter = contain_quarter
         self.language = language
         self.include_future = include_future
-        # Will be reset by get_correspondance, included for mypy
-        self.correspondenceMaps: list[dict[str, str | None]] = []
-        self.correspondenceItems: list[dict[str, str | None]] = []
+
         self.get_correspondence()
 
     def __str__(self) -> str:
@@ -145,12 +145,27 @@ class KlassCorrespondence:
             Sets .data attribute based on the attributes of the class
         """
         if self.correspondence_id:
-            result = correspondence_table_by_id(
+            result_id = correspondence_table_by_id(
                 self.correspondence_id, language=self.language
             )
-            for key, value in result.items():
-                setattr(self, key, value)
-            self.correspondence: list[dict[str, str]] = result["correspondenceMaps"]
+            self.name: str = result_id["name"]
+            self.contactPerson: dict[str, str] = result_id["contactPerson"]
+            self.owningSection: str = result_id["owningSection"]
+            self.source: str = result_id["source"]
+            self.sourceId: int = result_id["sourceId"]
+            self.target: str = result_id["target"]
+            self.targetId: int = result_id["targetId"]
+            self.changeTable: bool = result_id["changeTable"]
+            self.lastModified: str = result_id["lastModified"]
+            self.published: list[str] = result_id["published"]
+            self.sourceLevel: str | None = result_id["sourceLevel"]
+            self.targetLevel: str | None = result_id["targetLevel"]
+            self.description: str = result_id["description"]
+            self.changelogs: list[str] = result_id["changelogs"]
+            self.correspondenceMaps: type_correspondanceMaps = result_id[
+                "correspondenceMaps"
+            ]
+            self.correspondence: type_correspondanceMaps = self.correspondenceMaps
             del self.correspondenceMaps
         elif (
             self.source_classification_id
@@ -159,7 +174,7 @@ class KlassCorrespondence:
         ):
             if self.contain_quarter:
                 self.to_date = self._last_date_of_quarter()
-            result = corresponds(
+            result: type_json_corresponds = corresponds(
                 source_classification_id=self.source_classification_id,
                 target_classification_id=self.target_classification_id,
                 from_date=self.from_date,

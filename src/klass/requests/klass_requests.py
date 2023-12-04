@@ -2,6 +2,7 @@ from datetime import datetime
 from datetime import timedelta
 from datetime import timezone
 from typing import Any
+from typing import TypedDict
 
 import dateutil.parser
 import pandas as pd
@@ -290,6 +291,15 @@ def variants_by_id(
     return convert_return_type(get_json(url, params), return_type)
 
 
+correspondanceItems_type = dict[str, str]
+
+
+class type_json_corresponds(TypedDict):
+    """The type returned by the corresponds function."""
+
+    correspondenceItems: list[correspondanceItems_type]
+
+
 def corresponds(
     source_classification_id: str,
     target_classification_id: str,
@@ -297,8 +307,7 @@ def corresponds(
     to_date: str = "",
     language: str = "nb",
     include_future: bool = False,
-    return_type: str = "json",
-) -> json_type | pd.DataFrame:
+) -> type_json_corresponds:
     """Gets from the classifications/corresponds-endpoint."""
     url = (
         config.BASE_URL
@@ -318,7 +327,8 @@ def corresponds(
     if include_future:
         params["includeFuture"] = include_future
     params_final: params_after = validate_params(params)
-    return convert_return_type(get_json(url, params_final), return_type)
+    result: type_json_corresponds = get_json(url, params_final)
+    return result
 
 
 def corresponds_at(
@@ -327,8 +337,7 @@ def corresponds_at(
     date: str,
     language: str = "nb",
     include_future: bool = False,
-    return_type: str = "json",
-) -> json_type | pd.DataFrame:
+) -> type_json_corresponds:
     """Gets from the classificatins/correspondsAt-endpoint."""
     url = (
         config.BASE_URL
@@ -346,16 +355,42 @@ def corresponds_at(
     if include_future:
         params["includeFuture"] = include_future
     params_final: params_after = validate_params(params)
-    return convert_return_type(get_json(url, params_final), return_type)
+    result: type_json_corresponds = get_json(url, params_final)
+    return result
+
+
+type_correspondanceMaps = list[dict[str, str]]
+
+
+class type_json_correspondence_table_id(TypedDict):
+    """The type returned by the correspondence_table_by_id function."""
+
+    name: str
+    contactPerson: dict[str, str]
+    owningSection: str
+    source: str
+    sourceId: int
+    target: str
+    targetId: int
+    changeTable: bool
+    lastModified: str
+    published: list[str]
+    sourceLevel: str | None
+    targetLevel: str | None
+    description: str
+    changelogs: list[str]
+    correspondenceMaps: type_correspondanceMaps
 
 
 def correspondence_table_by_id(
-    correspondence_id: str, language: str = "nb", return_type: str = "json"
-) -> json_type | pd.DataFrame:
+    correspondence_id: str,
+    language: str = "nb",
+) -> type_json_correspondence_table_id:
     """Gets from the correspondence-table-by-id-endpoint."""
     url = config.BASE_URL + "correspondencetables/" + str(correspondence_id)
     params: params_after = validate_params({"language": language})
-    return convert_return_type(get_json(url, params), return_type)
+    result_json: type_json_correspondence_table_id = get_json(url, params)
+    return result_json
 
 
 def changes(
