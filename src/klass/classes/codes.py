@@ -3,8 +3,8 @@ from datetime import datetime
 
 import pandas as pd
 
-from ..requests.klass_requests import codes
-from ..requests.klass_requests import codes_at
+from klass.requests.klass_requests import codes
+from klass.requests.klass_requests import codes_at
 
 
 class KlassCodes:

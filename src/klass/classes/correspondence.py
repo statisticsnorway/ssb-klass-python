@@ -5,10 +5,10 @@ from datetime import date
 import dateutil.parser
 import pandas as pd
 
-from ..requests.klass_requests import correspondence_table_by_id
-from ..requests.klass_requests import corresponds
-from ..requests.types import T_correspondanceMaps
-from ..requests.types import T_corresponds
+from klass.requests.klass_requests import correspondence_table_by_id
+from klass.requests.klass_requests import corresponds
+from klass.requests.types import T_correspondanceMaps
+from klass.requests.types import T_corresponds
 
 
 class KlassCorrespondence:

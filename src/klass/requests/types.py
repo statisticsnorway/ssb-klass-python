@@ -1,8 +1,9 @@
-from typing import NotRequired
 from typing import TypedDict
 
+from typing_extensions import NotRequired
+
 T_params_before = TypedDict(
-    "params_before",
+    "T_params_before",
     {
         "language": NotRequired[str],
         "includeFuture": NotRequired[bool],  # Will be converted to lowercase string
@@ -21,7 +22,7 @@ T_params_before = TypedDict(
     },
 )
 T_params_after = TypedDict(
-    "params_after",
+    "T_params_after",
     {
         "language": NotRequired[str],
         "includeFuture": NotRequired[str],

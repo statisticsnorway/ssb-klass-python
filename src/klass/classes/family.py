@@ -1,7 +1,7 @@
-from ..requests.klass_requests import T_classificationfamilies_by_id
-from ..requests.klass_requests import T_classificationfamilies_by_id_classifications
-from ..requests.klass_requests import classificationfamilies_by_id
-from .classification import KlassClassification
+from klass.classes.classification import KlassClassification
+from klass.requests.klass_requests import classificationfamilies_by_id
+from klass.requests.types import T_classificationfamilies_by_id
+from klass.requests.types import T_classificationfamilies_by_id_classifications
 
 
 class KlassFamily:

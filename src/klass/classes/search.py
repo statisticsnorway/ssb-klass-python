@@ -1,7 +1,7 @@
-from ..requests.klass_requests import classification_search
-from ..requests.klass_requests import classificationfamilies
-from .classification import KlassClassification
-from .family import KlassFamily
+from klass.classes.classification import KlassClassification
+from klass.classes.family import KlassFamily
+from klass.requests.klass_requests import classification_search
+from klass.requests.klass_requests import classificationfamilies
 
 
 class KlassSearchClassifications:
