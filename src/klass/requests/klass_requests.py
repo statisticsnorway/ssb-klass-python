@@ -26,7 +26,7 @@ json_type = Any
 
 
 def get_json(url: str, params: T_params_after) -> json_type:
-    """Simplifies getting the json out of a get-request to the KLASS-api.
+    """Simplify getting the json out of a get-request to the KLASS-api.
 
     Used in most of the following functions.
 
@@ -37,12 +37,12 @@ def get_json(url: str, params: T_params_after) -> json_type:
     params : dict
         The parameters to send to the endpoint.
 
-    Returns:
+    Returns
     -------
     dict
         The json-response from the endpoint.
 
-    Raises:
+    Raises
     ------
     requests.exceptions.HTTPError
         If the response is not 200.
@@ -62,14 +62,14 @@ def get_json(url: str, params: T_params_after) -> json_type:
 def convert_return_type(
     data: json_type, return_type: str = "pandas"
 ) -> Any | pd.DataFrame:
-    """Differentiates between returning as raw json or convert to DataFrame."""
+    """Differentiate between returning as raw json or convert to DataFrame."""
     if return_type == "json":
         return data
     return pd.json_normalize(data)
 
 
 def convert_datestring(date: str | datetime, return_type: str = "isoklass") -> str:
-    """Uses dateutil to guess the format of a time sent in, and convert it to the expected string format of the API."""
+    """Use dateutil to guess the format of a time sent in, and convert it to the expected string format of the API."""
     if isinstance(date, str):
         date = dateutil.parser.parse(date)
     date_time = date.replace(tzinfo=timezone(timedelta(hours=1)))
@@ -81,7 +81,7 @@ def convert_datestring(date: str | datetime, return_type: str = "isoklass") -> s
 
 
 def convert_section(section: str) -> str:
-    """Gets the full section-name-string (that the API needs) from just a provided section-number/numeric string."""
+    """Get the full section-name-string (that the API needs) from just a provided section-number/numeric string."""
     if " " not in str(section):
         return sections_dict()[str(section)]
     return section
@@ -95,7 +95,7 @@ def convert_section(section: str) -> str:
 def classifications(
     include_codelists: bool = False, changed_since: str = ""
 ) -> json_type:
-    """Gets from the classifications-endpoint."""
+    """Get from the classifications-endpoint."""
     url = config.BASE_URL + "classifications"
     params: T_params_before = {
         "includeCodelists": include_codelists,
@@ -111,7 +111,7 @@ def classifications(
 def classification_search(
     query: str = "", include_codelists: bool = False, ssbsection: str = ""
 ) -> json_type:
-    """Gets from the classification/search-endpoint."""
+    """Get from the classification/search-endpoint."""
     url = config.BASE_URL + "classifications/search"
     if not query:
         raise ValueError("Please specify a query")
@@ -128,7 +128,7 @@ def classification_search(
 def classification_by_id(
     classification_id: str, language: str = "nb", include_future: bool = False
 ) -> T_classification_by_id:
-    """Gets from the classification-by-id-endpoint."""
+    """Get from the classification-by-id-endpoint."""
     url = config.BASE_URL + "classifications/" + str(classification_id)
     params: T_params_after = validate_params(
         {"language": language, "includeFuture": include_future}
@@ -147,7 +147,7 @@ def codes(
     language: str = "nb",
     include_future: bool = False,
 ) -> pd.DataFrame:
-    """Gets from the codes-endpoint."""
+    """Get from the codes-endpoint."""
     url = config.BASE_URL + "classifications/" + str(classification_id) + "/codes"
     from_date = convert_datestring(from_date, "yyyy-mm-dd")
     params: T_params_before = {
@@ -179,7 +179,7 @@ def codes_at(
     language: str = "nb",
     include_future: bool = False,
 ) -> pd.DataFrame:
-    """Gets from the codesAt-endpoint."""
+    """Get from the codesAt-endpoint."""
     url = config.BASE_URL + "classifications/" + str(classification_id) + "/codesAt"
     date = convert_datestring(date, "yyyy-mm-dd")
     params: T_params_before = {"date": date}
@@ -202,7 +202,7 @@ def version_by_id(
     language: str = "nb",
     include_future: bool = False,
 ) -> json_type:
-    """Gets from the version-by-id-endpoint."""
+    """Get from the version-by-id-endpoint."""
     url = config.BASE_URL + "versions/" + str(version_id)
     params: T_params_after = validate_params(
         {
@@ -226,7 +226,7 @@ def variant(
     include_future: bool = False,
     return_type: str = "pandas",
 ) -> pd.DataFrame | json_type:
-    """Gets from the variant-endpoint."""
+    """Get from the variant-endpoint."""
     url = config.BASE_URL + "classifications/" + str(classification_id) + "/variant"
     from_date = convert_datestring(from_date, "yyyy-mm-dd")
     params: T_params_before = {
@@ -260,7 +260,7 @@ def variant_at(
     include_future: bool = False,
     return_type: str = "pandas",
 ) -> pd.DataFrame | json_type:
-    """Gets from the variantAt-endpoint."""
+    """Get from the variantAt-endpoint."""
     url = config.BASE_URL + "classifications/" + str(classification_id) + "/variantAt"
     date = convert_datestring(date, "yyyy-mm-dd")
     params: T_params_before = {
@@ -283,7 +283,7 @@ def variant_at(
 
 
 def variants_by_id(variant_id: str, language: str = "nb") -> json_type:
-    """Gets from the variants-endpoint."""
+    """Get from the variants-endpoint."""
     url = config.BASE_URL + "variants/" + str(variant_id)
     params: T_params_after = validate_params({"language": language})
     return get_json(url, params)
@@ -297,7 +297,7 @@ def corresponds(
     language: str = "nb",
     include_future: bool = False,
 ) -> T_corresponds:
-    """Gets from the classifications/corresponds-endpoint."""
+    """Get from the classifications/corresponds-endpoint."""
     url = (
         config.BASE_URL
         + "classifications/"
@@ -327,7 +327,7 @@ def corresponds_at(
     language: str = "nb",
     include_future: bool = False,
 ) -> T_corresponds:
-    """Gets from the classificatins/correspondsAt-endpoint."""
+    """Get from the classificatins/correspondsAt-endpoint."""
     url = (
         config.BASE_URL
         + "classifications/"
@@ -352,7 +352,7 @@ def correspondence_table_by_id(
     correspondence_id: str,
     language: str = "nb",
 ) -> T_correspondence_table_id:
-    """Gets from the correspondence-table-by-id-endpoint."""
+    """Get from the correspondence-table-by-id-endpoint."""
     url = config.BASE_URL + "correspondencetables/" + str(correspondence_id)
     params: T_params_after = validate_params({"language": language})
     result_json: T_correspondence_table_id = get_json(url, params)
@@ -367,7 +367,7 @@ def changes(
     include_future: bool = False,
     return_type: str = "pandas",
 ) -> pd.DataFrame | json_type:
-    """Gets from the classifications/changes-endpoint."""
+    """Get from the classifications/changes-endpoint."""
     url = (
         config.BASE_URL + "classifications/" + str(classification_id) + "/changes.json"
     )
@@ -392,7 +392,7 @@ def classificationfamilies(
     include_codelists: bool = False,
     language: str = "nb",
 ) -> json_type:
-    """Gets from the classificationfamilies-endpoint."""
+    """Get from the classificationfamilies-endpoint."""
     url = config.BASE_URL + "classificationfamilies"
     params: T_params_before = {
         "includeCodelists": include_codelists,
@@ -410,7 +410,7 @@ def classificationfamilies_by_id(
     include_codelists: bool = False,
     language: str = "nb",
 ) -> T_classificationfamilies_by_id:
-    """Gets from the classificationsfamilies-endpoint with id."""
+    """Get from the classificationsfamilies-endpoint with id."""
     url = config.BASE_URL + "classificationfamilies/" + str(classificationfamily_id)
     params: T_params_before = {
         "includeCodelists": include_codelists,

@@ -40,7 +40,7 @@ class KlassCorrespondence:
     include_future : bool
         If the correspondence should include future correspondences.
 
-    Methods:
+    Methods
     -------
     to_dict()
         Extracts two columns from the data, turning them into a dict.
@@ -53,7 +53,7 @@ class KlassCorrespondence:
     _last_date_of_quarter()
         Returns the last date of the numbered quarter provided.
 
-    Attributes:
+    Attributes
     ----------
     data : pd.DataFrame
         The pandas dataframe of the correspondences.
@@ -89,7 +89,7 @@ class KlassCorrespondence:
         language: str = "nb",
         include_future: bool = False,
     ):
-        """Gets the correspondence-data from the API."""
+        """Get the correspondence-data from the API."""
         self.correspondence_id = correspondence_id
         self.source_classification_id = source_classification_id
         self.target_classification_id = target_classification_id
@@ -102,7 +102,7 @@ class KlassCorrespondence:
         self.get_correspondence()
 
     def __str__(self) -> str:
-        """Prints the correspondence in a human readable format, including some attributes/metadata."""
+        """Print the correspondence in a human readable format, including some attributes/metadata."""
         return f"""Klass Correspondence
         id: {self.correspondence_id}
         source id: {self.source_classification_id}
@@ -115,7 +115,7 @@ class KlassCorrespondence:
         """
 
     def __repr__(self) -> str:
-        """Returns a string representation of the correspondence-object, including the parameters used to recreate it."""
+        """Return a string representation of the correspondence-object, including the parameters used to recreate it."""
         result = "KlassCorrespondence("
         if self.correspondence_id:
             result += f"correspondence_id={self.correspondence_id}, "
@@ -139,7 +139,7 @@ class KlassCorrespondence:
 
         Gets and reshapes correspondences based on attributes on the class.
 
-        Returns:
+        Returns
         -------
         None
             Sets .data attribute based on the attributes of the class
@@ -190,11 +190,11 @@ class KlassCorrespondence:
         self.data = pd.json_normalize(self.correspondence)
 
     def _last_date_of_quarter(self) -> str:
-        """Calculates the last date of the quarter.
+        """Calculate the last date of the quarter.
 
         Uses the attribute "contain_quarter" to determine which quarter to use.
 
-        Returns:
+        Returns
         -------
         str
             The last date of the quarter.
@@ -213,7 +213,7 @@ class KlassCorrespondence:
         value: str = "targetCode",
         other: str = "",
     ) -> dict[str, str | None] | defaultdict[str, str | None]:
-        """Extracts two columns from the data, turning them into a dict.
+        """Extract two columns from the data, turning them into a dict.
 
         If you specify a value for "other", returns a defaultdict instead.
 
@@ -229,7 +229,7 @@ class KlassCorrespondence:
         other : str
             The value to use for keys that don't exist in the data.
 
-        Returns:
+        Returns
         -------
         dict | defaultdict
             The dictionary of the correspondence.

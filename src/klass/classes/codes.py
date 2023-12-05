@@ -8,7 +8,7 @@ from klass.requests.klass_requests import codes_at
 
 
 class KlassCodes:
-    r"""Gets codes from Klass.
+    r"""Get codes from Klass.
 
     The codelist is owned by the Classification through a Version, and will be valid for a time-period.
 
@@ -31,7 +31,7 @@ class KlassCodes:
     include_future : bool
         Whether to include future codes. Defaults to False.
 
-    Methods:
+    Methods
     -------
     get_codes()
         Gets the codes from Klass, assigns a pandas dataframe to the .data attribute. Gets called during initialization, so usually unnecessary to run manually.
@@ -45,7 +45,7 @@ class KlassCodes:
         Joining children codes onto their parentCodes.
         For example instead of "code", gives you "code_1", "code_2" etc.
 
-    Attributes:
+    Attributes
     ----------
     data : pd.DataFrame
         The pandas dataframe of the codes.
@@ -57,7 +57,7 @@ class KlassCodes:
     to_date : str
         The end date of the time period. "YYYY-MM-DD"
 
-    Raises:
+    Raises
     ------
     ValueError
         if from_date or to_date is not a valid date or date-string YYYY-MM-DD.
@@ -79,7 +79,7 @@ class KlassCodes:
         language: str = "nb",
         include_future: bool = False,
     ):
-        """Gets the data from the KLASS-api belonging to the code-list."""
+        """Get the data from the KLASS-api belonging to the code-list."""
         self.classification_id = classification_id
         if not from_date:
             from_date = datetime.now().strftime("%Y-%m-%d")
@@ -93,7 +93,7 @@ class KlassCodes:
         self.get_codes()
 
     def __repr__(self) -> str:
-        """Returns a copy-pasteable string to recreate the object."""
+        """Return a copy-pasteable string to recreate the object."""
         result = f"KlassCodes(classification_id={self.classification_id}, "
         result += f"from_date={self.from_date}, "
         if self.to_date:
@@ -106,7 +106,7 @@ class KlassCodes:
         return result
 
     def __str__(self) -> str:
-        """Prints a readable string of the codelist, including some of its attributes."""
+        """Print a readable string of the codelist, including some of its attributes."""
         unique_levels = ", ".join(self.data["level"].unique())
         some_names = ", \n\t- ".join(
             self.data[self.data["name"].notna()]["name"].value_counts().iloc[:5].index
@@ -142,12 +142,12 @@ class KlassCodes:
         include_future : bool
             Whether to include future codes.
 
-        Returns:
+        Returns
         -------
         None
             Changes the dates on the class, and swaps out the data on the .data-attribute.
 
-        Raises:
+        Raises
         ------
         ValueError
             if from_date or to_date is not a valid date or date-string YYYY-MM-DD.
@@ -167,7 +167,7 @@ class KlassCodes:
         by self.from_date and self.to_date. Otherwise, codes will be retrieved only for
         the date specified by self.from_date.
 
-        Returns:
+        Returns
         -------
         None
             Changes the data on the .data-attribute.
@@ -200,7 +200,7 @@ class KlassCodes:
         value: str = "",  # default is "name" if not set
         other: str = "",
     ) -> dict[str, str] | defaultdict[str, str]:
-        """Extracts two columns from the data, turning them into a dict.
+        """Extract two columns from the data, turning them into a dict.
 
         If you specify a value for "other", returns a defaultdict instead
 
@@ -213,12 +213,12 @@ class KlassCodes:
         other : str
             If key is missing from dict, return this value instead, if you specify a OTHER-value.
 
-        Returns:
+        Returns
         -------
         dict | defaultdict
             The extracted columns as a dict or defaultdict.
 
-        Raises:
+        Raises
         ------
         ValueError
             If the value is not specified and the pattern is not specified.
@@ -236,7 +236,7 @@ class KlassCodes:
         return mapping
 
     def pivot_level(self, keep: list[str] | None = None) -> pd.DataFrame:
-        """Pivots levels into seperate columns, and numbers columns based on levels as suffixes.
+        """Pivot levels into seperate columns, and numbers columns based on levels as suffixes.
 
         Joining children codes onto their parentCodes.
         For example instead of "code", gives you "code_1", "code_2" etc.
@@ -250,7 +250,7 @@ class KlassCodes:
             Default is ["code", "name"], but other possibilites are "presentationName",
             "level", "shortName", "validTo", "validFrom" and "notes"
 
-        Returns:
+        Returns
         -------
         pd.DataFrame
 

@@ -5,7 +5,7 @@ from klass.requests.klass_requests import classificationfamilies
 
 
 class KlassSearchClassifications:
-    """Used to search for classifications.
+    """Use to search for classifications.
 
     Parameters
     ----------
@@ -20,7 +20,7 @@ class KlassSearchClassifications:
         (Usually caused by languages showing up multiple times)
 
 
-    Attributes:
+    Attributes
     ----------
     classifications: list
         A list of KlassClassification objects.
@@ -35,7 +35,7 @@ class KlassSearchClassifications:
         Whether to remove duplicates from the search results.
 
 
-    Methods:
+    Methods
     -------
     get_search()
         Searches for classifications. Run as last part of initialization.
@@ -61,7 +61,7 @@ class KlassSearchClassifications:
         self.get_search()
 
     def get_search(self) -> None:
-        """Called during init, actually gets the data from the KLASS-API."""
+        """Call during init, actually get the data from the KLASS-API."""
         # If you enter a number, replace with name of the classification
         if self.query.isdigit() and self.query != "":
             actual_classification = KlassClassification(self.query)
@@ -106,7 +106,7 @@ class KlassSearchClassifications:
                 self.classifications = classification_replace
 
     def __str__(self) -> str:
-        """A human readable representation of the SearchClassification-object. Lists the found classifications."""
+        """Print a readable representation of the SearchClassification-object. List the found classifications."""
         classifications_string = "\n\t".join(
             [
                 ": ".join([str(c["classification_id"]), c["name"]])
@@ -117,7 +117,7 @@ class KlassSearchClassifications:
         {classifications_string}"""
 
     def __repr__(self) -> str:
-        """A string representation of how to recreate the current SearchClassification-object."""
+        """Print a string representation of how to recreate the current SearchClassification-object."""
         result = f'KlassSearchClassifications(query="{self.query}", '
         if not self.include_codelists:
             result += f'include_codelists="{self.include_codelists}", '
@@ -144,7 +144,7 @@ class KlassSearchClassifications:
         include_future : bool
             Whether to include future codelists.
 
-        Returns:
+        Returns
         -------
         KlassClassification
             The classification object.
@@ -153,9 +153,9 @@ class KlassSearchClassifications:
         return KlassClassification(classification_id, language, include_future)
 
     def simple_search_result(self) -> str:
-        """Reformats the resulting search into a simple string.
+        """Reformat the resulting search into a simple string.
 
-        Returns:
+        Returns
         -------
         str
             The resulting reformatted string from the search results
@@ -171,7 +171,7 @@ class KlassSearchClassifications:
 
 
 class KlassSearchFamilies:
-    """Used for searching for families in the Klass API.
+    """Search for families in the Klass API.
 
     Parameters
     ----------
@@ -183,7 +183,7 @@ class KlassSearchFamilies:
         The language to use in the search.
         Default: "nb" for Norwegian, "nn" for Nynorsk, "en" for English.
 
-    Methods:
+    Methods
     -------
     get_search()
         Runs the search. Rerun this if you change any attributes on the object.
@@ -206,7 +206,7 @@ class KlassSearchFamilies:
         self.get_search()
 
     def __str__(self) -> str:
-        """A human readable string of the families found, and how many classifications they contain."""
+        """Print a human readable string of the families found, and how many classifications they contain."""
         result = ""
         for fam in self.families:
             result += f"Family ID: {fam['family_id']} - {fam['name']} - "
@@ -214,7 +214,7 @@ class KlassSearchFamilies:
         return result
 
     def __repr__(self) -> str:
-        """A string representation of how to recreate this SearchFamilies-object."""
+        """Get a representation of how to recreate this SearchFamilies-object."""
         result = "KlassSearchFamilies("
         if self.ssbsection:
             result += f'ssbsection="{self.ssbsection}", '
@@ -226,12 +226,12 @@ class KlassSearchFamilies:
         return result
 
     def get_search(self) -> None:
-        """Gets the search result from the API and reformats it into the .families and .links attributes.
+        """Get the search result from the API and reformats it into the .families and .links attributes.
 
         This should be run after any change to the .ssbsection, .include_codelists, or .language
         attributes.
 
-        Returns:
+        Returns
         -------
         None
             Sets .families and .links attributes.
@@ -251,7 +251,7 @@ class KlassSearchFamilies:
         self.families = families_replace
 
     def get_family(self, family_id: str = "0") -> KlassFamily:
-        """Returns a KlassFamily object of the family with the given ID.
+        """Return a KlassFamily object of the family with the given ID.
 
         If no ID is given, chooses the first Family returned by the search.
 
@@ -260,7 +260,7 @@ class KlassSearchFamilies:
         family_id : int
             The family ID to get.
 
-        Returns:
+        Returns
         -------
         KlassFamily
             The family object.
@@ -271,9 +271,9 @@ class KlassSearchFamilies:
         return KlassFamily(str(family_id))
 
     def simple_search_result(self) -> str:
-        """Reformats the resulting search into a simple string.
+        """Reformat the resulting search into a simple string.
 
-        Returns:
+        Returns
         -------
         str
             The resulting reformatted string from the search results

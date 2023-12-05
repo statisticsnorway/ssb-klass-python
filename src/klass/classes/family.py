@@ -15,7 +15,7 @@ class KlassFamily:
     family_id : str
         The id of the family.
 
-    Attributes:
+    Attributes
     ----------
     classifications : list
         A list of classifications in the family.
@@ -28,7 +28,7 @@ class KlassFamily:
     """
 
     def __init__(self, family_id: str):
-        """Gets the family data from the klass-api, setting it as attributes on the object."""
+        """Get the family data from the klass-api, setting it as attributes on the object."""
         self.family_id = family_id
         # Setting for mypy
         result: T_classificationfamilies_by_id = classificationfamilies_by_id(
@@ -50,7 +50,7 @@ class KlassFamily:
         ] = new_classifications
 
     def __str__(self) -> str:
-        """String representation of the KLASS-family. Also containing all the ids for its classifications."""
+        """Print representation of the KLASS-family. Contains all the ids for its classifications."""
         classifications_string = "\n\t".join(
             [
                 ": ".join([c["classification_id"], c["name"]])
@@ -74,7 +74,7 @@ And contains the following classifications:
         classification_id : str
             The id of the classification. If not given, the first classification in the family is returned based on its ID.
 
-        Returns:
+        Returns
         -------
         KlassClassification
             The classification.

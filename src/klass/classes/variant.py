@@ -31,14 +31,14 @@ class KlassVariant:
         The language of the variant to select.
         For example: 'nb'
 
-    Methods:
+    Methods
     -------
     get_classification_codes()
         Gets the codes from the API. Populates the attributes, including .data.
         Rerun the method if the orignal parameters on the object are changed.
 
 
-    Attributes:
+    Attributes
     ----------
     data : pd.DataFrame
         The classificationItems as a pandas dataframe. Usually what you're after?
@@ -89,7 +89,7 @@ class KlassVariant:
         select_level: int = 0,
         language: str = "nb",
     ):
-        """Gets the data from the KLASS-api to populate this objects attributes."""
+        """Get the data from the KLASS-api to populate this objects attributes."""
         self.variant_id = variant_id
         self.select_level = select_level
         self.language = language
@@ -97,7 +97,7 @@ class KlassVariant:
         self.get_classification_codes()
 
     def get_classification_codes(self, select_level: int = 0) -> None:
-        """Actually gets the data from the API, setting it as attributes on the object.
+        """Get the data from the API, setting it as attributes on the object.
 
         The codes are put into the .data attribute.
         Other keys are added dynamically to the object, like classificationItems.
@@ -144,7 +144,7 @@ class KlassVariant:
             self.data = df
 
     def __repr__(self) -> str:
-        """A string representation of how to recreate the current object, including set parameters."""
+        """Get a string representation of how to recreate the current object, including set parameters."""
         result = f"KlassVariant(variant_id={self.variant_id}, "
         if self.select_level:
             result += f"select_level={self.select_level}, "
@@ -154,14 +154,14 @@ class KlassVariant:
         return result
 
     def __str__(self) -> str:
-        """A human readable string of the object, including its ID and a preview of the data contained."""
+        """Print a human readable string of the object, including its ID and a preview of the data contained."""
         result = f"This is a Klass Variant with the ID of {self.variant_id}."
         result += f"\nPreview of the .data (5 first rows):\n{self.data[self.data.columns[:5]].head(5)}"
         return result
 
 
 class KlassVariantSearchByName:
-    """Looks up a Variant based on the owning Classifications ID and the start of the Variants name.
+    """Look up a Variant based on the owning Classifications ID and the start of the Variants name.
 
     The name is put into a URL-parameter, so it might be sensitive to special characters,
     if the name you are trying isnt working, try keeping less of it, but keep the start of the name.
@@ -194,13 +194,13 @@ class KlassVariantSearchByName:
     include_future : bool
         Whether to include future codes. Defaults to False.
 
-    Methods:
+    Methods
     -------
     get_variant()
         Gets the Variant from the API. The codelist is put into the .data attribute.
         Rerun this method if you change any of the original attributes on the object.
 
-    Attributes:
+    Attributes
     ----------
     data : pd.DataFrame
         The codelists from the Variant as a pandas dataframe. Usually what you're after?
@@ -249,7 +249,7 @@ class KlassVariantSearchByName:
         self.get_variant()
 
     def get_variant(self) -> None:
-        """Actually gets the data from the API, called at the end of init."""
+        """Actually get the data from the API, called at the end of init."""
         if self.to_date:
             self.data = variant(
                 classification_id=self.classification_id,
@@ -275,7 +275,7 @@ class KlassVariantSearchByName:
             )
 
     def __repr__(self) -> str:
-        """A string representation of how to recreate the current object, including set parameters."""
+        """Get a string representation of how to recreate the current object, including set parameters."""
         result = (
             f'KlassVariantSearchByName(classification_id="{self.classification_id}", '
         )
@@ -296,7 +296,7 @@ class KlassVariantSearchByName:
         return result
 
     def __str__(self) -> str:
-        """A human-readable representation of the the object, including a preview of its data."""
+        """Print a human-readable representation of the the object, including a preview of its data."""
         result = f'A search for variants on classification ID "{self.classification_id}" on the name "{self.variant_name}".\n'
         result += f"From the date {self.from_date}"
         if self.to_date:

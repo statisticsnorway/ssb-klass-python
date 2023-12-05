@@ -23,7 +23,7 @@ class KlassVersion:
     include_future : bool, optional
         If the version should include future versions. Defaults to False.
 
-    Methods:
+    Methods
     -------
     variants_simple() -> dict:
         Simplify the variants of the version into a dict with IDs as keys.
@@ -38,7 +38,7 @@ class KlassVersion:
         Run as a part of the class initialization.
 
 
-    Attributes:
+    Attributes
     ----------
     data : pd.DataFrame
         The codelist of the classification-version as a pandas dataframe
@@ -75,7 +75,7 @@ class KlassVersion:
         language: str = "nb",
         include_future: bool = False,
     ):
-        """Sets up the object with data from the KLASS-API."""
+        """Set up the object with data from the KLASS-API."""
         self.version_id = version_id
         self.select_level = select_level
         self.language = language.lower()
@@ -116,7 +116,7 @@ class KlassVersion:
         self.get_classification_codes()
 
     def __repr__(self) -> str:
-        """A string representation of how to recreate the object, including its set parameters."""
+        """Get a string representation of how to recreate the object, including its set parameters."""
         result = f'KlassVersion(version_id="{self.version_id}", '
         if self.select_level:
             result += f"select_level={self.select_level}, "
@@ -128,7 +128,7 @@ class KlassVersion:
         return result
 
     def __str__(self) -> str:
-        """A human-readable string of the object, includes many of its attributes or their sizes."""
+        """Print a human-readable string of the object, includes many of its attributes or their sizes."""
         contact = "Contact Person:\n"
         for k, v in self.contactPerson.items():
             contact += f"\t{k}: {v}\n"
@@ -161,7 +161,7 @@ class KlassVersion:
         select_level : int
             The level of the version to keep in the data. Setting to 0 keeps all levels.
 
-        Returns:
+        Returns
         -------
         None
         Sets .data attribute based on the attributes of the class
@@ -183,7 +183,7 @@ class KlassVersion:
         self.data = data
 
     def variants_simple(self) -> dict[str, str]:
-        """A simplifed dictionary of the variants, ids as keys, names as values."""
+        """Get a simplifed dictionary of the variants, ids as keys, names as values."""
         return {
             v["_links"]["self"]["href"].split("/")[-1]: v["name"]
             for v in self.classificationVariants
@@ -204,7 +204,7 @@ class KlassVersion:
         language : str
             The language of the variant.
 
-        Returns:
+        Returns
         -------
         KlassVariant
             A variant object with the specified ID and language.
@@ -217,7 +217,7 @@ class KlassVersion:
 
         With the IDs as keys.
 
-        Returns:
+        Returns
         -------
         dict
             A nested dictionary of the available correspondences.
@@ -269,7 +269,7 @@ class KlassVersion:
         include_future : bool
             If the correspondence should include future correspondences.
 
-        Returns:
+        Returns
         -------
         KlassCorrespondence
             A correspondence object with the specified ID, language and dates.
