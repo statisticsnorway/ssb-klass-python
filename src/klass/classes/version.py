@@ -1,5 +1,7 @@
 import pandas as pd
 
+from ..requests.klass_requests import type_correspondenceTables
+from ..requests.klass_requests import type_json_version_by_id
 from ..requests.klass_requests import version_by_id
 from .correspondence import KlassCorrespondence
 from .variant import KlassVariant
@@ -78,23 +80,38 @@ class KlassVersion:
         self.select_level = select_level
         self.language = language.lower()
         self.include_future = include_future
-        for key, value in version_by_id(
+
+        result: type_json_version_by_id = version_by_id(
             version_id,
             language=language,
             include_future=include_future,
-        ).items():
-            setattr(self, key, value)
-
-        # Will be replaced by get_classifiaction_codes, here for mypy
-        self.contactPerson: dict = {}
-        self.name: str = ""
-        self.owningSection: str = ""
-        self.validFrom: str = ""
-        self.lastModified: str = ""
-        self.correspondenceTables: list[dict] = []
-        self.classificationVariants: list[dict] = []
-        self.classificationItems: list[dict] = []
-        self.levels: list[dict] = []
+        )
+        self.name: str = result["name"]
+        self.validFrom: str = result["validFrom"]
+        if "validTo" in result:
+            self.validTo: str = result["validTo"]
+        self.lastModified: str = result["lastModified"]
+        self.published: list[str] = result["published"]
+        self.introduction: str = result["introduction"]
+        self.contactPerson: dict[str, str] = result["contactPerson"]
+        self.owningSection: str = result["owningSection"]
+        if "legalBase" in result:
+            self.legalBase: str = result["legalBase"]
+        if "publications" in result:
+            self.publications: str = result["publications"]
+        if "derivedFrom" in result:
+            self.derivedFrom: str = result["derivedFrom"]
+        self.correspondenceTables: list[type_correspondenceTables] = result[
+            "correspondenceTables"
+        ]
+        if "classificationVariants" in result:
+            self.classificationVariants: list[type_correspondenceTables]
+        self.changelogs: list[dict[str, str]] = result["changelogs"]
+        self.levels: list[dict[str, int | str]] = result["levels"]
+        self.classificationItems: list[dict[str, str | None]] = result[
+            "classificationItems"
+        ]
+        self.links: dict[str, dict[str, str]] = result["_links"]
 
         self.get_classification_codes()
 
@@ -157,14 +174,11 @@ class KlassVersion:
         level_map = {
             str(item["levelNumber"]): item["levelName"] for item in self.levels
         }
-        level_map_reverse = {v: k for k, v in level_map.items()}
         data.insert(
             data.columns.to_list().index("level") + 1,
             "levelName",
             data["level"].astype(str).map(level_map),
         )
-        if not str(select_level).isdigit():
-            select_level = level_map_reverse[select_level]
         if select_level:
             data = data[data["level"].astype(str) == str(select_level)]
         self.data = data
@@ -212,7 +226,9 @@ class KlassVersion:
         """
         tables = {}
         for tab in self.correspondenceTables:
-            corr_id = tab["_links"]["self"]["href"].split("/")[-1]
+            links: dict[str, dict[str, str]] = tab["_links"]
+            corr_link: str = links["self"]["href"]
+            corr_id: str = corr_link.split("/")[-1]
             tables[corr_id] = {
                 "name": tab["name"],
                 "source": tab["source"],

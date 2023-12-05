@@ -204,6 +204,10 @@ class type_correspondenceTables(TypedDict):
     owningSection: str
     lastModified: str
     published: list[str]
+    source: NotRequired[str]
+    sourceId: NotRequired[str]
+    target: NotRequired[str]
+    targetId: NotRequired[str]
     _links: dict[str, dict[str, str]]
 
 
@@ -221,7 +225,8 @@ class type_json_version_by_id(TypedDict):
     legalBase: NotRequired[str]
     publications: NotRequired[str]
     derivedFrom: NotRequired[str]
-    correspondenceTables: type_correspondenceTables
+    correspondenceTables: list[type_correspondenceTables]
+    classificationVariants: NotRequired[list[type_correspondenceTables]]
     changelogs: list[dict[str, str]]
     levels: list[dict[str, int | str]]
     classificationItems: list[dict[str, str | None]]
@@ -232,7 +237,7 @@ def version_by_id(
     version_id: str,
     language: str = "nb",
     include_future: bool = False,
-) -> json_type | pd.DataFrame:
+) -> json_type:
     """Gets from the version-by-id-endpoint."""
     url = config.BASE_URL + "versions/" + str(version_id)
     params: params_after = validate_params(

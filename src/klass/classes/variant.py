@@ -124,7 +124,7 @@ class KlassVariant:
             self.publications: str = result["publications"]
         if "derivedFrom" in result:
             self.derivedFrom: str = result["derivedFrom"]
-        self.correspondenceTables: type_correspondenceTables = result[
+        self.correspondenceTables: list[type_correspondenceTables] = result[
             "correspondenceTables"
         ]
         self.changelogs: list[dict[str, str]] = result["changelogs"]
