@@ -51,7 +51,7 @@ class KlassSearchClassifications:
         query: str = "",
         include_codelists: bool = True,  # Opposite default of API, cause why not
         ssbsection: str = "",
-        no_dupes=False,
+        no_dupes: bool = False,
     ):
         """Get data from the KLASS-api, setting it as attributes on this object."""
         self.query = query
@@ -64,9 +64,11 @@ class KlassSearchClassifications:
         """Called during init, actually gets the data from the KLASS-API."""
         # If you enter a number, replace with name of the classification
         if self.query.isdigit() and self.query != "":
-            result = KlassClassification(self.query)
-            print(result.name)
-            self.query = "".join([c for c in result.name if c.isalnum() or c == " "])
+            actual_classification = KlassClassification(self.query)
+            print(actual_classification.name)
+            self.query = "".join(
+                [c for c in actual_classification.name if c.isalnum() or c == " "]
+            )
         elif not self.query and self.ssbsection:
             self.query = " "
 
@@ -248,7 +250,7 @@ class KlassSearchFamilies:
             families_replace.append(fam)
         self.families = families_replace
 
-    def get_family(self, family_id=0) -> KlassFamily:
+    def get_family(self, family_id: str = "0") -> KlassFamily:
         """Returns a KlassFamily object of the family with the given ID.
 
         If no ID is given, chooses the first Family returned by the search.
@@ -266,7 +268,7 @@ class KlassSearchFamilies:
         """
         if not family_id:
             family_id = self.families[0]["family_id"]
-        return KlassFamily(family_id)
+        return KlassFamily(str(family_id))
 
     def simple_search_result(self) -> str:
         """Reformats the resulting search into a simple string.

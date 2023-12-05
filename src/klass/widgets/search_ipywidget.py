@@ -4,8 +4,8 @@ import ipywidgets as widgets
 from IPython.display import HTML
 from IPython.display import display
 
-from klass import KlassSearchClassifications
-from klass import sections_dict
+from klass.classes.search import KlassSearchClassifications
+from klass.requests.sections import sections_dict
 
 
 def search_classification(no_dupes: bool = True) -> widgets.VBox:
@@ -24,7 +24,9 @@ def search_classification(no_dupes: bool = True) -> widgets.VBox:
     search_term: widgets.Text = widgets.Text(
         value="", placeholder="Searchterm", description="Type searchterm:"
     )
-    search_result: HTML = HTML()
+    section_dropdown: widgets.Dropdown = widgets.Dropdown(
+        options=["Choose..."], value="Choose...", description="Section:", disabled=False
+    )
 
     def do_search(btn: widgets.Button) -> None:
         nonlocal search_term
@@ -33,7 +35,7 @@ def search_classification(no_dupes: bool = True) -> widgets.VBox:
 
         with search_result:
             search_result.clear_output()
-            display("Searching...")
+            display("Searching...")  # type: ignore
             # Add loading-gif?
 
         try:
@@ -61,14 +63,16 @@ def search_classification(no_dupes: bool = True) -> widgets.VBox:
                         .replace("å", "aa")
                         .strip()
                     )
-                    var_name = [c if c.isalnum() else "_" for c in var_name]
-                    var_name = "".join([c for c in var_name if c and c != " "])
-                    if len(var_name.split("_")) > 3:
-                        var_name = "_".join(
-                            [part for part in var_name.split("_")[:3] if part]
+                    var_name_chars = [c if c.isalnum() else "_" for c in var_name]
+                    var_name_true = "".join(
+                        [c for c in var_name_chars if c and c != " "]
+                    )
+                    if len(var_name_true.split("_")) > 3:
+                        var_name_true = "_".join(
+                            [part for part in var_name_true.split("_")[:3] if part]
                         )
-                    text = f"""from klass import KlassClassification\\n{var_name} = KlassClassification({cl["classification_id"]})\\n{var_name}.get_codes(\\'{date.today().strftime('%Y-%m-%d')}\\').data"""
-                    var_name = "klass" + str(cl["classification_id"])
+                    text = f"""from klass import KlassClassification\\n{var_name_true} = KlassClassification({cl["classification_id"]})\\n{var_name_true}.get_codes(\\'{date.today().strftime('%Y-%m-%d')}\\').data"""
+                    # var_name = "klass" + str(cl["classification_id"])
                     search_content += f"""<button class="classification_copy_code" onclick="navigator.clipboard.writeText('{text}')">Copy code</button> {cl["classification_id"]} - {cl["name"]}<br />"""
             else:
                 search_content = "Found no matching classifications."
@@ -77,7 +81,7 @@ def search_classification(no_dupes: bool = True) -> widgets.VBox:
 
         with search_result:
             search_result.clear_output()
-            display(HTML(search_content))
+            display(HTML(search_content))  # type: ignore
 
     sections = ["Choose...", *list(sections_dict().keys())]
     section_dropdown = widgets.Dropdown(
