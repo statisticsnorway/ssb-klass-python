@@ -2,17 +2,20 @@ from datetime import datetime
 from datetime import timedelta
 from datetime import timezone
 from typing import Any
-from typing import TypedDict
 
 import dateutil.parser
 import pandas as pd
 import requests
-from typing_extensions import NotRequired
 
 import klass.config as config
 from klass.requests.sections import sections_dict
-from klass.requests.validate import params_after
-from klass.requests.validate import params_before
+from klass.requests.types import T_classification_by_id
+from klass.requests.types import T_classificationfamilies_by_id
+from klass.requests.types import T_correspondence_table_id
+from klass.requests.types import T_corresponds
+from klass.requests.types import T_params_after
+from klass.requests.types import T_params_before
+from klass.requests.types import T_version_by_id
 from klass.requests.validate import validate_params
 
 # ##########
@@ -22,22 +25,7 @@ from klass.requests.validate import validate_params
 json_type = Any
 
 
-class type_correspondenceTables(TypedDict):
-    """The type returned by the version_by_id function."""
-
-    name: str
-    contactPerson: dict[str, str]
-    owningSection: str
-    lastModified: str
-    published: list[str]
-    source: NotRequired[str]
-    sourceId: NotRequired[str]
-    target: NotRequired[str]
-    targetId: NotRequired[str]
-    _links: dict[str, dict[str, str]]
-
-
-def get_json(url: str, params: params_after) -> json_type:
+def get_json(url: str, params: T_params_after) -> json_type:
     """Simplifies getting the json out of a get-request to the KLASS-api.
 
     Used in most of the following functions.
@@ -109,14 +97,14 @@ def classifications(
 ) -> json_type:
     """Gets from the classifications-endpoint."""
     url = config.BASE_URL + "classifications"
-    params: params_before = {
+    params: T_params_before = {
         "includeCodelists": include_codelists,
     }
     if changed_since == "":
         params["changedSince"] = convert_datestring(
             date=changed_since, return_type="isoklass"
         )
-    params_final: params_after = validate_params(params)
+    params_final: T_params_after = validate_params(params)
     return get_json(url, params_final)
 
 
@@ -127,55 +115,25 @@ def classification_search(
     url = config.BASE_URL + "classifications/search"
     if not query:
         raise ValueError("Please specify a query")
-    params: params_before = {
+    params: T_params_before = {
         "query": query,
         "includeCodelists": include_codelists,
     }
     if ssbsection:
         params["ssbSection"] = convert_section(ssbsection)
-    params_final: params_after = validate_params(params)
+    params_final: T_params_after = validate_params(params)
     return get_json(url, params_final)
-
-
-class type_version_part(TypedDict):
-    """The type version part of the classification_by_id function."""
-
-    version_id: NotRequired[int]
-    name: str
-    validFrom: str
-    validTo: str
-    lastModified: str
-    published: list[str]
-    _links: dict[str, dict[str, str]]
-
-
-class type_json_classification_by_id(TypedDict):
-    """The type returned by the classification_by_id function."""
-
-    name: str
-    classificationType: str
-    lastModified: str
-    description: str
-    primaryLanguage: str
-    copyrighted: bool
-    includeShortName: bool
-    includeNotes: bool
-    contactPerson: dict[str, str]
-    owningSection: str
-    statisticalUnits: list[str]
-    versions: list[type_version_part]
-    _links: dict[str, dict[str, str]]
 
 
 def classification_by_id(
     classification_id: str, language: str = "nb", include_future: bool = False
-) -> type_json_classification_by_id:
+) -> T_classification_by_id:
     """Gets from the classification-by-id-endpoint."""
     url = config.BASE_URL + "classifications/" + str(classification_id)
-    params: params_after = validate_params(
+    params: T_params_after = validate_params(
         {"language": language, "includeFuture": include_future}
     )
-    result: type_json_classification_by_id = get_json(url, params)
+    result: T_classification_by_id = get_json(url, params)
     return result
 
 
@@ -192,7 +150,7 @@ def codes(
     """Gets from the codes-endpoint."""
     url = config.BASE_URL + "classifications/" + str(classification_id) + "/codes"
     from_date = convert_datestring(from_date, "yyyy-mm-dd")
-    params: params_before = {
+    params: T_params_before = {
         "from": from_date,
     }
     if to_date:
@@ -208,7 +166,7 @@ def codes(
         params["language"] = language
     if include_future:
         params["includeFuture"] = include_future
-    params_final: params_after = validate_params(params)
+    params_final: T_params_after = validate_params(params)
     return convert_return_type(get_json(url, params_final)["codes"], "pandas")
 
 
@@ -224,7 +182,7 @@ def codes_at(
     """Gets from the codesAt-endpoint."""
     url = config.BASE_URL + "classifications/" + str(classification_id) + "/codesAt"
     date = convert_datestring(date, "yyyy-mm-dd")
-    params: params_before = {"date": date}
+    params: T_params_before = {"date": date}
     if select_codes:
         params["selectCodes"] = select_codes
     if select_level:
@@ -235,30 +193,8 @@ def codes_at(
         params["language"] = language
     if include_future:
         params["includeFuture"] = include_future
-    params_final: params_after = validate_params(params)
+    params_final: T_params_after = validate_params(params)
     return convert_return_type(get_json(url, params_final)["codes"], "pandas")
-
-
-class type_json_version_by_id(TypedDict):
-    """The type returned by the version_by_id function."""
-
-    name: str
-    validFrom: str
-    validTo: NotRequired[str]
-    lastModified: str
-    published: list[str]
-    introduction: str
-    contactPerson: dict[str, str]
-    owningSection: str
-    legalBase: NotRequired[str]
-    publications: NotRequired[str]
-    derivedFrom: NotRequired[str]
-    correspondenceTables: list[type_correspondenceTables]
-    classificationVariants: NotRequired[list[type_correspondenceTables]]
-    changelogs: list[dict[str, str]]
-    levels: list[dict[str, int | str]]
-    classificationItems: list[dict[str, str | None]]
-    _links: dict[str, dict[str, str]]
 
 
 def version_by_id(
@@ -268,13 +204,13 @@ def version_by_id(
 ) -> json_type:
     """Gets from the version-by-id-endpoint."""
     url = config.BASE_URL + "versions/" + str(version_id)
-    params: params_after = validate_params(
+    params: T_params_after = validate_params(
         {
             "language": language,
             "includeFuture": include_future,
         }
     )
-    result: type_json_version_by_id = get_json(url, params)
+    result: T_version_by_id = get_json(url, params)
     return result
 
 
@@ -293,7 +229,7 @@ def variant(
     """Gets from the variant-endpoint."""
     url = config.BASE_URL + "classifications/" + str(classification_id) + "/variant"
     from_date = convert_datestring(from_date, "yyyy-mm-dd")
-    params: params_before = {
+    params: T_params_before = {
         "variantName": variant_name,
         "from": from_date,
     }
@@ -309,7 +245,7 @@ def variant(
         params["language"] = language
     if include_future:
         params["includeFuture"] = include_future
-    params_final: params_after = validate_params(params)
+    params_final: T_params_after = validate_params(params)
     return convert_return_type(get_json(url, params_final)["codes"], return_type)
 
 
@@ -327,7 +263,7 @@ def variant_at(
     """Gets from the variantAt-endpoint."""
     url = config.BASE_URL + "classifications/" + str(classification_id) + "/variantAt"
     date = convert_datestring(date, "yyyy-mm-dd")
-    params: params_before = {
+    params: T_params_before = {
         "variantName": variant_name,
         "date": date,
     }
@@ -342,24 +278,15 @@ def variant_at(
     if include_future:
         params["includeFuture"] = include_future
 
-    params_final: params_after = validate_params(params)
+    params_final: T_params_after = validate_params(params)
     return convert_return_type(get_json(url, params_final)["codes"], return_type)
 
 
 def variants_by_id(variant_id: str, language: str = "nb") -> json_type:
     """Gets from the variants-endpoint."""
     url = config.BASE_URL + "variants/" + str(variant_id)
-    params: params_after = validate_params({"language": language})
+    params: T_params_after = validate_params({"language": language})
     return get_json(url, params)
-
-
-correspondanceItems_type = dict[str, str]
-
-
-class type_json_corresponds(TypedDict):
-    """The type returned by the corresponds function."""
-
-    correspondenceItems: list[correspondanceItems_type]
 
 
 def corresponds(
@@ -369,7 +296,7 @@ def corresponds(
     to_date: str = "",
     language: str = "nb",
     include_future: bool = False,
-) -> type_json_corresponds:
+) -> T_corresponds:
     """Gets from the classifications/corresponds-endpoint."""
     url = (
         config.BASE_URL
@@ -378,7 +305,7 @@ def corresponds(
         + "/corresponds"
     )
     from_date = convert_datestring(from_date, "yyyy-mm-dd")
-    params: params_before = {
+    params: T_params_before = {
         "targetClassificationId": target_classification_id,
         "from": from_date,
     }
@@ -388,8 +315,8 @@ def corresponds(
         params["language"] = language
     if include_future:
         params["includeFuture"] = include_future
-    params_final: params_after = validate_params(params)
-    result: type_json_corresponds = get_json(url, params_final)
+    params_final: T_params_after = validate_params(params)
+    result: T_corresponds = get_json(url, params_final)
     return result
 
 
@@ -399,7 +326,7 @@ def corresponds_at(
     date: str,
     language: str = "nb",
     include_future: bool = False,
-) -> type_json_corresponds:
+) -> T_corresponds:
     """Gets from the classificatins/correspondsAt-endpoint."""
     url = (
         config.BASE_URL
@@ -408,7 +335,7 @@ def corresponds_at(
         + "/correspondsAt"
     )
     date = convert_datestring(date, "yyyy-mm-dd")
-    params: params_before = {
+    params: T_params_before = {
         "targetClassificationId": target_classification_id,
         "date": date,
     }
@@ -416,42 +343,19 @@ def corresponds_at(
         params["language"] = language
     if include_future:
         params["includeFuture"] = include_future
-    params_final: params_after = validate_params(params)
-    result: type_json_corresponds = get_json(url, params_final)
+    params_final: T_params_after = validate_params(params)
+    result: T_corresponds = get_json(url, params_final)
     return result
-
-
-type_correspondanceMaps = list[dict[str, str]]
-
-
-class type_json_correspondence_table_id(TypedDict):
-    """The type returned by the correspondence_table_by_id function."""
-
-    name: str
-    contactPerson: dict[str, str]
-    owningSection: str
-    source: str
-    sourceId: int
-    target: str
-    targetId: int
-    changeTable: bool
-    lastModified: str
-    published: list[str]
-    sourceLevel: str | None
-    targetLevel: str | None
-    description: str
-    changelogs: list[str]
-    correspondenceMaps: type_correspondanceMaps
 
 
 def correspondence_table_by_id(
     correspondence_id: str,
     language: str = "nb",
-) -> type_json_correspondence_table_id:
+) -> T_correspondence_table_id:
     """Gets from the correspondence-table-by-id-endpoint."""
     url = config.BASE_URL + "correspondencetables/" + str(correspondence_id)
-    params: params_after = validate_params({"language": language})
-    result_json: type_json_correspondence_table_id = get_json(url, params)
+    params: T_params_after = validate_params({"language": language})
+    result_json: T_correspondence_table_id = get_json(url, params)
     return result_json
 
 
@@ -470,7 +374,7 @@ def changes(
     from_date = convert_datestring(from_date, "yyyy-mm-dd")
     if to_date:
         to_date = convert_datestring(to_date, "yyyy-mm-dd")
-    params: params_before = {
+    params: T_params_before = {
         "from": from_date,
     }
     if to_date:
@@ -479,7 +383,7 @@ def changes(
         params["language"] = language
     if include_future:
         params["includeFuture"] = include_future
-    params_final: params_after = validate_params(params)
+    params_final: T_params_after = validate_params(params)
     return convert_return_type(get_json(url, params_final)["codeChanges"], return_type)
 
 
@@ -490,32 +394,14 @@ def classificationfamilies(
 ) -> json_type:
     """Gets from the classificationfamilies-endpoint."""
     url = config.BASE_URL + "classificationfamilies"
-    params: params_before = {
+    params: T_params_before = {
         "includeCodelists": include_codelists,
         "language": language,
     }
     if ssbsection:
         params["ssbSection"] = convert_section(ssbsection)
-    params_final: params_after = validate_params(params)
+    params_final: T_params_after = validate_params(params)
     return get_json(url, params_final)
-
-
-class type_classificationfamilies_by_id_classifications(TypedDict):
-    """Type for each of the classifications returned by a classificationfamilies-search."""
-
-    classification_id: NotRequired[str]
-    name: str
-    classificationType: str
-    lastModified: str
-    _links: dict[str, dict[str, str]]
-
-
-class type_classificationfamilies_by_id(TypedDict):
-    """Type for the whole return value of a classificationfamilies-search."""
-
-    name: str
-    classifications: list[type_classificationfamilies_by_id_classifications]
-    _links: dict[str, dict[str, str]]
 
 
 def classificationfamilies_by_id(
@@ -523,15 +409,15 @@ def classificationfamilies_by_id(
     ssbsection: str = "",
     include_codelists: bool = False,
     language: str = "nb",
-) -> type_classificationfamilies_by_id:
+) -> T_classificationfamilies_by_id:
     """Gets from the classificationsfamilies-endpoint with id."""
     url = config.BASE_URL + "classificationfamilies/" + str(classificationfamily_id)
-    params: params_before = {
+    params: T_params_before = {
         "includeCodelists": include_codelists,
         "language": language,
     }
     if ssbsection:
         params["ssbSection"] = convert_section(ssbsection)
-    params_final: params_after = validate_params(params)
-    result: type_classificationfamilies_by_id = get_json(url, params_final)
+    params_final: T_params_after = validate_params(params)
+    result: T_classificationfamilies_by_id = get_json(url, params_final)
     return result

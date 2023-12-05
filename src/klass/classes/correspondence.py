@@ -7,8 +7,8 @@ import pandas as pd
 
 from ..requests.klass_requests import correspondence_table_by_id
 from ..requests.klass_requests import corresponds
-from ..requests.klass_requests import type_correspondanceMaps
-from ..requests.klass_requests import type_json_corresponds
+from ..requests.types import T_correspondanceMaps
+from ..requests.types import T_corresponds
 
 
 class KlassCorrespondence:
@@ -162,10 +162,10 @@ class KlassCorrespondence:
             self.targetLevel: str | None = result_id["targetLevel"]
             self.description: str = result_id["description"]
             self.changelogs: list[str] = result_id["changelogs"]
-            self.correspondenceMaps: type_correspondanceMaps = result_id[
+            self.correspondenceMaps: T_correspondanceMaps = result_id[
                 "correspondenceMaps"
             ]
-            self.correspondence: type_correspondanceMaps = self.correspondenceMaps
+            self.correspondence: T_correspondanceMaps = self.correspondenceMaps
             del self.correspondenceMaps
         elif (
             self.source_classification_id
@@ -174,7 +174,7 @@ class KlassCorrespondence:
         ):
             if self.contain_quarter:
                 self.to_date = self._last_date_of_quarter()
-            result: type_json_corresponds = corresponds(
+            result: T_corresponds = corresponds(
                 source_classification_id=self.source_classification_id,
                 target_classification_id=self.target_classification_id,
                 from_date=self.from_date,

@@ -1,8 +1,8 @@
 import pandas as pd
 
-from ..requests.klass_requests import type_correspondenceTables
-from ..requests.klass_requests import type_json_version_by_id
 from ..requests.klass_requests import version_by_id
+from ..requests.types import T_correspondenceTables
+from ..requests.types import T_version_by_id
 from .correspondence import KlassCorrespondence
 from .variant import KlassVariant
 
@@ -81,7 +81,7 @@ class KlassVersion:
         self.language = language.lower()
         self.include_future = include_future
 
-        result: type_json_version_by_id = version_by_id(
+        result: T_version_by_id = version_by_id(
             version_id,
             language=language,
             include_future=include_future,
@@ -101,11 +101,11 @@ class KlassVersion:
             self.publications: str = result["publications"]
         if "derivedFrom" in result:
             self.derivedFrom: str = result["derivedFrom"]
-        self.correspondenceTables: list[type_correspondenceTables] = result[
+        self.correspondenceTables: list[T_correspondenceTables] = result[
             "correspondenceTables"
         ]
         if "classificationVariants" in result:
-            self.classificationVariants: list[type_correspondenceTables]
+            self.classificationVariants: list[T_correspondenceTables]
         self.changelogs: list[dict[str, str]] = result["changelogs"]
         self.levels: list[dict[str, int | str]] = result["levels"]
         self.classificationItems: list[dict[str, str | None]] = result[
@@ -164,8 +164,7 @@ class KlassVersion:
         Returns:
         -------
         None
-            Sets .data attribute based on the attributes of the class
-
+        Sets .data attribute based on the attributes of the class
         """
         if not select_level:
             if self.select_level:

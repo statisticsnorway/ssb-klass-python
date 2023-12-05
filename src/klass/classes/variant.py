@@ -1,10 +1,10 @@
 import pandas as pd
 
-from ..requests.klass_requests import type_correspondenceTables
-from ..requests.klass_requests import type_json_version_by_id
 from ..requests.klass_requests import variant
 from ..requests.klass_requests import variant_at
 from ..requests.klass_requests import variants_by_id
+from ..requests.types import T_correspondenceTables
+from ..requests.types import T_version_by_id
 
 
 class KlassVariant:
@@ -108,7 +108,7 @@ class KlassVariant:
             The level of the dataset to keep
             For example: 0
         """
-        result: type_json_version_by_id = variants_by_id(self.variant_id, self.language)
+        result: T_version_by_id = variants_by_id(self.variant_id, self.language)
         self.name: str = result["name"]
         self.validFrom: str = result["validFrom"]
         if "validTo" in result:
@@ -124,7 +124,7 @@ class KlassVariant:
             self.publications: str = result["publications"]
         if "derivedFrom" in result:
             self.derivedFrom: str = result["derivedFrom"]
-        self.correspondenceTables: list[type_correspondenceTables] = result[
+        self.correspondenceTables: list[T_correspondenceTables] = result[
             "correspondenceTables"
         ]
         self.changelogs: list[dict[str, str]] = result["changelogs"]

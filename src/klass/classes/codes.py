@@ -8,7 +8,7 @@ from ..requests.klass_requests import codes_at
 
 
 class KlassCodes:
-    """Gets codes from Klass.
+    r"""Gets codes from Klass.
 
     The codelist is owned by the Classification through a Version, and will be valid for a time-period.
 
@@ -32,7 +32,7 @@ class KlassCodes:
         Whether to include future codes. Defaults to False.
 
     Methods:
-    --------
+    -------
     get_codes()
         Gets the codes from Klass, assigns a pandas dataframe to the .data attribute. Gets called during initialization, so usually unnecessary to run manually.
     change_dates()
@@ -61,11 +61,11 @@ class KlassCodes:
     ------
     ValueError
         if from_date or to_date is not a valid date or date-string YYYY-MM-DD.
-        if select_codes contains anything except numbers and the special characters *-,
+        if select_codes contains anything except numbers and the special characters "*" (star) or "-" (dash),
         if select_level is anything except a whole number,
         if presentation_name_pattern is not a valid pattern.
         if language is not "nb", "nn" or "en".
-        if include_future is not a bool.
+    if include_future is not a bool.
     """
 
     def __init__(
@@ -244,14 +244,14 @@ class KlassCodes:
         First envisioned by @mfmssb
 
         Parameters
-        ---
+        ----------
         keep: list[str]
             The start of the names of the columns you want to keep when done.
             Default is ["code", "name"], but other possibilites are "presentationName",
             "level", "shortName", "validTo", "validFrom" and "notes"
 
         Returns:
-        ---
+        -------
         pd.DataFrame
 
         """

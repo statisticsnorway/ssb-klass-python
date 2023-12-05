@@ -13,13 +13,23 @@ delete the .rst file afterwards.
 
 ```{eval-rst}
 klass package
-=============================================================================
+=============
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   klass.classes
+   klass.requests
+   klass.widgets
 
 
-klass.functions module
------------------------------------------------------------------------------
+klass.config module
+-------------------
 
-.. automodule:: klass.functions
+.. automodule:: klass.config
    :members:
    :undoc-members:
    :show-inheritance:

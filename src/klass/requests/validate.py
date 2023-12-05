@@ -1,54 +1,14 @@
 from datetime import datetime
-from typing import TypedDict
-
-from typing_extensions import NotRequired
 
 import klass.config as config
 from klass.requests.sections import sections_dict
-
-params_before = TypedDict(
-    "params_before",
-    {
-        "language": NotRequired[str],
-        "includeFuture": NotRequired[bool],  # Will be converted to lowercase string
-        "from": NotRequired[str],
-        "to": NotRequired[str],
-        "date": NotRequired[str],
-        "selectCodes": NotRequired[str],
-        "selectLevel": NotRequired[str],
-        "presentationNamePattern": NotRequired[str],
-        "variantName": NotRequired[str],
-        "targetClassificationId": NotRequired[str],
-        "ssbSection": NotRequired[str],
-        "includeCodelists": NotRequired[bool],  # Will be converted to lowercase string
-        "changedSince": NotRequired[str],
-        "query": NotRequired[str],
-    },
-)
-params_after = TypedDict(
-    "params_after",
-    {
-        "language": NotRequired[str],
-        "includeFuture": NotRequired[str],
-        "from": NotRequired[str],
-        "to": NotRequired[str],
-        "date": NotRequired[str],
-        "selectCodes": NotRequired[str],
-        "selectLevel": NotRequired[str],
-        "presentationNamePattern": NotRequired[str],
-        "variantName": NotRequired[str],
-        "targetClassificationId": NotRequired[str],
-        "ssbSection": NotRequired[str],
-        "includeCodelists": NotRequired[str],
-        "changedSince": NotRequired[str],
-        "query": NotRequired[str],
-    },
-)
+from klass.requests.types import T_params_after
+from klass.requests.types import T_params_before
 
 
-def validate_params(params: params_before) -> params_after:
+def validate_params(params: T_params_before) -> T_params_after:
     """Links parameters to their validate-functions."""
-    new_params: params_after = {}
+    new_params: T_params_after = {}
     if "language" in params:
         new_params["language"] = validate_language(params["language"])
     if "includeFuture" in params:

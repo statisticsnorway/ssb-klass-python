@@ -1,13 +1,13 @@
 import pandas as pd
 
-from ..requests.klass_requests import changes
-from ..requests.klass_requests import classification_by_id
-from ..requests.klass_requests import type_json_classification_by_id
-from ..requests.klass_requests import type_version_part
-from .codes import KlassCodes
-from .correspondence import KlassCorrespondence
-from .variant import KlassVariantSearchByName
-from .version import KlassVersion
+from klass.classes.codes import KlassCodes
+from klass.classes.correspondence import KlassCorrespondence
+from klass.classes.variant import KlassVariantSearchByName
+from klass.classes.version import KlassVersion
+from klass.requests.klass_requests import changes
+from klass.requests.klass_requests import classification_by_id
+from klass.requests.types import T_classification_by_id
+from klass.requests.types import T_version_part
 
 
 class KlassClassification:
@@ -107,7 +107,7 @@ class KlassClassification:
         self.classification_id = classification_id
         self.language = language
         self.include_future = include_future
-        result: type_json_classification_by_id = classification_by_id(
+        result: T_classification_by_id = classification_by_id(
             classification_id, language=language, include_future=include_future
         )
         self.name: str = result.get("name", "")
@@ -121,16 +121,16 @@ class KlassClassification:
         self.contactPerson: dict[str, str] = result.get("contactPerson", {})
         self.owningSection: str = result.get("owningSection", "")
         self.statisticalUnits: list[str] = result.get("statisticalUnits", [""])
-        versions_temp: list[type_version_part] = result.get("versions", [])
+        versions_temp: list[T_version_part] = result.get("versions", [])
         self._links: dict[str, dict[str, str]] = result.get("_links", {})
 
-        version_replace: list[type_version_part] = []
+        version_replace: list[T_version_part] = []
         for ver in versions_temp:
             version_replace.append(
                 {"version_id": int(ver["_links"]["self"]["href"].split("/")[-1]), **ver}
             )
 
-        self.versions: list[type_version_part] = version_replace
+        self.versions: list[T_version_part] = version_replace
 
     def __str__(self) -> str:
         """Prints a readable string of the classification, including some of its attributes."""
