@@ -9,7 +9,7 @@ from klass.requests.sections import sections_dict
 
 
 def search_classification(no_dupes: bool = True) -> widgets.VBox:
-    """Opens a GUI in Jupyter Notebooks using ipywidgets.
+    """Open a GUI in Jupyter Notebooks using ipywidgets.
 
     Lets you search for terms and copy sample code out,
     that'll let you get data from the classification.

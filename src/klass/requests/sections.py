@@ -10,7 +10,7 @@ import klass.config as config
 
 @lru_cache(maxsize=1)
 def sections_list() -> list[str]:
-    """Gets the sections that are registered in KLASS-api. Unlikely to change often, so we cache this."""
+    """Get the sections that are registered in KLASS-api. Unlikely to change often, so we cache this."""
     url: str = config.BASE_URL + "/ssbsections"
     response = requests.get(url).json()
     sections = [x["name"] for x in response["_embedded"]["ssbSections"]]
@@ -18,5 +18,5 @@ def sections_list() -> list[str]:
 
 
 def sections_dict() -> dict[str, str]:
-    """Reshapes the section list to a dict, with section-numbers as keys."""
+    """Reshape the section list to a dict, with section-numbers as keys."""
     return {s.split(" ")[0]: s for s in sections_list()}

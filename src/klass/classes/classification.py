@@ -14,10 +14,8 @@ class KlassClassification:
     """Classifications are the main level people are used to thinking about "things in KLASS".
 
     - they represent "groupings of general, official codelists".
-    - can have many Versions, versions are the classification placed in time.
-    When the classification is updated with new codes, a new version is created.
-    - has Codes, actually owned by the Versions (placed in time),
-    but they are directly available under the classification as well, by adding time-parameters.
+    - can have many Versions, versions are the classification placed in time. When the classification is updated with new codes, a new version is created.
+    - has Codes, actually owned by the Versions (placed in time), but they are directly available under the classification as well, by adding time-parameters.
     - has Variants, which are differently grouped aggregations of codelists.
     - can Correspond with other Classifications and their codelists.
     - belongs undera Family, a general statistical group, like "Education".
