@@ -500,12 +500,30 @@ def classificationfamilies(
     return get_json(url, params_final)
 
 
+class type_classificationfamilies_by_id_classifications(TypedDict):
+    """Type for each of the classifications returned by a classificationfamilies-search."""
+
+    classification_id: NotRequired[str]
+    name: str
+    classificationType: str
+    lastModified: str
+    _links: dict[str, dict[str, str]]
+
+
+class type_classificationfamilies_by_id(TypedDict):
+    """Type for the whole return value of a classificationfamilies-search."""
+
+    name: str
+    classifications: list[type_classificationfamilies_by_id_classifications]
+    _links: dict[str, dict[str, str]]
+
+
 def classificationfamilies_by_id(
     classificationfamily_id: str,
     ssbsection: str = "",
     include_codelists: bool = False,
     language: str = "nb",
-) -> json_type:
+) -> type_classificationfamilies_by_id:
     """Gets from the classificationsfamilies-endpoint with id."""
     url = config.BASE_URL + "classificationfamilies/" + str(classificationfamily_id)
     params: params_before = {
@@ -515,4 +533,5 @@ def classificationfamilies_by_id(
     if ssbsection:
         params["ssbSection"] = convert_section(ssbsection)
     params_final: params_after = validate_params(params)
-    return get_json(url, params_final)
+    result: type_classificationfamilies_by_id = get_json(url, params_final)
+    return result

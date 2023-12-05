@@ -1,4 +1,6 @@
 from ..requests.klass_requests import classificationfamilies_by_id
+from ..requests.klass_requests import type_classificationfamilies_by_id
+from ..requests.klass_requests import type_classificationfamilies_by_id_classifications
 from .classification import KlassClassification
 
 
@@ -29,15 +31,25 @@ class KlassFamily:
         """Gets the family data from the klass-api, setting it as attributes on the object."""
         self.family_id = family_id
         # Setting for mypy
-        self.name: str = ""
-        for key, value in classificationfamilies_by_id(self.family_id).items():
-            setattr(self, key, value)
-        new_classifications = []
-        for cl in self.classifications:
+        result: type_classificationfamilies_by_id = classificationfamilies_by_id(
+            self.family_id
+        )
+        self.name: str = result["name"]
+        classifications_temp: list[
+            type_classificationfamilies_by_id_classifications
+        ] = result["classifications"]
+        self._links: dict[str, dict[str, str]] = result["_links"]
+
+        new_classifications: list[
+            type_classificationfamilies_by_id_classifications
+        ] = []
+        for cl in classifications_temp:
             new_classifications.append(
                 {"classification_id": cl["_links"]["self"]["href"].split("/")[-1], **cl}
             )
-        self.classifications = new_classifications
+        self.classifications: list[
+            type_classificationfamilies_by_id_classifications
+        ] = new_classifications
 
     def __str__(self) -> str:
         """String representation of the KLASS-family. Also containing all the ids for its classifications."""
