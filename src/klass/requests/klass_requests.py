@@ -16,10 +16,25 @@ from klass.requests.validate import params_before
 from klass.requests.validate import validate_params
 
 # ##########
-# GENERAL #
+# Types #
 # ##########
 
 json_type = Any
+
+
+class type_correspondenceTables(TypedDict):
+    """The type returned by the version_by_id function."""
+
+    name: str
+    contactPerson: dict[str, str]
+    owningSection: str
+    lastModified: str
+    published: list[str]
+    source: NotRequired[str]
+    sourceId: NotRequired[str]
+    target: NotRequired[str]
+    targetId: NotRequired[str]
+    _links: dict[str, dict[str, str]]
 
 
 def get_json(url: str, params: params_after) -> json_type:
@@ -122,18 +137,46 @@ def classification_search(
     return get_json(url, params_final)
 
 
+class type_version_part(TypedDict):
+    """The type version part of the classification_by_id function."""
+
+    version_id: NotRequired[int]
+    name: str
+    validFrom: str
+    validTo: str
+    lastModified: str
+    published: list[str]
+    _links: dict[str, dict[str, str]]
+
+
+class type_json_classification_by_id(TypedDict):
+    """The type returned by the classification_by_id function."""
+
+    name: str
+    classificationType: str
+    lastModified: str
+    description: str
+    primaryLanguage: str
+    copyrighted: bool
+    includeShortName: bool
+    includeNotes: bool
+    contactPerson: dict[str, str]
+    owningSection: str
+    statisticalUnits: list[str]
+    versions: list[type_version_part]
+    _links: dict[str, dict[str, str]]
+
+
 def classification_by_id(
-    classification_id: str,
-    language: str = "nb",
-    include_future: bool = False,
-    return_type: str = "json",
-) -> json_type | pd.DataFrame:
+    classification_id: str, language: str = "nb", include_future: bool = False
+) -> type_json_classification_by_id:
     """Gets from the classification-by-id-endpoint."""
     url = config.BASE_URL + "classifications/" + str(classification_id)
     params: params_after = validate_params(
         {"language": language, "includeFuture": include_future}
     )
-    return convert_return_type(get_json(url, params), return_type)
+    result: type_json_classification_by_id = get_json(url, params)
+    return result
 
 
 def codes(
@@ -194,21 +237,6 @@ def codes_at(
         params["includeFuture"] = include_future
     params_final: params_after = validate_params(params)
     return convert_return_type(get_json(url, params_final)["codes"], "pandas")
-
-
-class type_correspondenceTables(TypedDict):
-    """The type returned by the version_by_id function."""
-
-    name: str
-    contactPerson: dict[str, str]
-    owningSection: str
-    lastModified: str
-    published: list[str]
-    source: NotRequired[str]
-    sourceId: NotRequired[str]
-    target: NotRequired[str]
-    targetId: NotRequired[str]
-    _links: dict[str, dict[str, str]]
 
 
 class type_json_version_by_id(TypedDict):

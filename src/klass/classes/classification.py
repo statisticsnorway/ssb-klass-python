@@ -2,6 +2,8 @@ import pandas as pd
 
 from ..requests.klass_requests import changes
 from ..requests.klass_requests import classification_by_id
+from ..requests.klass_requests import type_json_classification_by_id
+from ..requests.klass_requests import type_version_part
 from .codes import KlassCodes
 from .correspondence import KlassCorrespondence
 from .variant import KlassVariantSearchByName
@@ -105,18 +107,30 @@ class KlassClassification:
         self.classification_id = classification_id
         self.language = language
         self.include_future = include_future
-
-        for key, value in classification_by_id(
+        result: type_json_classification_by_id = classification_by_id(
             classification_id, language=language, include_future=include_future
-        ).items():
-            setattr(self, key, value)
+        )
+        self.name: str = result.get("name", "")
+        self.classificationType: str = result.get("classificationType", "")
+        self.lastModified: str = result.get("lastModified", "")
+        self.description: str = result.get("description", "")
+        self.primaryLanguage: str = result.get("primaryLanguage", "")
+        self.copyrighted: bool = result.get("copyrighted", True)
+        self.includeShortName: bool = result.get("includeShortName", False)
+        self.includeNotes: bool = result.get("includeNotes", False)
+        self.contactPerson: dict[str, str] = result.get("contactPerson", {})
+        self.owningSection: str = result.get("owningSection", "")
+        self.statisticalUnits: list[str] = result.get("statisticalUnits", [""])
+        versions_temp: list[type_version_part] = result.get("versions", [])
+        self._links: dict[str, dict[str, str]] = result.get("_links", {})
 
-        version_replace = []
-        for ver in self.versions:
+        version_replace: list[type_version_part] = []
+        for ver in versions_temp:
             version_replace.append(
                 {"version_id": int(ver["_links"]["self"]["href"].split("/")[-1]), **ver}
             )
-        self.versions = version_replace
+
+        self.versions: list[type_version_part] = version_replace
 
     def __str__(self) -> str:
         """Prints a readable string of the classification, including some of its attributes."""
@@ -186,13 +200,13 @@ class KlassClassification:
         if include_future is None:
             include_future = self.include_future
         return KlassVersion(
-            version_id,
+            str(version_id),
             select_level=select_level,
             language=language,
             include_future=include_future,
         )
 
-    def versions_dict(self) -> dict:
+    def versions_dict(self) -> dict[int, str]:
         """Reformats the versions into a simple dict with just the IDs as keys, and name as values.
 
         Returns:
