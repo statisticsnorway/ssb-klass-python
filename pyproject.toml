@@ -78,6 +78,7 @@ module = [
     "ipywidgets.*",
 ]
 ignore_missing_imports = true
+exclude = "tests"
 
 [tool.ruff]
 force-exclude = true  # Apply excludes to pre-commit
