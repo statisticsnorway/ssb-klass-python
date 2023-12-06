@@ -4,7 +4,7 @@ from klass.requests.klass_requests import variant
 from klass.requests.klass_requests import variant_at
 from klass.requests.klass_requests import variants_by_id
 from klass.requests.types import T_correspondenceTables
-from klass.requests.types import T_version_by_id
+from klass.requests.types import T_variants_by_id
 
 
 class KlassVariant:
@@ -99,22 +99,22 @@ class KlassVariant:
             The level of the dataset to keep
             For example: 0
         """
-        result: T_version_by_id = variants_by_id(self.variant_id, self.language)
+        result: T_variants_by_id = variants_by_id(self.variant_id, self.language)
         self.name: str = result["name"]
-        self.validFrom: str = result["validFrom"]
         if "validTo" in result:
             self.validTo: str = result["validTo"]
-        self.lastModified: str = result["lastModified"]
-        self.published: list[str] = result["published"]
-        self.introduction: str = result["introduction"]
-        self.contactPerson: dict[str, str] = result["contactPerson"]
-        self.owningSection: str = result["owningSection"]
         if "legalBase" in result:
             self.legalBase: str = result["legalBase"]
         if "publications" in result:
             self.publications: str = result["publications"]
         if "derivedFrom" in result:
             self.derivedFrom: str = result["derivedFrom"]
+        self.contactPerson: dict[str, str] = result["contactPerson"]
+        self.owningSection: str = result["owningSection"]
+        self.lastModified: str = result["lastModified"]
+        self.published: list[str] = result["published"]
+        self.validFrom: str = result["validFrom"]
+        self.introduction: str = result["introduction"]
         self.correspondenceTables: list[T_correspondenceTables] = result[
             "correspondenceTables"
         ]

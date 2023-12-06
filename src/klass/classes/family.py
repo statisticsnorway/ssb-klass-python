@@ -1,7 +1,7 @@
 from klass.classes.classification import KlassClassification
 from klass.requests.klass_requests import classificationfamilies_by_id
+from klass.requests.types import T_classification_part_with_type
 from klass.requests.types import T_classificationfamilies_by_id
-from klass.requests.types import T_classificationfamilies_by_id_classifications
 
 
 class KlassFamily:
@@ -35,18 +35,18 @@ class KlassFamily:
             self.family_id
         )
         self.name: str = result["name"]
-        classifications_temp: list[
-            T_classificationfamilies_by_id_classifications
-        ] = result["classifications"]
+        classifications_temp: list[T_classification_part_with_type] = result[
+            "classifications"
+        ]
         self._links: dict[str, dict[str, str]] = result["_links"]
 
-        new_classifications: list[T_classificationfamilies_by_id_classifications] = []
+        new_classifications: list[T_classification_part_with_type] = []
         for cl in classifications_temp:
             new_classifications.append(
                 {"classification_id": cl["_links"]["self"]["href"].split("/")[-1], **cl}
             )
         self.classifications: list[
-            T_classificationfamilies_by_id_classifications
+            T_classification_part_with_type
         ] = new_classifications
 
     def __str__(self) -> str:

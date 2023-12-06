@@ -10,11 +10,15 @@ import requests
 import klass.config as config
 from klass.requests.sections import sections_dict
 from klass.requests.types import T_classification_by_id
+from klass.requests.types import T_classification_search
+from klass.requests.types import T_classificationfamilies
 from klass.requests.types import T_classificationfamilies_by_id
+from klass.requests.types import T_classifications
 from klass.requests.types import T_correspondence_table_id
 from klass.requests.types import T_corresponds
 from klass.requests.types import T_params_after
 from klass.requests.types import T_params_before
+from klass.requests.types import T_variants_by_id
 from klass.requests.types import T_version_by_id
 from klass.requests.validate import validate_params
 
@@ -94,7 +98,7 @@ def convert_section(section: str) -> str:
 
 def classifications(
     include_codelists: bool = False, changed_since: str = ""
-) -> json_type:
+) -> T_classifications:
     """Get from the classifications-endpoint."""
     url = config.BASE_URL + "classifications"
     params: T_params_before = {
@@ -105,12 +109,13 @@ def classifications(
             date=changed_since, return_type="isoklass"
         )
     params_final: T_params_after = validate_params(params)
-    return get_json(url, params_final)
+    result: T_classifications = get_json(url, params_final)
+    return result
 
 
 def classification_search(
     query: str = "", include_codelists: bool = False, ssbsection: str = ""
-) -> json_type:
+) -> T_classification_search:
     """Get from the classification/search-endpoint."""
     url = config.BASE_URL + "classifications/search"
     if not query:
@@ -122,7 +127,8 @@ def classification_search(
     if ssbsection:
         params["ssbSection"] = convert_section(ssbsection)
     params_final: T_params_after = validate_params(params)
-    return get_json(url, params_final)
+    result: T_classification_search = get_json(url, params_final)
+    return result
 
 
 def classification_by_id(
@@ -201,7 +207,7 @@ def version_by_id(
     version_id: str,
     language: str = "nb",
     include_future: bool = False,
-) -> json_type:
+) -> T_version_by_id:
     """Get from the version-by-id-endpoint."""
     url = config.BASE_URL + "versions/" + str(version_id)
     params: T_params_after = validate_params(
@@ -224,8 +230,7 @@ def variant(
     presentation_name_pattern: str = "",
     language: str = "nb",
     include_future: bool = False,
-    return_type: str = "pandas",
-) -> pd.DataFrame | json_type:
+) -> pd.DataFrame:
     """Get from the variant-endpoint."""
     url = config.BASE_URL + "classifications/" + str(classification_id) + "/variant"
     from_date = convert_datestring(from_date, "yyyy-mm-dd")
@@ -246,7 +251,10 @@ def variant(
     if include_future:
         params["includeFuture"] = include_future
     params_final: T_params_after = validate_params(params)
-    return convert_return_type(get_json(url, params_final)["codes"], return_type)
+    result: pd.DataFrame = convert_return_type(
+        get_json(url, params_final)["codes"], "pandas"
+    )
+    return result
 
 
 def variant_at(
@@ -258,8 +266,7 @@ def variant_at(
     presentation_name_pattern: str = "",
     language: str = "nb",
     include_future: bool = False,
-    return_type: str = "pandas",
-) -> pd.DataFrame | json_type:
+) -> pd.DataFrame:
     """Get from the variantAt-endpoint."""
     url = config.BASE_URL + "classifications/" + str(classification_id) + "/variantAt"
     date = convert_datestring(date, "yyyy-mm-dd")
@@ -279,14 +286,18 @@ def variant_at(
         params["includeFuture"] = include_future
 
     params_final: T_params_after = validate_params(params)
-    return convert_return_type(get_json(url, params_final)["codes"], return_type)
+    result: pd.DataFrame = convert_return_type(
+        get_json(url, params_final)["codes"], "pandas"
+    )
+    return result
 
 
-def variants_by_id(variant_id: str, language: str = "nb") -> json_type:
+def variants_by_id(variant_id: str, language: str = "nb") -> T_variants_by_id:
     """Get from the variants-endpoint."""
     url = config.BASE_URL + "variants/" + str(variant_id)
     params: T_params_after = validate_params({"language": language})
-    return get_json(url, params)
+    result: T_variants_by_id = get_json(url, params)
+    return result
 
 
 def corresponds(
@@ -365,8 +376,7 @@ def changes(
     to_date: str = "",
     language: str = "nb",
     include_future: bool = False,
-    return_type: str = "pandas",
-) -> pd.DataFrame | json_type:
+) -> pd.DataFrame:
     """Get from the classifications/changes-endpoint."""
     url = (
         config.BASE_URL + "classifications/" + str(classification_id) + "/changes.json"
@@ -384,14 +394,17 @@ def changes(
     if include_future:
         params["includeFuture"] = include_future
     params_final: T_params_after = validate_params(params)
-    return convert_return_type(get_json(url, params_final)["codeChanges"], return_type)
+    result: pd.DataFrame = convert_return_type(
+        get_json(url, params_final)["codeChanges"], "pandas"
+    )
+    return result
 
 
 def classificationfamilies(
     ssbsection: str = "",
     include_codelists: bool = False,
     language: str = "nb",
-) -> json_type:
+) -> T_classificationfamilies:
     """Get from the classificationfamilies-endpoint."""
     url = config.BASE_URL + "classificationfamilies"
     params: T_params_before = {
@@ -401,7 +414,8 @@ def classificationfamilies(
     if ssbsection:
         params["ssbSection"] = convert_section(ssbsection)
     params_final: T_params_after = validate_params(params)
-    return get_json(url, params_final)
+    result: T_classificationfamilies = get_json(url, params_final)
+    return result
 
 
 def classificationfamilies_by_id(

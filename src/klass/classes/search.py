@@ -66,12 +66,8 @@ class KlassSearchClassifications:
             include_codelists=self.include_codelists,
             ssbsection=self.ssbsection,
         )
-        if "_embedded" in result.keys():
-            self.classifications = result["_embedded"]["searchResults"]
-        elif "searchResults" in result.keys():
-            self.classifications = result["searchResults"]
-        else:
-            self.classifications = []
+
+        self.classifications = result["_embedded"]["searchResults"]
 
         self.links = result["_links"]
         if len(self.classifications):
@@ -226,7 +222,7 @@ class KlassSearchFamilies:
         self.links = result["_links"]
         families_replace = []
         for fam in self.families:
-            fam["family_id"] = int(fam["_links"]["self"]["href"].split("/")[-1])
+            fam["family_id"] = fam["_links"]["self"]["href"].split("/")[-1]
             families_replace.append(fam)
         self.families = families_replace
 
