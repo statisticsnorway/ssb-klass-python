@@ -1,6 +1,6 @@
 import requests
 
-from klass import KlassConfig
+import klass.config as config
 
 
 def base_request(content: str, status_code: int = 200) -> requests.Response:
@@ -11,7 +11,7 @@ def base_request(content: str, status_code: int = 200) -> requests.Response:
         "utf8",
     )
     response.request = requests.PreparedRequest()
-    response.request.headers = KlassConfig().HEADERS
+    response.request.headers = config.HEADERS
     return response
 
 
