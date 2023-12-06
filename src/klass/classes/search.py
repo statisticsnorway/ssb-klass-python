@@ -33,17 +33,6 @@ class KlassSearchClassifications:
         The SSB section who owns the classification you are seraching for.
     no_dupes: bool
         Whether to remove duplicates from the search results.
-
-
-    Methods
-    -------
-    get_search()
-        Searches for classifications. Run as last part of initialization.
-        Rerun this method, if you change any of the parameters on the object.
-    simple_search_result()
-        Returns a simple string of the classifications.
-    get_classification()
-        Convenience-method for getting a Classification from the search object.
     """
 
     def __init__(
@@ -182,15 +171,6 @@ class KlassSearchFamilies:
     language : str
         The language to use in the search.
         Default: "nb" for Norwegian, "nn" for Nynorsk, "en" for English.
-
-    Methods
-    -------
-    get_search()
-        Runs the search. Rerun this if you change any attributes on the object.
-    get_family()
-        Returns a KlassFamily object of the family with the given ID.
-    simple_search_result()
-        Returns a simple string of the search results.
     """
 
     def __init__(

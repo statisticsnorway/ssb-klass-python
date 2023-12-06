@@ -2,12 +2,13 @@ from typing import TypedDict
 
 from typing_extensions import NotRequired
 
+# Keeping these two as non-class, declarative, as the API operates with the parameter "from", which is a reserved keyword in Python
 T_params_before = TypedDict(
     "T_params_before",
     {
         "language": NotRequired[str],
         "includeFuture": NotRequired[bool],  # Will be converted to lowercase string
-        "from": NotRequired[str],
+        "from": NotRequired[str],  # Cant convert to class cause of this thingy
         "to": NotRequired[str],
         "date": NotRequired[str],
         "selectCodes": NotRequired[str],
@@ -26,7 +27,7 @@ T_params_after = TypedDict(
     {
         "language": NotRequired[str],
         "includeFuture": NotRequired[str],
-        "from": NotRequired[str],
+        "from": NotRequired[str],  # Cant convert to class cause of this thingy
         "to": NotRequired[str],
         "date": NotRequired[str],
         "selectCodes": NotRequired[str],

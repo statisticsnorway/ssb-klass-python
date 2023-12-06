@@ -38,24 +38,6 @@ class KlassClassification:
         Whether to include future versions of the classification.
         Default: False.
 
-    Methods
-    -------
-    get_version()
-        Returns a KlassVersion object of the classification based on ID.
-        If no ID is specified, will get the first version under the attribute .versions on this class.
-    get_variant_by_name()
-        Returns a KlassVariantSearchByName object by using this classification's classification_id,
-        and a the start of a variant_name you specify.
-    get_correspondence_to()
-        Treats the current classification as a source of correspondences, you must specify the targets ID.
-        Returns a KlassCorrespondence object of the correspondences.
-    get_codes()
-        Returns a KlassCodes object of the classification at a specific time, or in a specific time range.
-    get_changes()
-        Returns a KlassChanges object of the classification at a specific time, or in a specific time range.
-        Different from get_codes() this method does not return all codes,
-        but only whats changed since last update, or within the time range.
-
     Attributes
     ----------
     versions : list

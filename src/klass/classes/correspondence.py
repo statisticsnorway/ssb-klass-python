@@ -40,19 +40,6 @@ class KlassCorrespondence:
     include_future : bool
         If the correspondence should include future correspondences.
 
-    Methods
-    -------
-    to_dict()
-        Extracts two columns from the data, turning them into a dict.
-        If you specify a value for "other", returns a defaultdict instead.
-        Columns in the data are 'sourceCode', 'sourceName', 'sourceShortName'
-        'targetCode', 'targetName', 'targetShortName', 'validFrom', 'validTo'
-    get_correspondence()
-        Run as last part of initialization.
-        If you reset some attributes, maybe run this after to "update" the data of the correspondence.
-    _last_date_of_quarter()
-        Returns the last date of the numbered quarter provided.
-
     Attributes
     ----------
     data : pd.DataFrame

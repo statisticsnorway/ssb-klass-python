@@ -31,12 +31,6 @@ class KlassVariant:
         The language of the variant to select.
         For example: 'nb'
 
-    Methods
-    -------
-    get_classification_codes()
-        Gets the codes from the API. Populates the attributes, including .data.
-        Rerun the method if the orignal parameters on the object are changed.
-
 
     Attributes
     ----------
@@ -76,9 +70,6 @@ class KlassVariant:
     language : str
         The language of the variant to select.
         For example: 'nb'
-    classificationItems : list
-        The json returned from the API, which is converted to a pandas dataframe under
-        the .data attribute on initialization.
     _links : dict
         The links returned from the API.
     """
@@ -194,12 +185,6 @@ class KlassVariantSearchByName:
     include_future : bool
         Whether to include future codes. Defaults to False.
 
-    Methods
-    -------
-    get_variant()
-        Gets the Variant from the API. The codelist is put into the .data attribute.
-        Rerun this method if you change any of the original attributes on the object.
-
     Attributes
     ----------
     data : pd.DataFrame
@@ -221,7 +206,7 @@ class KlassVariantSearchByName:
     language : str
         Language of the names, select "en", "nb" or "nn".
     include_future : bool
-    Whether to include future codes. Defaults to False.
+        Whether to include future codes. Defaults to False.
     """
 
     def __init__(

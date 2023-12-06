@@ -31,20 +31,6 @@ class KlassCodes:
     include_future : bool
         Whether to include future codes. Defaults to False.
 
-    Methods
-    -------
-    get_codes()
-        Gets the codes from Klass, assigns a pandas dataframe to the .data attribute. Gets called during initialization, so usually unnecessary to run manually.
-    change_dates()
-        Change the dates of the codes. Runs get_codes() again after changing the dates.
-    to_dict()
-        Extracts two columns from the data, turning them into a dict.
-        If you specify a value for "other", returns a defaultdict instead
-    pivot_level()
-        Pivots the data, adding the levels as suffixes to the column-names,
-        Joining children codes onto their parentCodes.
-        For example instead of "code", gives you "code_1", "code_2" etc.
-
     Attributes
     ----------
     data : pd.DataFrame

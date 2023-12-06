@@ -23,20 +23,6 @@ class KlassVersion:
     include_future : bool, optional
         If the version should include future versions. Defaults to False.
 
-    Methods
-    -------
-    variants_simple() -> dict:
-        Simplify the variants of the version into a dict with IDs as keys.
-    get_variant() -> KlassVariant:
-        Get a specific variant.
-    correspondences_simple() -> dict:
-        Simplify the correspondences of the version into a dict with IDs as keys.
-    get_correspondence() -> KlassCorrespondence:
-        Get a specific correspondence.
-    get_classification_codes()
-        Get the codelists of the version. Inserts the result into the KlassVersions .data attribute, instead of returning it.
-        Run as a part of the class initialization.
-
 
     Attributes
     ----------
