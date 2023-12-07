@@ -12,60 +12,26 @@ delete the .rst file afterwards.
 -->
 
 ```{eval-rst}
+klass package
+=============
 
-klass.classes.classification module
------------------------------------
+Subpackages
+-----------
 
-.. automodule:: klass.classes.classification
+.. toctree::
+   :maxdepth: 4
+
+   klass.classes
+   klass.requests
+   klass.widgets
+
+
+klass.config module
+-------------------
+
+.. automodule:: klass.config
    :members:
    :undoc-members:
    :show-inheritance:
 
-klass.classes.codes module
---------------------------
-
-.. automodule:: klass.classes.codes
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-klass.classes.correspondence module
------------------------------------
-
-.. automodule:: klass.classes.correspondence
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-klass.classes.family module
----------------------------
-
-.. automodule:: klass.classes.family
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-klass.classes.search module
----------------------------
-
-.. automodule:: klass.classes.search
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-klass.classes.variant module
-----------------------------
-
-.. automodule:: klass.classes.variant
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-klass.classes.version module
-----------------------------
-
-.. automodule:: klass.classes.version
-   :members:
-   :undoc-members:
-   :show-inheritance:
 ```
