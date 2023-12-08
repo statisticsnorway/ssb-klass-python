@@ -1,5 +1,6 @@
 from collections import defaultdict
 from datetime import datetime
+from typing import Self
 
 import pandas as pd
 
@@ -99,7 +100,7 @@ class KlassCodes:
         from_date: str = "",
         to_date: str = "",
         include_future: bool | None = None,
-    ) -> None:
+    ) -> Self:
         """Change the dates of the codelist and get the data again based on new dates.
 
         Args:
@@ -108,10 +109,7 @@ class KlassCodes:
             include_future (bool): Whether to include future codes.
 
         Returns:
-            None: Changes the dates on the class and swaps out the data on the .data attribute.
-
-        Raises:
-            ValueError: If from_date or to_date is not a valid date or date-string YYYY-MM-DD.
+            self (KlassSearchFamilies): Returns self to make the method more easily chainable.
         """
         if not from_date:
             from_date = datetime.now().strftime("%Y-%m-%d")
@@ -120,17 +118,23 @@ class KlassCodes:
         self.from_date = from_date
         self.to_date = to_date
         self.get_codes()
+        return self
 
-    def get_codes(self) -> None:
+    def get_codes(self, raise_on_empty_data: bool = True) -> Self:
         """Retrieve codes from the classification specified by self.classification_id at a specific time.
 
         If self.to_date is not None, codes will be retrieved from the date range specified
         by self.from_date and self.to_date. Otherwise, codes will be retrieved only for
         the date specified by self.from_date.
 
+        Args:
+            raise_on_empty_data (bool): Whether to raise an error if the returned dataframe is empty. Defaults to True.
+
         Returns:
-        -------
-            None: Changes the data on the .data attribute.
+            self (KlassSearchFamilies): Returns self to make the method more easily chainable.
+
+        Raises:
+            ValueError: If the returned dataframe is empty, there is probably something too narrow in the parameters.
         """
         if self.to_date:
             self.data = codes(
@@ -153,10 +157,11 @@ class KlassCodes:
                 language=self.language,
                 include_future=self.include_future,
             )
-        if len(self.data) == 0:
+        if len(self.data) == 0 and raise_on_empty_data:
             raise ValueError(
                 "Empty data, no codes found for the specified parameters. Maybe your select_codes or select_level is too narrow?"
             )
+        return self
 
     def to_dict(
         self,
@@ -175,9 +180,6 @@ class KlassCodes:
 
         Returns:
             dict | defaultdict: The extracted columns as a dict or defaultdict.
-
-        Raises:
-            ValueError: If the value is not specified and the pattern is not specified.
         """
         if not value:
             # If you bothered specifying a pattern, we assume you want it

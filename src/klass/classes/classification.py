@@ -135,11 +135,9 @@ class KlassClassification:
             include_future (bool): Whether to include future versions of the version.
 
         Returns:
-        -------
             KlassVersion: A KlassVersion object of the specified ID.
 
         Raises:
-        ------
             ValueError: If the language is not "nn", "nb" or "en".
             ValueError: If the include_future is not a bool.
         """
@@ -160,7 +158,6 @@ class KlassClassification:
         """Reformats the versions into a simple dict with just the IDs as keys and names as values.
 
         Returns:
-        -------
             dict: Version IDs as keys, and version names as values.
         """
         return {v["version_id"]: v["name"] for v in self.versions[::-1]}
@@ -195,12 +192,10 @@ class KlassClassification:
             include_future (bool): Whether to include future versions of the version.
 
         Returns:
-        -------
             KlassVariantSearchByName: A KlassVariantSearchByName object based on the classification's ID
             and searching for the name passed in.
 
         Raises:
-        ------
             ValueError: If the language is not "nn", "nb" or "en".
             ValueError: If the include_future is not a bool.
         """
@@ -236,12 +231,10 @@ class KlassClassification:
             include_future (bool): Whether to include future correspondences.
 
         Returns:
-        -------
             KlassCorrespondence: A KlassCorrespondence object of the correspondences
             between the current classification and the target classification.
 
         Raises:
-        ------
             ValueError: If the language is not "nn", "nb" or "en".
             ValueError: If the include_future is not a bool.
         """
@@ -282,7 +275,6 @@ class KlassClassification:
             include_future (bool): Whether to include future versions of the version.
 
         Returns:
-        -------
             KlassCodes: A KlassCodes object of the classification at a specific time or in a specific time range.
         """
         # If not passed to method, grab these from the Classification

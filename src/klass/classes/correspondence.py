@@ -1,6 +1,7 @@
 from calendar import monthrange
 from collections import defaultdict
 from datetime import date
+from typing import Self
 
 import dateutil.parser
 import pandas as pd
@@ -99,7 +100,7 @@ class KlassCorrespondence:
         result += ")"
         return result
 
-    def get_correspondence(self) -> None:
+    def get_correspondence(self) -> Self:
         """Run as the last part of initialization. Actually setting the data from the API as attributes.
 
         If you reset some attributes, maybe run this after to "update" the data of the correspondence.
@@ -107,7 +108,11 @@ class KlassCorrespondence:
         Gets and reshapes correspondences based on attributes on the class.
 
         Returns:
-            None: Sets .data attribute based on the attributes of the class.
+            self (KlassCorrespondence): Returns self to make the method more easily chainable.
+
+        Raises:
+            ValueError: If you are filling out the wrong combination of correspondence_id, source_classification_id,
+            target_classification_id and from_date, we cant get make a correct query to the API.
         """
         if self.correspondence_id:
             result_id = correspondence_table_by_id(
@@ -153,6 +158,7 @@ class KlassCorrespondence:
                 "Please set correspondence ID, or source and target classification IDs + from_date"
             )
         self.data = pd.json_normalize(self.correspondence)
+        return self
 
     def _last_date_of_quarter(self) -> str:
         """Calculate the last date of the quarter.

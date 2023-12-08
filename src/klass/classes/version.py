@@ -1,3 +1,5 @@
+from typing import Self
+
 import pandas as pd
 
 from ..requests.klass_requests import version_by_id
@@ -126,7 +128,7 @@ class KlassVersion:
         )
         return result
 
-    def get_classification_codes(self, select_level: int = 0) -> None:
+    def get_classification_codes(self, select_level: int = 0) -> Self:
         """Get the codelists of the version. Inserts the result into the KlassVersions .data attribute, instead of returning it.
 
         Run as a part of the class initialization.
@@ -135,7 +137,7 @@ class KlassVersion:
             select_level (int): The level of the version to keep in the data. Setting to 0 keeps all levels.
 
         Returns:
-            None: Sets .data attribute based on the attributes of the class.
+            self (KlassVersion): Returns self to make the method more easily chainable.
         """
         if not select_level:
             if self.select_level:
@@ -152,6 +154,7 @@ class KlassVersion:
         if select_level:
             data = data[data["level"].astype(str) == str(select_level)]
         self.data = data
+        return self
 
     def variants_simple(self) -> dict[str, str]:
         """Get a simplifed dictionary of the variants, ids as keys, names as values."""

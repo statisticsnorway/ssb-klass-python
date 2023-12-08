@@ -26,25 +26,18 @@ from klass.requests.validate import validate_params
 # Types #
 # ##########
 
-json_type = Any
 
-
-def get_json(url: str, params: ParamsAfterType) -> json_type:
+def get_json(url: str, params: ParamsAfterType) -> dict[str, Any]:
     """Simplify getting the JSON out of a GET request to the KLASS API.
 
     Used in most of the following functions.
 
     Args:
         url (str): The URL to the endpoint.
-        params (dict): The parameters to send to the endpoint.
+        params (ParamsAfterType): The parameters to send to the endpoint.
 
     Returns:
         dict: The JSON response from the endpoint.
-
-    Raises:
-        requests.exceptions.HTTPError: If the response is not 200.
-        requests.exceptions.RequestException: If there is a connection error.
-        ValueError: If the response has no JSON.
     """
     req = requests.Request("GET", url=url, headers=config.HEADERS, params=params)
     if config.TESTING:
@@ -55,8 +48,8 @@ def get_json(url: str, params: ParamsAfterType) -> json_type:
 
 
 def convert_return_type(
-    data: json_type, return_type: str = "pandas"
-) -> Any | pd.DataFrame:
+    data: dict[str, Any], return_type: str = "pandas"
+) -> dict[str, Any] | pd.DataFrame:
     """Differentiate between returning as raw json or convert to DataFrame."""
     if return_type == "json":
         return data

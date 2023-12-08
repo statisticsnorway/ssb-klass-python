@@ -1,3 +1,5 @@
+from typing import Self
+
 from klass.classes.classification import KlassClassification
 from klass.classes.family import KlassFamily
 from klass.requests.klass_requests import classification_search
@@ -174,14 +176,14 @@ class KlassSearchFamilies:
         result += ")"
         return result
 
-    def get_search(self) -> None:
+    def get_search(self) -> Self:
         """Get the search result from the API and reformat it into the .families and .links attributes.
 
         This should be run after any change to the .ssbsection, .include_codelists, or .language
         attributes.
 
         Returns:
-            None: Sets .families and .links attributes.
+            self (KlassSearchFamilies): Returns self to make the method more easily chainable.
         """
         result = classificationfamilies(
             ssbsection=self.ssbsection,
@@ -195,6 +197,7 @@ class KlassSearchFamilies:
             fam["family_id"] = fam["_links"]["self"]["href"].split("/")[-1]
             families_replace.append(fam)
         self.families = families_replace
+        return self
 
     def get_family(self, family_id: str = "0") -> KlassFamily:
         """Return a KlassFamily object of the family with the given ID.
