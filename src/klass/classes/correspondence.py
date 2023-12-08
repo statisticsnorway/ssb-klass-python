@@ -1,10 +1,10 @@
 from calendar import monthrange
 from collections import defaultdict
 from datetime import date
-from typing import Self
 
 import dateutil.parser
 import pandas as pd
+from typing_extensions import Self
 
 from klass.requests.klass_requests import correspondence_table_by_id
 from klass.requests.klass_requests import corresponds

@@ -1,6 +1,5 @@
-from typing import Self
-
 import pandas as pd
+from typing_extensions import Self
 
 from ..requests.klass_requests import version_by_id
 from ..requests.types import CorrespondenceTablesType

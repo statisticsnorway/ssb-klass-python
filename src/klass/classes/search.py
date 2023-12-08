@@ -1,4 +1,4 @@
-from typing import Self
+from typing_extensions import Self
 
 from klass.classes.classification import KlassClassification
 from klass.classes.family import KlassFamily

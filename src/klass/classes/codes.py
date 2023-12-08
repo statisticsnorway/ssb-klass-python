@@ -1,8 +1,8 @@
 from collections import defaultdict
 from datetime import datetime
-from typing import Self
 
 import pandas as pd
+from typing_extensions import Self
 
 from klass.requests.klass_requests import codes
 from klass.requests.klass_requests import codes_at
