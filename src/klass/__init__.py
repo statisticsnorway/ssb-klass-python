@@ -11,13 +11,20 @@ import toml
 
 
 # Split into function for testing
-def _try_getting_pyproject_toml(e=""):
+def _try_getting_pyproject_toml(e: Exception | None = None) -> str:
+    if e is None:
+        passed_excep: Exception = Exception("")
+    else:
+        passed_excep = e
     try:
-        return toml.load("../pyproject.toml")
+        version: str = toml.load("../pyproject.toml")["tool"]["poetry"]["version"]
+        return version
     except Exception as e:
+        version_missing: str = "0.0.0"
         print(
-            f"Error from ssb-klass-python not installed correctly(?) version unknown, setting it to {__version__}: {e}"
+            f"Error from ssb-klass-pythons __init__, not able to get version-number, setting it to {version_missing}: {passed_excep}"
         )
+        return version_missing
 
 
 # Gets the installed version from pyproject.toml, then there is no need to update this file
