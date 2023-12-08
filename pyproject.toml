@@ -123,7 +123,7 @@ force-single-line = true
 max-complexity = 15
 
 [tool.ruff.pydocstyle]
-convention = "numpy"  # You can also use "numpy".
+convention = "google"  # You can also use "numpy".
 
 [tool.ruff.pep8-naming]
 classmethod-decorators = ["classmethod", "validator", "root_validator", "pydantic.validator"]
