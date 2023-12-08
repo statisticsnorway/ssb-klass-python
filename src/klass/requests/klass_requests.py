@@ -37,7 +37,7 @@ def get_json(url: str, params: ParamsAfterType) -> Any:
         params (ParamsAfterType): The parameters to send to the endpoint.
 
     Returns:
-        dict: The JSON response from the endpoint.
+        Any: The JSON response from the endpoint, hard to type because all endpoints have differently structured responses.
     """
     req = requests.Request("GET", url=url, headers=config.HEADERS, params=params)
     if config.TESTING:
