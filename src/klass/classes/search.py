@@ -77,6 +77,7 @@ class KlassSearchClassifications:
             list: The cleaned classifications.
         """
         classification_replace: list[ClassificationSearchResultsPartType] = []
+        seen = []
         if len(classifications):
             for cl in classifications:
                 cl = {
@@ -85,15 +86,11 @@ class KlassSearchClassifications:
                     ),
                     **cl,
                 }
-                classification_replace.append(cl)
-            if no_dupes:
-                classification_replace = []
-                seen = []
-                for cl in classifications:
-                    if cl["classification_id"] not in seen:
-                        classification_replace.append(cl)
-                        seen.append(cl["classification_id"])
-
+                if cl["classification_id"] not in seen and no_dupes:
+                    classification_replace.append(cl)
+                    seen.append(cl["classification_id"])
+                else:
+                    classification_replace.append(cl)
         return classification_replace
 
     def __str__(self) -> str:
