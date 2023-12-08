@@ -91,7 +91,8 @@ class KlassVersion:
             "correspondenceTables"
         ]
         if "classificationVariants" in result:
-            self.classificationVariants: list[T_correspondenceTables]
+            self.classificationVariants: list[T_correspondenceTables] = result["classificationVariants"]
+            
         self.changelogs: list[dict[str, str]] = result["changelogs"]
         self.levels: list[dict[str, int | str]] = result["levels"]
         self.classificationItems: list[dict[str, str | None]] = result[
@@ -114,6 +115,11 @@ class KlassVersion:
         return result
 
     def __str__(self) -> str:
+        if hasattr(self, "classificationVariants"):
+            number_variants = f"\n\tNumber of classification variants: {len(self.classificationVariants)}" 
+        else:
+            number_variants = "" 
+        
         """Print a human-readable string of the object, includes many of its attributes or their sizes."""
         contact = "Contact Person:\n"
         for k, v in self.contactPerson.items():
@@ -127,8 +133,7 @@ class KlassVersion:
         result += f"""\nLast modified: {self.lastModified}
         {contact}
 
-        Number of correspondences: {len(self.correspondenceTables)}
-        Number of classification variants: {len(self.classificationVariants)}
+        Number of correspondences: {len(self.correspondenceTables)}""" + number_variants + f"""        
         Number of classification items: {len(self.classificationItems)}
         Number of levels: {len(self.levels)}
 
