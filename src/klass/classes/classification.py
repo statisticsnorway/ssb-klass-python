@@ -33,7 +33,6 @@ class KlassClassification:
         include_future (bool): Whether to include future versions of the classification.
 
     Attributes:
-    ----------
         versions (list): A list of the data the Classifications has on its versions.
             Versions represent the changes to the classifications codelists placed in time.
         name (str): The name of the classification.
@@ -53,7 +52,6 @@ class KlassClassification:
         _links (dict): A dictionary containing the links to different possible endpoints using the classification.
 
     Raises:
-    ------
         ValueError: If the language is not "no", "nb" or "en".
             If the include_future is not a bool.
     """
