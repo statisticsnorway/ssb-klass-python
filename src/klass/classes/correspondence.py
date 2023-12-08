@@ -80,7 +80,7 @@ class KlassCorrespondence:
         self.correspondence_id = correspondence_id
         self.source_classification_id = source_classification_id
         self.target_classification_id = target_classification_id
-        self.from_date: str = from_date
+        self.from_date = from_date
         self.to_date = to_date
         self.contain_quarter = contain_quarter
         self.language = language

@@ -179,6 +179,10 @@ class KlassCodes:
                 language=self.language,
                 include_future=self.include_future,
             )
+        if len(self.data) == 0:
+            raise ValueError(
+                "Empty data, no codes found for the specified parameters. Maybe your select_codes or select_level is too narrow?"
+            )
 
     def to_dict(
         self,
