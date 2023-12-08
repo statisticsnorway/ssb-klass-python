@@ -27,6 +27,12 @@ class KlassVersion:
         publications (str): Where the classification is published (URL).
         derivedFrom (str): Notes on where the classification was derived from.
         correspondenceTables (list): A list of correspondence-tables of the version.
+
+    Args:
+        version_id (str): The ID of the version.
+        select_level (int, optional): The level in the codelist-data to keep. Defaults to 0.
+        language (str, optional): The language of the version. Defaults to "nb", can be set to "en", or "nn".
+        include_future (bool, optional): If the version should include future versions. Defaults to False.
     """
 
     def __init__(
@@ -36,14 +42,7 @@ class KlassVersion:
         language: str = "nb",
         include_future: bool = False,
     ):
-        """Set up the object with data from the KLASS-API.
-
-        Args:
-            version_id (str): The ID of the version.
-            select_level (int, optional): The level in the codelist-data to keep. Defaults to 0.
-            language (str, optional): The language of the version. Defaults to "nb", can be set to "en", or "nn".
-            include_future (bool, optional): If the version should include future versions. Defaults to False.
-        """
+        """Set up the object with data from the KLASS-API."""
         self.version_id = version_id
         self.select_level = select_level
         self.language = language.lower()

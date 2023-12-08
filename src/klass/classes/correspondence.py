@@ -33,6 +33,17 @@ class KlassCorrespondence:
             this replaces the to_date during initialization.
         language (str): The language of the correspondence. "nb", "nn" or "en".
         include_future (bool): If the correspondence should include future correspondences.
+
+    Args:
+        correspondence_id (str): The ID of the correspondence.
+        source_classification_id (str): The ID of the source classification.
+        target_classification_id (str): The ID of the target classification.
+        from_date (str): The start date of the correspondence.
+        to_date (str, optional): The end date of the correspondence.
+        contain_quarter (int): The number of quarters the correspondence should contain,
+            this replaces the to_date during initialization.
+        language (str): The language of the correspondence. "nb", "nn" or "en".
+        include_future (bool): If the correspondence should include future correspondences.
     """
 
     def __init__(
@@ -46,19 +57,7 @@ class KlassCorrespondence:
         language: str = "nb",
         include_future: bool = False,
     ):
-        """Get the correspondence-data from the API.
-
-        Args:
-            correspondence_id (str): The ID of the correspondence.
-            source_classification_id (str): The ID of the source classification.
-            target_classification_id (str): The ID of the target classification.
-            from_date (str): The start date of the correspondence.
-            to_date (str, optional): The end date of the correspondence.
-            contain_quarter (int): The number of quarters the correspondence should contain,
-                this replaces the to_date during initialization.
-            language (str): The language of the correspondence. "nb", "nn" or "en".
-            include_future (bool): If the correspondence should include future correspondences.
-        """
+        """Get the correspondence-data from the API."""
         self.correspondence_id = correspondence_id
         self.source_classification_id = source_classification_id
         self.target_classification_id = target_classification_id

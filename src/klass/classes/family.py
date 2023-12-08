@@ -15,14 +15,13 @@ class KlassFamily:
         family_id (str): The ID of the family.
         name (str): The name of the family.
         _links (dict): A dictionary of API links referencing itself.
+
+    Args:
+        family_id (str): The ID of the family.
     """
 
     def __init__(self, family_id: str):
-        """Get the family data from the klass-api, setting it as attributes on the object.
-
-        Args:
-            family_id (str): The ID of the family.
-        """
+        """Get the family data from the klass-api, setting it as attributes on the object."""
         self.family_id = family_id
         # Setting for mypy
         result: ClassificationFamiliesByIdType = classificationfamilies_by_id(

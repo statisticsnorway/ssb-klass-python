@@ -37,6 +37,11 @@ class KlassVariant:
         select_level (int): The level of the dataset to keep. For example: 0.
         language (str): The language of the variant to select. For example: 'nb'.
         _links (dict): The links returned from the API.
+
+    Args:
+        variant_id (str): The variant_id of the variant. For example: '1959'.
+        select_level (int): The level of the dataset to keep. For example: 5.
+        language (str): The language of the variant to select. For example: 'nb'.
     """
 
     def __init__(
@@ -45,13 +50,7 @@ class KlassVariant:
         select_level: int = 0,
         language: str = "nb",
     ):
-        """Get the data from the KLASS-api to populate this objects attributes.
-
-        Args:
-            variant_id (str): The variant_id of the variant. For example: '1959'.
-            select_level (int): The level of the dataset to keep. For example: 5.
-            language (str): The language of the variant to select. For example: 'nb'.
-        """
+        """Get the data from the KLASS-api to populate this objects attributes."""
         self.variant_id = variant_id
         self.select_level = select_level
         self.language = language
@@ -144,6 +143,19 @@ class KlassVariantSearchByName:
             See rules: https://data.ssb.no/api/klass/v1/api-guide.html#_presentationnamepattern
         language (str): Language of the names, select "en", "nb" or "nn".
         include_future (bool): Whether to include future codes. Defaults to False.
+
+    Args:
+        classification_id (str): The classification ID.
+        variant_name (str): The start of the variant name.
+        from_date (str): The start of the date range.
+        to_date (str): The end of the date range.
+        select_codes (str): Limit the result to codes matching this pattern.
+            See rules: https://data.ssb.no/api/klass/v1/api-guide.html#_selectcodes
+        select_level (str): The level of codes to keep in the dataset.
+        presentation_name_pattern (str): Used to build an alternative presentation name for the codes.
+            See rules: https://data.ssb.no/api/klass/v1/api-guide.html#_presentationnamepattern
+        language (str): Language of the names, select "en", "nb" or "nn".
+        include_future (bool): Whether to include future codes. Defaults to False.
     """
 
     def __init__(
@@ -158,21 +170,7 @@ class KlassVariantSearchByName:
         language: str = "nb",
         include_future: bool = False,
     ):
-        """Get the data from the KLASS-api, setting it as attributes on the object.
-
-        Args:
-            classification_id (str): The classification ID.
-            variant_name (str): The start of the variant name.
-            from_date (str): The start of the date range.
-            to_date (str): The end of the date range.
-            select_codes (str): Limit the result to codes matching this pattern.
-                See rules: https://data.ssb.no/api/klass/v1/api-guide.html#_selectcodes
-            select_level (str): The level of codes to keep in the dataset.
-            presentation_name_pattern (str): Used to build an alternative presentation name for the codes.
-                See rules: https://data.ssb.no/api/klass/v1/api-guide.html#_presentationnamepattern
-            language (str): Language of the names, select "en", "nb" or "nn".
-            include_future (bool): Whether to include future codes. Defaults to False.
-        """
+        """Get the data from the KLASS-api, setting it as attributes on the object."""
         self.classification_id = classification_id
         self.variant_name = variant_name
         self.from_date = from_date

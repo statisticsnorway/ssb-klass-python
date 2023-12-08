@@ -46,6 +46,11 @@ class KlassClassification:
         include_future (bool): Whether to include future versions of the classification.
         _links (dict): A dictionary containing the links to different possible endpoints using the classification.
 
+    Args:
+        classification_id (str): The classification_id of the classification. For example: '36'
+        language (str): The language of the classification. "nb", "nn" or "en".
+        include_future (bool): Whether to include future versions of the classification.
+
     Raises:
         ValueError: If the language is not "no", "nb" or "en".
             If the include_future is not a bool.
@@ -54,13 +59,7 @@ class KlassClassification:
     def __init__(
         self, classification_id: str, language: str = "nb", include_future: bool = False
     ):
-        """Get the data for the classification from the API.
-
-        Args:
-            classification_id (str): The classification_id of the classification. For example: '36'
-            language (str): The language of the classification. "nb", "nn" or "en".
-            include_future (bool): Whether to include future versions of the classification.
-        """
+        """Get the data for the classification from the API."""
         self.classification_id = classification_id
         self.language = language
         self.include_future = include_future

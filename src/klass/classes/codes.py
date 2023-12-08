@@ -19,6 +19,16 @@ class KlassCodes:
         from_date (str): The start date of the time period. "YYYY-MM-DD".
         to_date (str): The end date of the time period. "YYYY-MM-DD".
 
+    Args:
+        classification_id (str): The classification ID.
+        from_date (str): The start date of the time period. "YYYY-MM-DD".
+        to_date (str): The end date of the time period. "YYYY-MM-DD".
+        select_codes (str): A list of codes to be selected.
+        select_level (str): A list of levels to be selected.
+        presentation_name_pattern (str): A pattern for filtering the code names.
+        language (str): The language of the code names. Defaults to "nb".
+        include_future (bool): Whether to include future codes. Defaults to False.
+
     Raises:
         ValueError: If from_date or to_date is not a valid date or date-string YYYY-MM-DD.
         ValueError: If select_codes contains anything except numbers and the special characters "*" (star) or "-" (dash).
@@ -39,18 +49,7 @@ class KlassCodes:
         language: str = "nb",
         include_future: bool = False,
     ):
-        """Get the data from the KLASS-api belonging to the code-list.
-
-        Args:
-            classification_id (str): The classification ID.
-            from_date (str): The start date of the time period. "YYYY-MM-DD".
-            to_date (str): The end date of the time period. "YYYY-MM-DD".
-            select_codes (str): A list of codes to be selected.
-            select_level (str): A list of levels to be selected.
-            presentation_name_pattern (str): A pattern for filtering the code names.
-            language (str): The language of the code names. Defaults to "nb".
-            include_future (bool): Whether to include future codes. Defaults to False.
-        """
+        """Get the data from the KLASS-api belonging to the code-list."""
         self.classification_id = classification_id
         if not from_date:
             from_date = datetime.now().strftime("%Y-%m-%d")
