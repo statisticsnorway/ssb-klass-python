@@ -136,10 +136,6 @@ class KlassClassification:
 
         Returns:
             KlassVersion: A KlassVersion object of the specified ID.
-
-        Raises:
-            ValueError: If the language is not "nn", "nb" or "en".
-            ValueError: If the include_future is not a bool.
         """
         if not version_id:
             version_id = self.versions[0]["version_id"]
@@ -194,10 +190,6 @@ class KlassClassification:
         Returns:
             KlassVariantSearchByName: A KlassVariantSearchByName object based on the classification's ID
             and searching for the name passed in.
-
-        Raises:
-            ValueError: If the language is not "nn", "nb" or "en".
-            ValueError: If the include_future is not a bool.
         """
         return KlassVariantSearchByName(
             classification_id=self.classification_id,
@@ -233,10 +225,6 @@ class KlassClassification:
         Returns:
             KlassCorrespondence: A KlassCorrespondence object of the correspondences
             between the current classification and the target classification.
-
-        Raises:
-            ValueError: If the language is not "nn", "nb" or "en".
-            ValueError: If the include_future is not a bool.
         """
         if language == "":
             language = self.language
@@ -315,10 +303,6 @@ class KlassClassification:
         Returns:
             pd.DataFrame: A pandas DataFrame of the changes in the classification at a specific time
             (from the last time it changed) or within the specific time range.
-
-        Raises:
-            ValueError: If the language is not "nn", "nb" or "en".
-            ValueError: If the include_future is not a bool.
         """
         return changes(
             classification_id=self.classification_id,

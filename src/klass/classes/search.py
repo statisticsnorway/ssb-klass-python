@@ -205,7 +205,7 @@ class KlassSearchFamilies:
         If no ID is given, chooses the first Family returned by the search.
 
         Args:
-            family_id (int): The family ID to get.
+            family_id (str): The family ID to get.
 
         Returns:
             KlassFamily: The family object.

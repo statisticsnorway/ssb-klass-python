@@ -112,7 +112,7 @@ class KlassCorrespondence:
 
         Raises:
             ValueError: If you are filling out the wrong combination of correspondence_id, source_classification_id,
-            target_classification_id and from_date, we cant get make a correct query to the API.
+                target_classification_id and from_date, we cant get make a correct query to the API.
         """
         if self.correspondence_id:
             result_id = correspondence_table_by_id(

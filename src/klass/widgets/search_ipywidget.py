@@ -17,6 +17,9 @@ def search_classification(no_dupes: bool = True) -> widgets.VBox:
     Args:
         no_dupes (bool): To include duplicate results or not in the result.
                         Dupes are caused by multiple languages being returned.
+
+    Returns:
+        widgets.VBox: Containing the nested ipywidgets-GUI. Jupyter will automatically display it.
     """
     search_result: widgets.output = widgets.Output()
     search_term: widgets.Text = widgets.Text(
