@@ -2,6 +2,7 @@ from collections import defaultdict
 from datetime import datetime
 
 import pandas as pd
+from typing_extensions import Self
 
 from klass.requests.klass_requests import codes
 from klass.requests.klass_requests import codes_at
@@ -10,48 +11,31 @@ from klass.requests.klass_requests import codes_at
 class KlassCodes:
     r"""Get codes from Klass.
 
-    The codelist is owned by the Classification through a Version, and will be valid for a time-period.
+    The codelist is owned by the Classification through a Version, and will be valid for a time period.
 
-    Parameters
-    ----------
-    classification_id : str
-        The classification id.
-    from_date : str
-        The start date of the time period.
-    to_date : str
-        The end date of the time period.
-    select_codes : str
-        A list of codes to be selected.
-    select_level : str
-        A list of levels to be selected.
-    presentation_name_pattern : str
-        A pattern for filtering the code names.
-    language : str
-        The language of the code names. Defaults to "nb".
-    include_future : bool
-        Whether to include future codes. Defaults to False.
+    Args:
+        classification_id (str): The classification ID.
+        from_date (str): The start date of the time period. "YYYY-MM-DD".
+        to_date (str): The end date of the time period. "YYYY-MM-DD".
+        select_codes (str): A list of codes to be selected.
+        select_level (str): A list of levels to be selected.
+        presentation_name_pattern (str): A pattern for filtering the code names.
+        language (str): The language of the code names. Defaults to "nb".
+        include_future (bool): Whether to include future codes. Defaults to False.
 
-    Attributes
-    ----------
-    data : pd.DataFrame
-        The pandas dataframe of the codes.
+    Attributes:
+        data (pd.DataFrame): The pandas DataFrame of the codes.
+        classification_id (str): The classification ID.
+        from_date (str): The start date of the time period. "YYYY-MM-DD".
+        to_date (str): The end date of the time period. "YYYY-MM-DD".
 
-    classification_id : str
-        The classification id.
-    from_date : str
-        The start date of the time period. "YYYY-MM-DD"
-    to_date : str
-        The end date of the time period. "YYYY-MM-DD"
-
-    Raises
-    ------
-    ValueError
-        if from_date or to_date is not a valid date or date-string YYYY-MM-DD.
-        if select_codes contains anything except numbers and the special characters "*" (star) or "-" (dash),
-        if select_level is anything except a whole number,
-        if presentation_name_pattern is not a valid pattern.
-        if language is not "nb", "nn" or "en".
-    if include_future is not a bool.
+    Raises:
+        ValueError: If from_date or to_date is not a valid date or date-string YYYY-MM-DD.
+        ValueError: If select_codes contains anything except numbers and the special characters "*" (star) or "-" (dash).
+        ValueError: If select_level is anything except a whole number.
+        ValueError: If presentation_name_pattern is not a valid pattern.
+        ValueError: If language is not "nb", "nn" or "en".
+        ValueError: If include_future is not a bool.
     """
 
     def __init__(
@@ -116,27 +100,16 @@ class KlassCodes:
         from_date: str = "",
         to_date: str = "",
         include_future: bool | None = None,
-    ) -> None:
-        """Change the dates of the codelist, and gets the data again based on new dates.
+    ) -> Self:
+        """Change the dates of the codelist and get the data again based on new dates.
 
-        Parameters
-        ----------
-        from_date : str
-            The start date of the time period.
-        to_date : str
-            The end date of the time period.
-        include_future : bool
-            Whether to include future codes.
+        Args:
+            from_date (str): The start date of the time period. "YYYY-MM-DD".
+            to_date (str): The end date of the time period. "YYYY-MM-DD".
+            include_future (bool): Whether to include future codes.
 
-        Returns
-        -------
-        None
-            Changes the dates on the class, and swaps out the data on the .data-attribute.
-
-        Raises
-        ------
-        ValueError
-            if from_date or to_date is not a valid date or date-string YYYY-MM-DD.
+        Returns:
+            self (KlassSearchFamilies): Returns self to make the method more easily chainable.
         """
         if not from_date:
             from_date = datetime.now().strftime("%Y-%m-%d")
@@ -145,18 +118,23 @@ class KlassCodes:
         self.from_date = from_date
         self.to_date = to_date
         self.get_codes()
+        return self
 
-    def get_codes(self) -> None:
+    def get_codes(self, raise_on_empty_data: bool = True) -> Self:
         """Retrieve codes from the classification specified by self.classification_id at a specific time.
 
         If self.to_date is not None, codes will be retrieved from the date range specified
         by self.from_date and self.to_date. Otherwise, codes will be retrieved only for
         the date specified by self.from_date.
 
-        Returns
-        -------
-        None
-            Changes the data on the .data-attribute.
+        Args:
+            raise_on_empty_data (bool): Whether to raise an error if the returned dataframe is empty. Defaults to True.
+
+        Returns:
+            self (KlassSearchFamilies): Returns self to make the method more easily chainable.
+
+        Raises:
+            ValueError: If the returned dataframe is empty, there is probably something too narrow in the parameters.
         """
         if self.to_date:
             self.data = codes(
@@ -179,6 +157,11 @@ class KlassCodes:
                 language=self.language,
                 include_future=self.include_future,
             )
+        if len(self.data) == 0 and raise_on_empty_data:
+            raise ValueError(
+                "Empty data, no codes found for the specified parameters. Maybe your select_codes or select_level is too narrow?"
+            )
+        return self
 
     def to_dict(
         self,
@@ -188,27 +171,15 @@ class KlassCodes:
     ) -> dict[str, str] | defaultdict[str, str]:
         """Extract two columns from the data, turning them into a dict.
 
-        If you specify a value for "other", returns a defaultdict instead
+        If you specify a value for "other", returns a defaultdict instead.
 
-        Parameters
-        ----------
-        key : str
-            The name of the column with the values you want as keys.
-        value : str
-            The name of the column with the values you want as values in your dict.
-        other : str
-            If key is missing from dict, return this value instead, if you specify a OTHER-value.
+        Args:
+            key (str): The name of the column with the values you want as keys.
+            value (str): The name of the column with the values you want as values in your dict.
+            other (str): If key is missing from dict, return this value instead, if you specify an OTHER-value.
 
-        Returns
-        -------
-        dict | defaultdict
-            The extracted columns as a dict or defaultdict.
-
-        Raises
-        ------
-        ValueError
-            If the value is not specified and the pattern is not specified.
-
+        Returns:
+            dict | defaultdict: The extracted columns as a dict or defaultdict.
         """
         if not value:
             # If you bothered specifying a pattern, we assume you want it
@@ -222,24 +193,20 @@ class KlassCodes:
         return mapping
 
     def pivot_level(self, keep: list[str] | None = None) -> pd.DataFrame:
-        """Pivot levels into seperate columns, and numbers columns based on levels as suffixes.
+        """Pivot levels into separate columns and number columns based on levels as suffixes.
 
-        Joining children codes onto their parentCodes.
-        For example instead of "code", gives you "code_1", "code_2" etc.
+        Joining children codes onto their parent codes.
+        For example, instead of "code", gives you "code_1", "code_2" etc.
 
         First envisioned by @mfmssb
 
-        Parameters
-        ----------
-        keep: list[str]
-            The start of the names of the columns you want to keep when done.
-            Default is ["code", "name"], but other possibilites are "presentationName",
-            "level", "shortName", "validTo", "validFrom" and "notes"
+        Args:
+            keep (list[str]): The start of the names of the columns you want to keep when done.
+                Default is ["code", "name"], but other possibilities are "presentationName",
+                "level", "shortName", "validTo", "validFrom", and "notes".
 
-        Returns
-        -------
-        pd.DataFrame
-
+        Returns:
+            pd.DataFrame: The resulting pandas DataFrame.
         """
         if keep is None:
             keep = ["code", "name"]

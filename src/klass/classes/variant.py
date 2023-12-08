@@ -3,14 +3,14 @@ import pandas as pd
 from klass.requests.klass_requests import variant
 from klass.requests.klass_requests import variant_at
 from klass.requests.klass_requests import variants_by_id
-from klass.requests.types import T_correspondenceTables
-from klass.requests.types import T_version_by_id
+from klass.requests.types import CorrespondenceTablesType
+from klass.requests.types import VariantsByIdType
 
 
 class KlassVariant:
     """In Klass a Variant is a different way of aggregating an existing codelist.
 
-    It does not have to be extensive (all filled out), but can for example
+    It does not have to be extensive (all filled out), but can, for example,
     redefine upper levels, for some lower-level codes.
 
     For example:
@@ -19,59 +19,29 @@ class KlassVariant:
     It sets a new upper level of codes (amount of study points),
     for a set of lower-level existing codes (NUS codes, level 5).
 
-    Parameters
-    ----------
-    variant_id : str
-        The variant_id of the variant.
-        For example: '1959'
-    select_level : int
-        The level of the dataset to keep
-        For example: 5
-    language : str
-        The language of the variant to select.
-        For example: 'nb'
+    Args:
+        variant_id (str): The variant_id of the variant. For example: '1959'.
+        select_level (int): The level of the dataset to keep. For example: 5.
+        language (str): The language of the variant to select. For example: 'nb'.
 
-
-    Attributes
-    ----------
-    data : pd.DataFrame
-        The classificationItems as a pandas dataframe. Usually what you're after?
-    variant_id : str
-        The variant_id of the variant.
-        For example: '36'
-
-    name : str
-        The name of the variant.
-    contactPerson : dict
-        The contact person of the variant.
-    owningSection : str
-        The owning section of the variant.
-    lastModified : str
-        Stringified iso-datetime for last modification
-    published : list[str]
-        Languages that the variant is published in.
-    validFrom : str
-        Date-string from when the version is valid
-    validTo : str (optional)
-        Date-string to when the version is valid
-    introduction : str
-        A longer description of the variant.
-    correspondenceTables : list
-        The correspondence tables of the variant.
-    changelogs : list
-        The changelogs of the variant.
-    levels : list[dict]
-        The levels contained in the codelist (items)
-    classificationItems : list[dict]
-        The codelist-elements of the variant.
-    select_level : int
-        The level of the dataset to keep
-        For example: 0
-    language : str
-        The language of the variant to select.
-        For example: 'nb'
-    _links : dict
-        The links returned from the API.
+    Attributes:
+        data (pd.DataFrame): The classificationItems as a pandas dataframe. Usually what you're after?
+        variant_id (str): The variant_id of the variant. For example: '36'.
+        name (str): The name of the variant.
+        contactPerson (dict): The contact person of the variant.
+        owningSection (str): The owning section of the variant.
+        lastModified (str): Stringified iso-datetime for last modification.
+        published (list[str]): Languages that the variant is published in.
+        validFrom (str): Date-string from when the version is valid.
+        validTo (str, optional): Date-string to when the version is valid.
+        introduction (str): A longer description of the variant.
+        correspondenceTables (list): The correspondence tables of the variant.
+        changelogs (list): The changelogs of the variant.
+        levels (list[dict]): The levels contained in the codelist (items).
+        classificationItems (list[dict]): The codelist-elements of the variant.
+        select_level (int): The level of the dataset to keep. For example: 0.
+        language (str): The language of the variant to select. For example: 'nb'.
+        _links (dict): The links returned from the API.
     """
 
     def __init__(
@@ -93,29 +63,26 @@ class KlassVariant:
         The codes are put into the .data attribute.
         Other keys are added dynamically to the object, like classificationItems.
 
-        Parameters
-        ----------
-        select_level : int
-            The level of the dataset to keep
-            For example: 0
+        Args:
+            select_level (int): The level of the dataset to keep. For example: 0.
         """
-        result: T_version_by_id = variants_by_id(self.variant_id, self.language)
+        result: VariantsByIdType = variants_by_id(self.variant_id, self.language)
         self.name: str = result["name"]
-        self.validFrom: str = result["validFrom"]
         if "validTo" in result:
             self.validTo: str = result["validTo"]
-        self.lastModified: str = result["lastModified"]
-        self.published: list[str] = result["published"]
-        self.introduction: str = result["introduction"]
-        self.contactPerson: dict[str, str] = result["contactPerson"]
-        self.owningSection: str = result["owningSection"]
         if "legalBase" in result:
             self.legalBase: str = result["legalBase"]
         if "publications" in result:
             self.publications: str = result["publications"]
         if "derivedFrom" in result:
             self.derivedFrom: str = result["derivedFrom"]
-        self.correspondenceTables: list[T_correspondenceTables] = result[
+        self.contactPerson: dict[str, str] = result["contactPerson"]
+        self.owningSection: str = result["owningSection"]
+        self.lastModified: str = result["lastModified"]
+        self.published: list[str] = result["published"]
+        self.validFrom: str = result["validFrom"]
+        self.introduction: str = result["introduction"]
+        self.correspondenceTables: list[CorrespondenceTablesType] = result[
             "correspondenceTables"
         ]
         self.changelogs: list[dict[str, str]] = result["changelogs"]
@@ -155,58 +122,41 @@ class KlassVariantSearchByName:
     """Look up a Variant based on the owning Classifications ID and the start of the Variants name.
 
     The name is put into a URL-parameter, so it might be sensitive to special characters,
-    if the name you are trying isnt working, try keeping less of it, but keep the start of the name.
+    if the name you are trying isn't working, try keeping less of it, but keep the start of the name.
 
     There might be a bug (2023), where you can get duplicate rows from the API on this,
     so if you use this class, make sure to check for duplicates before moving on.
 
     In Klass a Variant is a different way of aggregating an existing codelist.
-    It does not have to be extensive (all filled out), but can for example
+    It does not have to be extensive (all filled out), but can, for example,
     redefine upper levels, for some lower-level codes.
 
-    Parameters
-    ----------
-    classification_id : str
-        The classification id.
-    variant_name : str
-        The start of the variant name.
-    from_date : str
-        The start of the date range.
-    to_date : str
-        The end of the date range.
-    select_codes : str
-        Limit the result to codes matching this pattern. See rules: https://data.ssb.no/api/klass/v1/api-guide.html#_selectcodes
-    select_level : str
-        The level of codes to keep in the dataset
-    presentation_name_pattern : str
-        Used to build an alternative presentation name for the codes. See rules: https://data.ssb.no/api/klass/v1/api-guide.html#_presentationnamepattern
-    language : str
-        Language of the names, select "en", "nb" or "nn".
-    include_future : bool
-        Whether to include future codes. Defaults to False.
+    Args:
+        classification_id (str): The classification ID.
+        variant_name (str): The start of the variant name.
+        from_date (str): The start of the date range.
+        to_date (str): The end of the date range.
+        select_codes (str): Limit the result to codes matching this pattern.
+            See rules: https://data.ssb.no/api/klass/v1/api-guide.html#_selectcodes
+        select_level (str): The level of codes to keep in the dataset.
+        presentation_name_pattern (str): Used to build an alternative presentation name for the codes.
+            See rules: https://data.ssb.no/api/klass/v1/api-guide.html#_presentationnamepattern
+        language (str): Language of the names, select "en", "nb" or "nn".
+        include_future (bool): Whether to include future codes. Defaults to False.
 
-    Attributes
-    ----------
-    data : pd.DataFrame
-        The codelists from the Variant as a pandas dataframe. Usually what you're after?
-    classification_id : str
-        The classification id.
-    variant_name : str
-        The start of the variant name.
-    from_date : str
-        The start of the date range.
-    to_date : str
-        The end of the date range.
-    select_codes : str
-        Limit the result to codes matching this pattern. See rules: https://data.ssb.no/api/klass/v1/api-guide.html#_selectcodes
-    select_level : str
-        The level of codes to keep in the dataset
-    presentation_name_pattern : str
-        Used to build an alternative presentation name for the codes. See rules: https://data.ssb.no/api/klass/v1/api-guide.html#_presentationnamepattern
-    language : str
-        Language of the names, select "en", "nb" or "nn".
-    include_future : bool
-        Whether to include future codes. Defaults to False.
+    Attributes:
+        data (pd.DataFrame): The codelists from the Variant as a pandas dataframe. Usually what you're after?
+        classification_id (str): The classification ID.
+        variant_name (str): The start of the variant name.
+        from_date (str): The start of the date range.
+        to_date (str): The end of the date range.
+        select_codes (str): Limit the result to codes matching this pattern.
+            See rules: https://data.ssb.no/api/klass/v1/api-guide.html#_selectcodes
+        select_level (str): The level of codes to keep in the dataset.
+        presentation_name_pattern (str): Used to build an alternative presentation name for the codes.
+            See rules: https://data.ssb.no/api/klass/v1/api-guide.html#_presentationnamepattern
+        language (str): Language of the names, select "en", "nb" or "nn".
+        include_future (bool): Whether to include future codes. Defaults to False.
     """
 
     def __init__(

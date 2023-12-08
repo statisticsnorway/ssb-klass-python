@@ -26,6 +26,7 @@ requests = ">=2.31.0"
 pandas-stubs = ">=2.1.1.230928"
 types-requests = ">=2.31.0.10"
 types-python-dateutil = ">=2.8.19.14"
+types-toml = ">=0.10.8.7"
 
 [tool.poetry.group.dev.dependencies]
 pygments = ">=2.10.0"
@@ -79,7 +80,6 @@ module = [
     "argcomplete.*",
 ]
 ignore_missing_imports = true
-exclude = "tests"
 
 [tool.ruff]
 force-exclude = true  # Apply excludes to pre-commit
@@ -123,7 +123,7 @@ force-single-line = true
 max-complexity = 15
 
 [tool.ruff.pydocstyle]
-convention = "numpy"  # You can also use "numpy".
+convention = "google"  # You can also use "numpy".
 
 [tool.ruff.pep8-naming]
 classmethod-decorators = ["classmethod", "validator", "root_validator", "pydantic.validator"]

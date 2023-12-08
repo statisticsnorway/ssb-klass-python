@@ -4,65 +4,46 @@ from datetime import date
 
 import dateutil.parser
 import pandas as pd
+from typing_extensions import Self
 
 from klass.requests.klass_requests import correspondence_table_by_id
 from klass.requests.klass_requests import corresponds
+from klass.requests.types import CorrespondsType
 from klass.requests.types import T_correspondanceMaps
-from klass.requests.types import T_corresponds
 
 
 class KlassCorrespondence:
     """Correspondences in Klass exist between two classifications at a specific time (hence actually between Versions).
 
     They are used to translate data between two classifications.
-    For example from geographical municipality up to county level.
+    For example, from geographical municipality up to county level.
 
     You can identify the correspondence by their individual ids,
     or by the source classification ID + the target classification ID + a specific time.
 
-    Parameters
-    ----------
-    correspondence_id : str
-        The id of the correspondence.
-    source_classification_id : str
-        The id of the source classification.
-    target_classification_id : str
-        The id of the target classification.
-    from_date : str
-        The start date of the correspondence.
-    to_date : str (optional)
-        The end date of the correspondence.
-    contain_quarter : int
-        The number of quarters the correspondence should contain,
-        this replaces the to_date during initialization.
-    language : str
-        The language of the correspondence. "nb", "nn" or "en".
-    include_future : bool
-        If the correspondence should include future correspondences.
+    Args:
+        correspondence_id (str): The ID of the correspondence.
+        source_classification_id (str): The ID of the source classification.
+        target_classification_id (str): The ID of the target classification.
+        from_date (str): The start date of the correspondence.
+        to_date (str, optional): The end date of the correspondence.
+        contain_quarter (int): The number of quarters the correspondence should contain,
+            this replaces the to_date during initialization.
+        language (str): The language of the correspondence. "nb", "nn" or "en".
+        include_future (bool): If the correspondence should include future correspondences.
 
-    Attributes
-    ----------
-    data : pd.DataFrame
-        The pandas dataframe of the correspondences.
-    correspondence : list
-        The list of the correspondences returned by the API.
-    correspondence_id : str
-        The id of the correspondence.
-    source_classification_id : str
-        The id of the source classification.
-    target_classification_id : str
-        The id of the target classification.
-    from_date : str
-        The start date of the correspondence.
-    to_date : str (optional)
-        The end date of the correspondence.
-    contain_quarter : int
-        The number of quarters the correspondence should contain,
-        this replaces the to_date during initialization.
-    language : str
-        The language of the correspondence. "nb", "nn" or "en".
-    include_future : bool
-        If the correspondence should include future correspondences.
+    Attributes:
+        data (pd.DataFrame): The pandas DataFrame of the correspondences.
+        correspondence (list): The list of the correspondences returned by the API.
+        correspondence_id (str): The ID of the correspondence.
+        source_classification_id (str): The ID of the source classification.
+        target_classification_id (str): The ID of the target classification.
+        from_date (str): The start date of the correspondence.
+        to_date (str, optional): The end date of the correspondence.
+        contain_quarter (int): The number of quarters the correspondence should contain,
+            this replaces the to_date during initialization.
+        language (str): The language of the correspondence. "nb", "nn" or "en".
+        include_future (bool): If the correspondence should include future correspondences.
     """
 
     def __init__(
@@ -80,7 +61,7 @@ class KlassCorrespondence:
         self.correspondence_id = correspondence_id
         self.source_classification_id = source_classification_id
         self.target_classification_id = target_classification_id
-        self.from_date: str = from_date
+        self.from_date = from_date
         self.to_date = to_date
         self.contain_quarter = contain_quarter
         self.language = language
@@ -119,17 +100,19 @@ class KlassCorrespondence:
         result += ")"
         return result
 
-    def get_correspondence(self) -> None:
-        """Run as last part of initialization. Actually setting the data from the API as attributes.
+    def get_correspondence(self) -> Self:
+        """Run as the last part of initialization. Actually setting the data from the API as attributes.
 
         If you reset some attributes, maybe run this after to "update" the data of the correspondence.
 
         Gets and reshapes correspondences based on attributes on the class.
 
-        Returns
-        -------
-        None
-            Sets .data attribute based on the attributes of the class
+        Returns:
+            self (KlassCorrespondence): Returns self to make the method more easily chainable.
+
+        Raises:
+            ValueError: If you are filling out the wrong combination of correspondence_id, source_classification_id,
+                target_classification_id and from_date, we cant get make a correct query to the API.
         """
         if self.correspondence_id:
             result_id = correspondence_table_by_id(
@@ -161,7 +144,7 @@ class KlassCorrespondence:
         ):
             if self.contain_quarter:
                 self.to_date = self._last_date_of_quarter()
-            result: T_corresponds = corresponds(
+            result: CorrespondsType = corresponds(
                 source_classification_id=self.source_classification_id,
                 target_classification_id=self.target_classification_id,
                 from_date=self.from_date,
@@ -175,16 +158,15 @@ class KlassCorrespondence:
                 "Please set correspondence ID, or source and target classification IDs + from_date"
             )
         self.data = pd.json_normalize(self.correspondence)
+        return self
 
     def _last_date_of_quarter(self) -> str:
         """Calculate the last date of the quarter.
 
         Uses the attribute "contain_quarter" to determine which quarter to use.
 
-        Returns
-        -------
-        str
-            The last date of the quarter.
+        Returns:
+            str: The last date of the quarter.
         """
         from_date = dateutil.parser.parse(self.from_date)
         year = from_date.year
@@ -204,22 +186,16 @@ class KlassCorrespondence:
 
         If you specify a value for "other", returns a defaultdict instead.
 
-        Columns in the data are 'sourceCode', 'sourceName', 'sourceShortName'
-        'targetCode', 'targetName', 'targetShortName', 'validFrom', 'validTo'
+        Columns in the data are 'sourceCode', 'sourceName', 'sourceShortName',
+        'targetCode', 'targetName', 'targetShortName', 'validFrom', 'validTo'.
 
-        Parameters
-        ----------
-        key : str
-            The name of the column with the values you want as keys.
-        value : str
-            The name of the column with the values you want as values in your dict.
-        other : str
-            The value to use for keys that don't exist in the data.
+        Args:
+            key (str): The name of the column with the values you want as keys.
+            value (str): The name of the column with the values you want as values in your dict.
+            other (str): The value to use for keys that don't exist in the data.
 
-        Returns
-        -------
-        dict | defaultdict
-            The dictionary of the correspondence.
+        Returns:
+            dict | defaultdict: The dictionary of the correspondence.
         """
         mapping = dict(zip(self.data[key], self.data[value]))
         if other:

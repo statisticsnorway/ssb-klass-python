@@ -101,3 +101,9 @@ def classificationfamilies_by_id_success(mock_response):
 def sections_list_success(mock_response):
     mock_response.return_value = mock_response_data.sections_fake_content()
     return sections.sections_list()
+
+
+@mock.patch.object(requests.Session, "send")
+def sections_dict_success(mock_response):
+    mock_response.return_value = mock_response_data.sections_fake_content()
+    return sections.sections_dict()
