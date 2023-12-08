@@ -138,9 +138,8 @@ class KlassVersion:
         Returns:
             self (KlassVersion): Returns self to make the method more easily chainable.
         """
-        if not select_level:
-            if self.select_level:
-                select_level = self.select_level
+        if not select_level and self.select_level:
+            select_level = self.select_level
         data = pd.json_normalize(self.classificationItems)
         level_map = {
             str(item["levelNumber"]): item["levelName"] for item in self.levels

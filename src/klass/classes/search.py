@@ -4,6 +4,7 @@ from klass.classes.classification import KlassClassification
 from klass.classes.family import KlassFamily
 from klass.requests.klass_requests import classification_search
 from klass.requests.klass_requests import classificationfamilies
+from klass.requests.types import ClassificationSearchResultsPartType
 
 
 class KlassSearchClassifications:
@@ -56,12 +57,28 @@ class KlassSearchClassifications:
             ssbsection=self.ssbsection,
         )
 
-        self.classifications = result["_embedded"]["searchResults"]
-
         self.links = result["_links"]
-        if len(self.classifications):
-            classification_replace = []
-            for cl in self.classifications:
+        self.classifications = self._clean_classifications(
+            result["_embedded"]["searchResults"], self.no_dupes
+        )
+
+    @staticmethod
+    def _clean_classifications(
+        classifications: list[ClassificationSearchResultsPartType],
+        no_dupes: bool = False,
+    ) -> list[ClassificationSearchResultsPartType]:
+        """Extract id from each classification, removing dupes.
+
+        Args:
+            classifications (list): The classifications to clean.
+            no_dupes (bool): Set to True if you want equal results to be filtered out.
+
+        Returns:
+            list: The cleaned classifications.
+        """
+        classification_replace: list[ClassificationSearchResultsPartType] = []
+        if len(classifications):
+            for cl in classifications:
                 cl = {
                     "classification_id": int(
                         cl["_links"]["self"]["href"].split("/")[-1]
@@ -69,15 +86,15 @@ class KlassSearchClassifications:
                     **cl,
                 }
                 classification_replace.append(cl)
-            self.classifications = classification_replace
-            if self.no_dupes:
+            if no_dupes:
                 classification_replace = []
                 seen = []
-                for cl in self.classifications:
+                for cl in classifications:
                     if cl["classification_id"] not in seen:
                         classification_replace.append(cl)
                         seen.append(cl["classification_id"])
-                self.classifications = classification_replace
+
+        return classification_replace
 
     def __str__(self) -> str:
         """Print a readable representation of the SearchClassification-object. List the found classifications."""

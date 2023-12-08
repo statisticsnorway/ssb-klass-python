@@ -26,6 +26,8 @@ from klass.requests.validate import validate_params
 # Types #
 # ##########
 
+URL_PART_CLASS = "classifications/"
+
 
 def get_json(url: str, params: ParamsAfterType) -> Any:
     """Simplify getting the JSON out of a GET request to the KLASS API.
@@ -93,7 +95,7 @@ def classification_search(
     query: str = "", include_codelists: bool = False, ssbsection: str = ""
 ) -> ClassificationSearchType:
     """Get from the classification/search-endpoint."""
-    url = config.BASE_URL + "classifications/search"
+    url = config.BASE_URL + URL_PART_CLASS + "search"
     if not query:
         raise ValueError("Please specify a query")
     params: ParamsBeforeType = {
@@ -111,7 +113,7 @@ def classification_by_id(
     classification_id: str, language: str = "nb", include_future: bool = False
 ) -> ClassificationsByIdType:
     """Get from the classification-by-id-endpoint."""
-    url = config.BASE_URL + "classifications/" + str(classification_id)
+    url = config.BASE_URL + URL_PART_CLASS + str(classification_id)
     params: ParamsAfterType = validate_params(
         {"language": language, "includeFuture": include_future}
     )
@@ -130,14 +132,13 @@ def codes(
     include_future: bool = False,
 ) -> pd.DataFrame:
     """Get from the codes-endpoint."""
-    url = config.BASE_URL + "classifications/" + str(classification_id) + "/codes"
+    url = config.BASE_URL + URL_PART_CLASS + str(classification_id) + "/codes"
     from_date = convert_datestring(from_date, "yyyy-mm-dd")
     params: ParamsBeforeType = {
         "from": from_date,
     }
     if to_date:
         params["to"] = convert_datestring(to_date)
-        params["to"] = to_date
     if select_codes:
         params["selectCodes"] = select_codes
     if select_level:
@@ -162,7 +163,7 @@ def codes_at(
     include_future: bool = False,
 ) -> pd.DataFrame:
     """Get from the codesAt-endpoint."""
-    url = config.BASE_URL + "classifications/" + str(classification_id) + "/codesAt"
+    url = config.BASE_URL + URL_PART_CLASS + str(classification_id) + "/codesAt"
     date = convert_datestring(date, "yyyy-mm-dd")
     params: ParamsBeforeType = {"date": date}
     if select_codes:
@@ -208,7 +209,7 @@ def variant(
     include_future: bool = False,
 ) -> pd.DataFrame:
     """Get from the variant-endpoint."""
-    url = config.BASE_URL + "classifications/" + str(classification_id) + "/variant"
+    url = config.BASE_URL + URL_PART_CLASS + str(classification_id) + "/variant"
     from_date = convert_datestring(from_date, "yyyy-mm-dd")
     params: ParamsBeforeType = {
         "variantName": variant_name,
@@ -242,7 +243,7 @@ def variant_at(
     include_future: bool = False,
 ) -> pd.DataFrame:
     """Get from the variantAt-endpoint."""
-    url = config.BASE_URL + "classifications/" + str(classification_id) + "/variantAt"
+    url = config.BASE_URL + URL_PART_CLASS + str(classification_id) + "/variantAt"
     date = convert_datestring(date, "yyyy-mm-dd")
     params: ParamsBeforeType = {
         "variantName": variant_name,
@@ -283,7 +284,7 @@ def corresponds(
     """Get from the classifications/corresponds-endpoint."""
     url = (
         config.BASE_URL
-        + "classifications/"
+        + URL_PART_CLASS
         + str(source_classification_id)
         + "/corresponds"
     )
@@ -313,7 +314,7 @@ def corresponds_at(
     """Get from the classificatins/correspondsAt-endpoint."""
     url = (
         config.BASE_URL
-        + "classifications/"
+        + URL_PART_CLASS
         + str(source_classification_id)
         + "/correspondsAt"
     )
@@ -350,9 +351,7 @@ def changes(
     include_future: bool = False,
 ) -> pd.DataFrame:
     """Get from the classifications/changes-endpoint."""
-    url = (
-        config.BASE_URL + "classifications/" + str(classification_id) + "/changes.json"
-    )
+    url = config.BASE_URL + URL_PART_CLASS + str(classification_id) + "/changes.json"
     from_date = convert_datestring(from_date, "yyyy-mm-dd")
     if to_date:
         to_date = convert_datestring(to_date, "yyyy-mm-dd")

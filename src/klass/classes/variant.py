@@ -93,9 +93,8 @@ class KlassVariant:
         self._links: dict[str, dict[str, str]] = result["_links"]
 
         df = pd.json_normalize(self.classificationItems)
-        if not select_level:
-            if self.select_level:
-                select_level = self.select_level
+        if not select_level and self.select_level:
+            select_level = self.select_level
         if select_level:
             self.data = df[df["level"] == str(select_level)]
         else:
