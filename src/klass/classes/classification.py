@@ -32,7 +32,7 @@ class KlassClassification:
         language (str): The language of the classification. "nb", "nn" or "en".
         include_future (bool): Whether to include future versions of the classification.
 
-    Attributes
+    Attributes:
     ----------
         versions (list): A list of the data the Classifications has on its versions.
             Versions represent the changes to the classifications codelists placed in time.
@@ -52,7 +52,7 @@ class KlassClassification:
         include_future (bool): Whether to include future versions of the classification.
         _links (dict): A dictionary containing the links to different possible endpoints using the classification.
 
-    Raises
+    Raises:
     ------
         ValueError: If the language is not "no", "nb" or "en".
             If the include_future is not a bool.
@@ -134,11 +134,11 @@ class KlassClassification:
             language (str): The language of the version. "nn", "nb" or "en".
             include_future (bool): Whether to include future versions of the version.
 
-        Returns
+        Returns:
         -------
             KlassVersion: A KlassVersion object of the specified ID.
 
-        Raises
+        Raises:
         ------
             ValueError: If the language is not "nn", "nb" or "en".
             ValueError: If the include_future is not a bool.
@@ -159,7 +159,7 @@ class KlassClassification:
     def versions_dict(self) -> dict[int, str]:
         """Reformats the versions into a simple dict with just the IDs as keys and names as values.
 
-        Returns
+        Returns:
         -------
             dict: Version IDs as keys, and version names as values.
         """
@@ -194,12 +194,12 @@ class KlassClassification:
             language (str): The language of the version. "nn", "nb" or "en".
             include_future (bool): Whether to include future versions of the version.
 
-        Returns
+        Returns:
         -------
             KlassVariantSearchByName: A KlassVariantSearchByName object based on the classification's ID
             and searching for the name passed in.
 
-        Raises
+        Raises:
         ------
             ValueError: If the language is not "nn", "nb" or "en".
             ValueError: If the include_future is not a bool.
@@ -235,12 +235,12 @@ class KlassClassification:
             language (str): The language of the correspondences. "nn", "nb" or "en".
             include_future (bool): Whether to include future correspondences.
 
-        Returns
+        Returns:
         -------
             KlassCorrespondence: A KlassCorrespondence object of the correspondences
             between the current classification and the target classification.
 
-        Raises
+        Raises:
         ------
             ValueError: If the language is not "nn", "nb" or "en".
             ValueError: If the include_future is not a bool.
@@ -281,7 +281,7 @@ class KlassClassification:
             language (str): The language of the version. "nn", "nb" or "en".
             include_future (bool): Whether to include future versions of the version.
 
-        Returns
+        Returns:
         -------
             KlassCodes: A KlassCodes object of the classification at a specific time or in a specific time range.
         """
@@ -320,13 +320,11 @@ class KlassClassification:
             language (str): The language of the version. "nn", "nb" or "en".
             include_future (bool): Whether to include future versions of the version.
 
-        Returns
-        -------
+        Returns:
             pd.DataFrame: A pandas DataFrame of the changes in the classification at a specific time
             (from the last time it changed) or within the specific time range.
 
-        Raises
-        ------
+        Raises:
             ValueError: If the language is not "nn", "nb" or "en".
             ValueError: If the include_future is not a bool.
         """

@@ -74,6 +74,8 @@ autoclass_content = "both"
 
 # Napoleon settings, changed from default
 # Cant find anything that removes duplicate "parameters settings"
+napoleon_numpy_docstring = False  # Moved all code over to other style
+
 
 # Napoleon settings defaults
 # napoleon_google_docstring = True

@@ -22,15 +22,13 @@ class KlassCodes:
         language (str): The language of the code names. Defaults to "nb".
         include_future (bool): Whether to include future codes. Defaults to False.
 
-    Attributes
-    ----------
+    Attributes:
         data (pd.DataFrame): The pandas DataFrame of the codes.
         classification_id (str): The classification ID.
         from_date (str): The start date of the time period. "YYYY-MM-DD".
         to_date (str): The end date of the time period. "YYYY-MM-DD".
 
-    Raises
-    ------
+    Raises:
         ValueError: If from_date or to_date is not a valid date or date-string YYYY-MM-DD.
         ValueError: If select_codes contains anything except numbers and the special characters "*" (star) or "-" (dash).
         ValueError: If select_level is anything except a whole number.
@@ -109,12 +107,10 @@ class KlassCodes:
             to_date (str): The end date of the time period. "YYYY-MM-DD".
             include_future (bool): Whether to include future codes.
 
-        Returns
-        -------
+        Returns:
             None: Changes the dates on the class and swaps out the data on the .data attribute.
 
-        Raises
-        ------
+        Raises:
             ValueError: If from_date or to_date is not a valid date or date-string YYYY-MM-DD.
         """
         if not from_date:
@@ -132,7 +128,7 @@ class KlassCodes:
         by self.from_date and self.to_date. Otherwise, codes will be retrieved only for
         the date specified by self.from_date.
 
-        Returns
+        Returns:
         -------
             None: Changes the data on the .data attribute.
         """
@@ -177,12 +173,10 @@ class KlassCodes:
             value (str): The name of the column with the values you want as values in your dict.
             other (str): If key is missing from dict, return this value instead, if you specify an OTHER-value.
 
-        Returns
-        -------
+        Returns:
             dict | defaultdict: The extracted columns as a dict or defaultdict.
 
-        Raises
-        ------
+        Raises:
             ValueError: If the value is not specified and the pattern is not specified.
         """
         if not value:
@@ -209,8 +203,7 @@ class KlassCodes:
                 Default is ["code", "name"], but other possibilities are "presentationName",
                 "level", "shortName", "validTo", "validFrom", and "notes".
 
-        Returns
-        -------
+        Returns:
             pd.DataFrame: The resulting pandas DataFrame.
         """
         if keep is None:

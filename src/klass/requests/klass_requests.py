@@ -38,12 +38,10 @@ def get_json(url: str, params: ParamsAfterType) -> json_type:
         url (str): The URL to the endpoint.
         params (dict): The parameters to send to the endpoint.
 
-    Returns
-    -------
+    Returns:
         dict: The JSON response from the endpoint.
 
-    Raises
-    ------
+    Raises:
         requests.exceptions.HTTPError: If the response is not 200.
         requests.exceptions.RequestException: If there is a connection error.
         ValueError: If the response has no JSON.

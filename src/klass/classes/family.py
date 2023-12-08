@@ -13,8 +13,7 @@ class KlassFamily:
     Args:
         family_id (str): The ID of the family.
 
-    Attributes
-    ----------
+    Attributes:
         classifications (list): A list of classifications in the family.
         family_id (str): The ID of the family.
         name (str): The name of the family.
@@ -65,8 +64,7 @@ And contains the following classifications:
             classification_id (str): The ID of the classification.
                 If not given, the first classification in the family is returned based on its ID.
 
-        Returns
-        -------
+        Returns:
             KlassClassification: The classification.
         """
         if not classification_id:

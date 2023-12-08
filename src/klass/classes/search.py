@@ -14,8 +14,7 @@ class KlassSearchClassifications:
         no_dupes (bool): Whether to remove duplicates from the search results.
             (Usually caused by languages showing up multiple times)
 
-    Attributes
-    ----------
+    Attributes:
         classifications (list): A list of KlassClassification objects.
         query (str): The search query.
         include_codelists (bool): Whether to include codelists in the search results.
@@ -113,8 +112,7 @@ class KlassSearchClassifications:
                 Default: "nb" for Norwegian, "nn" for Nynorsk, "en" for English.
             include_future (bool): Whether to include future codelists.
 
-        Returns
-        -------
+        Returns:
             KlassClassification: The classification object.
         """
         return KlassClassification(classification_id, language, include_future)
@@ -122,8 +120,7 @@ class KlassSearchClassifications:
     def simple_search_result(self) -> str:
         """Reformat the resulting search into a simple string.
 
-        Returns
-        -------
+        Returns:
             str: The resulting reformatted string from the search results.
         """
         result = ""
@@ -183,8 +180,7 @@ class KlassSearchFamilies:
         This should be run after any change to the .ssbsection, .include_codelists, or .language
         attributes.
 
-        Returns
-        -------
+        Returns:
             None: Sets .families and .links attributes.
         """
         result = classificationfamilies(
@@ -208,8 +204,7 @@ class KlassSearchFamilies:
         Args:
             family_id (int): The family ID to get.
 
-        Returns
-        -------
+        Returns:
             KlassFamily: The family object.
         """
         if not family_id:
@@ -219,8 +214,7 @@ class KlassSearchFamilies:
     def simple_search_result(self) -> str:
         """Reformat the resulting search into a simple string.
 
-        Returns
-        -------
+        Returns:
             str: The resulting reformatted string from the search results.
         """
         result = ""

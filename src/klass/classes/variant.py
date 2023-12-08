@@ -24,8 +24,7 @@ class KlassVariant:
         select_level (int): The level of the dataset to keep. For example: 5.
         language (str): The language of the variant to select. For example: 'nb'.
 
-    Attributes
-    ----------
+    Attributes:
         data (pd.DataFrame): The classificationItems as a pandas dataframe. Usually what you're after?
         variant_id (str): The variant_id of the variant. For example: '36'.
         name (str): The name of the variant.
@@ -145,8 +144,7 @@ class KlassVariantSearchByName:
         language (str): Language of the names, select "en", "nb" or "nn".
         include_future (bool): Whether to include future codes. Defaults to False.
 
-    Attributes
-    ----------
+    Attributes:
         data (pd.DataFrame): The codelists from the Variant as a pandas dataframe. Usually what you're after?
         classification_id (str): The classification ID.
         variant_name (str): The start of the variant name.

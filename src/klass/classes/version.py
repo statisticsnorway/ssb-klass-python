@@ -18,8 +18,7 @@ class KlassVersion:
         language (str, optional): The language of the version. Defaults to "nb", can be set to "en", or "nn".
         include_future (bool, optional): If the version should include future versions. Defaults to False.
 
-    Attributes
-    ----------
+    Attributes:
         data (pd.DataFrame): The codelist of the classification-version as a pandas dataframe.
         name (str): The name of the version.
         validFrom (str): The date the version is valid from.
@@ -135,8 +134,7 @@ class KlassVersion:
         Args:
             select_level (int): The level of the version to keep in the data. Setting to 0 keeps all levels.
 
-        Returns
-        -------
+        Returns:
             None: Sets .data attribute based on the attributes of the class.
         """
         if not select_level:
@@ -173,8 +171,7 @@ class KlassVersion:
             select_level (int): The level of the variant to keep in the data. Setting to 0 keeps all levels.
             language (str): The language of the variant.
 
-        Returns
-        -------
+        Returns:
             KlassVariant: A variant object with the specified ID and language.
         """
         return KlassVariant(variant_id, select_level, language)
@@ -184,8 +181,7 @@ class KlassVersion:
 
         With the IDs as keys.
 
-        Returns
-        -------
+        Returns:
             dict: A nested dictionary of the available correspondences.
         """
         tables = {}
@@ -225,8 +221,7 @@ class KlassVersion:
             language (str): The language of the correspondence. "nb", "nn" or "en".
             include_future (bool): If the correspondence should include future correspondences.
 
-        Returns
-        -------
+        Returns:
             KlassCorrespondence: A correspondence object with the specified ID, language, and dates.
         """
         return KlassCorrespondence(

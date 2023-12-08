@@ -31,8 +31,7 @@ class KlassCorrespondence:
         language (str): The language of the correspondence. "nb", "nn" or "en".
         include_future (bool): If the correspondence should include future correspondences.
 
-    Attributes
-    ----------
+    Attributes:
         data (pd.DataFrame): The pandas DataFrame of the correspondences.
         correspondence (list): The list of the correspondences returned by the API.
         correspondence_id (str): The ID of the correspondence.
@@ -107,8 +106,7 @@ class KlassCorrespondence:
 
         Gets and reshapes correspondences based on attributes on the class.
 
-        Returns
-        -------
+        Returns:
             None: Sets .data attribute based on the attributes of the class.
         """
         if self.correspondence_id:
@@ -161,8 +159,7 @@ class KlassCorrespondence:
 
         Uses the attribute "contain_quarter" to determine which quarter to use.
 
-        Returns
-        -------
+        Returns:
             str: The last date of the quarter.
         """
         from_date = dateutil.parser.parse(self.from_date)
@@ -191,8 +188,7 @@ class KlassCorrespondence:
             value (str): The name of the column with the values you want as values in your dict.
             other (str): The value to use for keys that don't exist in the data.
 
-        Returns
-        -------
+        Returns:
             dict | defaultdict: The dictionary of the correspondence.
         """
         mapping = dict(zip(self.data[key], self.data[value]))
