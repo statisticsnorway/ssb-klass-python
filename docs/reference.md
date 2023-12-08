@@ -31,7 +31,6 @@ klass.config module
 
 .. automodule:: klass.config
    :members:
-   :undoc-members:
    :show-inheritance:
 
 ```
