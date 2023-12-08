@@ -30,30 +30,23 @@ json_type = Any
 
 
 def get_json(url: str, params: ParamsAfterType) -> json_type:
-    """Simplify getting the json out of a get-request to the KLASS-api.
+    """Simplify getting the JSON out of a GET request to the KLASS API.
 
     Used in most of the following functions.
 
-    Parameters
-    ----------
-    url : str
-        The url to the endpoint.
-    params : dict
-        The parameters to send to the endpoint.
+    Args:
+        url (str): The URL to the endpoint.
+        params (dict): The parameters to send to the endpoint.
 
     Returns
     -------
-    dict
-        The json-response from the endpoint.
+        dict: The JSON response from the endpoint.
 
     Raises
     ------
-    requests.exceptions.HTTPError
-        If the response is not 200.
-    requests.exceptions.RequestException
-        If there is a connection-error.
-    ValueError
-        If the response has no json.
+        requests.exceptions.HTTPError: If the response is not 200.
+        requests.exceptions.RequestException: If there is a connection error.
+        ValueError: If the response has no JSON.
     """
     req = requests.Request("GET", url=url, headers=config.HEADERS, params=params)
     if config.TESTING:

@@ -7,24 +7,18 @@ from klass.requests.types import ClassificationPartWithType
 class KlassFamily:
     """Families represent "general statistical areas" like "Education".
 
-    Families in Klass "own" / "has" several classifications.
+    Families in Klass "own" / "have" several classifications.
     Families are owned by sections (a part of Statistics Norway who is responsible for the family).
 
-    Parameters
-    ----------
-    family_id : str
-        The id of the family.
+    Args:
+        family_id (str): The ID of the family.
 
     Attributes
     ----------
-    classifications : list
-        A list of classifications in the family.
-    family_id : str
-        The id of the family.
-    name : str
-        The name of the family.
-    _links : dict
-    A dictionary of api-links referencing itself.
+        classifications (list): A list of classifications in the family.
+        family_id (str): The ID of the family.
+        name (str): The name of the family.
+        _links (dict): A dictionary of API links referencing itself.
     """
 
     def __init__(self, family_id: str):
@@ -67,16 +61,13 @@ And contains the following classifications:
     def get_classification(self, classification_id: str = "") -> KlassClassification:
         """Get a classification from the family.
 
-        Parameters
-        ----------
-        classification_id : str
-            The id of the classification. If not given, the first classification in the family is returned based on its ID.
+        Args:
+            classification_id (str): The ID of the classification.
+                If not given, the first classification in the family is returned based on its ID.
 
         Returns
         -------
-        KlassClassification
-            The classification.
-
+            KlassClassification: The classification.
         """
         if not classification_id:
             classification_id = self.classifications[0]["classification_id"]

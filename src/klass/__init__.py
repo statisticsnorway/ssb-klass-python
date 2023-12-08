@@ -9,18 +9,23 @@ import importlib
 
 import toml
 
+
+# Split into function for testing
+def _try_getting_pyproject_toml(e=""):
+    try:
+        return toml.load("../pyproject.toml")
+    except Exception as e:
+        print(
+            f"Error from ssb-klass-python not installed correctly(?) version unknown, setting it to {__version__}: {e}"
+        )
+
+
 # Gets the installed version from pyproject.toml, then there is no need to update this file
 try:
     __version__ = importlib.metadata.version("ssb-klass-python")
 except importlib.metadata.PackageNotFoundError as e:
-    try:
-        # importlib fails during the sphinx docs-build, but this works?
-        __version__ = toml.load("../pyproject.toml")["tool"]["poetry"]["version"]
-    except Exception as t:
-        __version__ = "0.0.0"
-        print(
-            f"Error from ssb-klass-python not installed correctly(?) version unknown, setting it to {__version__}: {e} and {t}"
-        )
+    __version__ = _try_getting_pyproject_toml(e)
+
 
 __all__ = []
 

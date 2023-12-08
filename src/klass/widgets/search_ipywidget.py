@@ -14,11 +14,9 @@ def search_classification(no_dupes: bool = True) -> widgets.VBox:
     Lets you search for terms and copy sample code out,
     that'll let you get data from the classification.
 
-    Parameters
-    ----------
-    no_dupes : bool
-        To include duplicate results or not in the result.
-        Dupes are caused by multiple languages being returned?
+    Args:
+        no_dupes (bool): To include duplicate results or not in the result.
+                        Dupes are caused by multiple languages being returned.
     """
     search_result: widgets.output = widgets.Output()
     search_term: widgets.Text = widgets.Text(

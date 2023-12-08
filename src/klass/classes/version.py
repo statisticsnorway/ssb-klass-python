@@ -8,50 +8,31 @@ from .variant import KlassVariant
 
 
 class KlassVersion:
-    """A version of a classification, is set in time.
+    """A version of a classification is set in time.
 
-    For example the ID of NUS valid in 2023 is 1954, while the ID of NUS without being time-specific is 36.
+    For example, the ID of NUS valid in 2023 is 1954, while the ID of NUS without being time-specific is 36.
 
-    Parameters
-    ----------
-    version_id : str
-        The id of the version.
-    select_level : int, optional
-        The level in the codelist-data to keep. Defaults to 0.
-    language : str, optional
-        The language of the version. Defaults to "nb", can be set to "en", or "nn".
-    include_future : bool, optional
-        If the version should include future versions. Defaults to False.
-
+    Args:
+        version_id (str): The ID of the version.
+        select_level (int, optional): The level in the codelist-data to keep. Defaults to 0.
+        language (str, optional): The language of the version. Defaults to "nb", can be set to "en", or "nn".
+        include_future (bool, optional): If the version should include future versions. Defaults to False.
 
     Attributes
     ----------
-    data : pd.DataFrame
-        The codelist of the classification-version as a pandas dataframe
-    name : str
-        The name of the version.
-    validFrom : str
-        The date the version is valid from.
-    validTo : str
-        The date the version is valid to (if any).
-    lastModified : str
-        The date the version was last modified.
-    published: list
-        A list of languages that the version is published in.
-    introduction : str
-        A longer description of the version.
-    contactPerson : dict
-        A dictionary of the contact person of the version.
-    owningSection : str
-        The name of the section that owns the version.
-    legalBase: str
-        The basis in law for the classification.
-    publications : str (url)
-        Where the classification is published.
-    derivedFrom : str
-        Notes on where the classification was derived from.
-    correspondenceTables : list
-        A list of correspondence-tables of the version.
+        data (pd.DataFrame): The codelist of the classification-version as a pandas dataframe.
+        name (str): The name of the version.
+        validFrom (str): The date the version is valid from.
+        validTo (str): The date the version is valid to (if any).
+        lastModified (str): The date the version was last modified.
+        published (list): A list of languages that the version is published in.
+        introduction (str): A longer description of the version.
+        contactPerson (dict): A dictionary of the contact person of the version.
+        owningSection (str): The name of the section that owns the version.
+        legalBase (str): The basis in law for the classification.
+        publications (str): Where the classification is published (URL).
+        derivedFrom (str): Notes on where the classification was derived from.
+        correspondenceTables (list): A list of correspondence-tables of the version.
     """
 
     def __init__(
@@ -151,15 +132,12 @@ class KlassVersion:
 
         Run as a part of the class initialization.
 
-        Parameters
-        ----------
-        select_level : int
-            The level of the version to keep in the data. Setting to 0 keeps all levels.
+        Args:
+            select_level (int): The level of the version to keep in the data. Setting to 0 keeps all levels.
 
         Returns
         -------
-        None
-        Sets .data attribute based on the attributes of the class
+            None: Sets .data attribute based on the attributes of the class.
         """
         if not select_level:
             if self.select_level:
@@ -190,20 +168,14 @@ class KlassVersion:
     ) -> KlassVariant:
         """Get a specific variant.
 
-        Parameters
-        ----------
-        variant_id : str
-            The ID of the variant.
-        select_level : int
-            The level of the variant to keep in the data. Setting to 0 keeps all levels.
-        language : str
-            The language of the variant.
+        Args:
+            variant_id (str): The ID of the variant.
+            select_level (int): The level of the variant to keep in the data. Setting to 0 keeps all levels.
+            language (str): The language of the variant.
 
         Returns
         -------
-        KlassVariant
-            A variant object with the specified ID and language.
-
+            KlassVariant: A variant object with the specified ID and language.
         """
         return KlassVariant(variant_id, select_level, language)
 
@@ -214,9 +186,7 @@ class KlassVersion:
 
         Returns
         -------
-        dict
-            A nested dictionary of the available correspondences.
-
+            dict: A nested dictionary of the available correspondences.
         """
         tables = {}
         for tab in self.correspondenceTables:
@@ -245,30 +215,19 @@ class KlassVersion:
     ) -> KlassCorrespondence:
         """Get a specific correspondence.
 
-        Parameters
-        ----------
-        correspondence_id : str
-            The ID of the correspondence.
-        source_classification_id : str
-            The ID of the source classification.
-        target_classification_id : str
-            The ID of the target classification.
-        from_date : str
-            The start date of the correspondence.
-        to_date : str
-            The end date of the correspondence.
-        contain_quarter : int
-            The number of quarters the correspondence should contain.
-        language : str
-            The language of the correspondence. "nb", "nn" or "en".
-        include_future : bool
-            If the correspondence should include future correspondences.
+        Args:
+            correspondence_id (str): The ID of the correspondence.
+            source_classification_id (str): The ID of the source classification.
+            target_classification_id (str): The ID of the target classification.
+            from_date (str): The start date of the correspondence.
+            to_date (str): The end date of the correspondence.
+            contain_quarter (int): The number of quarters the correspondence should contain.
+            language (str): The language of the correspondence. "nb", "nn" or "en".
+            include_future (bool): If the correspondence should include future correspondences.
 
         Returns
         -------
-        KlassCorrespondence
-            A correspondence object with the specified ID, language and dates.
-
+            KlassCorrespondence: A correspondence object with the specified ID, language, and dates.
         """
         return KlassCorrespondence(
             correspondence_id=correspondence_id,

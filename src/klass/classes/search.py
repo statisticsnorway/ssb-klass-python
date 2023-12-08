@@ -7,32 +7,20 @@ from klass.requests.klass_requests import classificationfamilies
 class KlassSearchClassifications:
     """Use to search for classifications.
 
-    Parameters
-    ----------
-    query: str
-        The search query.
-    include_codelists: bool
-        Whether to include codelists in the search results.
-    ssbsection: str
-        The SSB section who owns the classification you are seraching for.
-    no_dupes: bool
-        Whether to remove duplicates from the search results.
-        (Usually caused by languages showing up multiple times)
-
+    Args:
+        query (str): The search query.
+        include_codelists (bool): Whether to include codelists in the search results.
+        ssbsection (str): The SSB section who owns the classification you are searching for.
+        no_dupes (bool): Whether to remove duplicates from the search results.
+            (Usually caused by languages showing up multiple times)
 
     Attributes
     ----------
-    classifications: list
-        A list of KlassClassification objects.
-
-    query: str
-        The search query.
-    include_codelists: bool
-        Whether to include codelists in the search results.
-    ssbsection: str
-        The SSB section who owns the classification you are seraching for.
-    no_dupes: bool
-        Whether to remove duplicates from the search results.
+        classifications (list): A list of KlassClassification objects.
+        query (str): The search query.
+        include_codelists (bool): Whether to include codelists in the search results.
+        ssbsection (str): The SSB section who owns the classification you are searching for.
+        no_dupes (bool): Whether to remove duplicates from the search results.
     """
 
     def __init__(
@@ -117,23 +105,17 @@ class KlassSearchClassifications:
     def get_classification(
         classification_id: str, language: str = "nb", include_future: bool = False
     ) -> KlassClassification:
-        """Convenience-method for getting a Classification from the search object.
+        """Get a Classification from the search object.
 
-        Parameters
-        ----------
-        classification_id : str
-            The classification ID to get.
-        language : str
-            The language to get the classification in.
-            Default: "nb" for Norwegian, "nn" for Nynorsk, "en" for English.
-        include_future : bool
-            Whether to include future codelists.
+        Args:
+            classification_id (str): The classification ID to get.
+            language (str): The language to get the classification in.
+                Default: "nb" for Norwegian, "nn" for Nynorsk, "en" for English.
+            include_future (bool): Whether to include future codelists.
 
         Returns
         -------
-        KlassClassification
-            The classification object.
-
+            KlassClassification: The classification object.
         """
         return KlassClassification(classification_id, language, include_future)
 
@@ -142,9 +124,7 @@ class KlassSearchClassifications:
 
         Returns
         -------
-        str
-            The resulting reformatted string from the search results
-
+            str: The resulting reformatted string from the search results.
         """
         result = ""
         if len(self.classifications):
@@ -158,15 +138,11 @@ class KlassSearchClassifications:
 class KlassSearchFamilies:
     """Search for families in the Klass API.
 
-    Parameters
-    ----------
-    ssbsection : str
-        The SSB section who owns the family you are searching for.
-    include_codelists : bool
-        Whether to include codelists in the search.
-    language : str
-        The language to use in the search.
-        Default: "nb" for Norwegian, "nn" for Nynorsk, "en" for English.
+    Args:
+        ssbsection (str): The SSB section who owns the family you are searching for.
+        include_codelists (bool): Whether to include codelists in the search.
+        language (str): The language to use in the search.
+            Default: "nb" for Norwegian, "nn" for Nynorsk, "en" for English.
     """
 
     def __init__(
@@ -202,16 +178,14 @@ class KlassSearchFamilies:
         return result
 
     def get_search(self) -> None:
-        """Get the search result from the API and reformats it into the .families and .links attributes.
+        """Get the search result from the API and reformat it into the .families and .links attributes.
 
         This should be run after any change to the .ssbsection, .include_codelists, or .language
         attributes.
 
         Returns
         -------
-        None
-            Sets .families and .links attributes.
-
+            None: Sets .families and .links attributes.
         """
         result = classificationfamilies(
             ssbsection=self.ssbsection,
@@ -231,16 +205,12 @@ class KlassSearchFamilies:
 
         If no ID is given, chooses the first Family returned by the search.
 
-        Parameters
-        ----------
-        family_id : int
-            The family ID to get.
+        Args:
+            family_id (int): The family ID to get.
 
         Returns
         -------
-        KlassFamily
-            The family object.
-
+            KlassFamily: The family object.
         """
         if not family_id:
             family_id = self.families[0]["family_id"]
@@ -251,9 +221,7 @@ class KlassSearchFamilies:
 
         Returns
         -------
-        str
-            The resulting reformatted string from the search results
-
+            str: The resulting reformatted string from the search results.
         """
         result = ""
         for fl in self.families:

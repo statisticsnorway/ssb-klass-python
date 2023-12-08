@@ -15,54 +15,35 @@ class KlassCorrespondence:
     """Correspondences in Klass exist between two classifications at a specific time (hence actually between Versions).
 
     They are used to translate data between two classifications.
-    For example from geographical municipality up to county level.
+    For example, from geographical municipality up to county level.
 
     You can identify the correspondence by their individual ids,
     or by the source classification ID + the target classification ID + a specific time.
 
-    Parameters
-    ----------
-    correspondence_id : str
-        The id of the correspondence.
-    source_classification_id : str
-        The id of the source classification.
-    target_classification_id : str
-        The id of the target classification.
-    from_date : str
-        The start date of the correspondence.
-    to_date : str (optional)
-        The end date of the correspondence.
-    contain_quarter : int
-        The number of quarters the correspondence should contain,
-        this replaces the to_date during initialization.
-    language : str
-        The language of the correspondence. "nb", "nn" or "en".
-    include_future : bool
-        If the correspondence should include future correspondences.
+    Args:
+        correspondence_id (str): The ID of the correspondence.
+        source_classification_id (str): The ID of the source classification.
+        target_classification_id (str): The ID of the target classification.
+        from_date (str): The start date of the correspondence.
+        to_date (str, optional): The end date of the correspondence.
+        contain_quarter (int): The number of quarters the correspondence should contain,
+            this replaces the to_date during initialization.
+        language (str): The language of the correspondence. "nb", "nn" or "en".
+        include_future (bool): If the correspondence should include future correspondences.
 
     Attributes
     ----------
-    data : pd.DataFrame
-        The pandas dataframe of the correspondences.
-    correspondence : list
-        The list of the correspondences returned by the API.
-    correspondence_id : str
-        The id of the correspondence.
-    source_classification_id : str
-        The id of the source classification.
-    target_classification_id : str
-        The id of the target classification.
-    from_date : str
-        The start date of the correspondence.
-    to_date : str (optional)
-        The end date of the correspondence.
-    contain_quarter : int
-        The number of quarters the correspondence should contain,
-        this replaces the to_date during initialization.
-    language : str
-        The language of the correspondence. "nb", "nn" or "en".
-    include_future : bool
-        If the correspondence should include future correspondences.
+        data (pd.DataFrame): The pandas DataFrame of the correspondences.
+        correspondence (list): The list of the correspondences returned by the API.
+        correspondence_id (str): The ID of the correspondence.
+        source_classification_id (str): The ID of the source classification.
+        target_classification_id (str): The ID of the target classification.
+        from_date (str): The start date of the correspondence.
+        to_date (str, optional): The end date of the correspondence.
+        contain_quarter (int): The number of quarters the correspondence should contain,
+            this replaces the to_date during initialization.
+        language (str): The language of the correspondence. "nb", "nn" or "en".
+        include_future (bool): If the correspondence should include future correspondences.
     """
 
     def __init__(
@@ -120,7 +101,7 @@ class KlassCorrespondence:
         return result
 
     def get_correspondence(self) -> None:
-        """Run as last part of initialization. Actually setting the data from the API as attributes.
+        """Run as the last part of initialization. Actually setting the data from the API as attributes.
 
         If you reset some attributes, maybe run this after to "update" the data of the correspondence.
 
@@ -128,8 +109,7 @@ class KlassCorrespondence:
 
         Returns
         -------
-        None
-            Sets .data attribute based on the attributes of the class
+            None: Sets .data attribute based on the attributes of the class.
         """
         if self.correspondence_id:
             result_id = correspondence_table_by_id(
@@ -183,8 +163,7 @@ class KlassCorrespondence:
 
         Returns
         -------
-        str
-            The last date of the quarter.
+            str: The last date of the quarter.
         """
         from_date = dateutil.parser.parse(self.from_date)
         year = from_date.year
@@ -204,22 +183,17 @@ class KlassCorrespondence:
 
         If you specify a value for "other", returns a defaultdict instead.
 
-        Columns in the data are 'sourceCode', 'sourceName', 'sourceShortName'
-        'targetCode', 'targetName', 'targetShortName', 'validFrom', 'validTo'
+        Columns in the data are 'sourceCode', 'sourceName', 'sourceShortName',
+        'targetCode', 'targetName', 'targetShortName', 'validFrom', 'validTo'.
 
-        Parameters
-        ----------
-        key : str
-            The name of the column with the values you want as keys.
-        value : str
-            The name of the column with the values you want as values in your dict.
-        other : str
-            The value to use for keys that don't exist in the data.
+        Args:
+            key (str): The name of the column with the values you want as keys.
+            value (str): The name of the column with the values you want as values in your dict.
+            other (str): The value to use for keys that don't exist in the data.
 
         Returns
         -------
-        dict | defaultdict
-            The dictionary of the correspondence.
+            dict | defaultdict: The dictionary of the correspondence.
         """
         mapping = dict(zip(self.data[key], self.data[value]))
         if other:

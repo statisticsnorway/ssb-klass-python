@@ -78,9 +78,9 @@ def klass_correspondence_from_id_success(
 @mock.patch("klass.classes.correspondence.correspondence_table_by_id")
 @mock.patch("klass.classes.correspondence.corresponds")
 def klass_correspondence_between_classifications_success(
-    tescorrespondstype, test_correspondence_table_by_id
+    test_correspondstype, test_correspondence_table_by_id
 ):
-    tescorrespondstype.return_value = mock_returns.corresponds_success()
+    test_correspondstype.return_value = mock_returns.corresponds_success()
     test_correspondence_table_by_id.return_value = (
         mock_returns.correspondence_table_by_id_success()
     )
@@ -90,3 +90,14 @@ def klass_correspondence_between_classifications_success(
         target_classification_id="1",
         from_date="2023-01-01",
     )
+
+
+@pytest.fixture
+@mock.patch("klass.classes.family.classificationfamilies_by_id")
+def klass_search_families_by_id_success(
+    test_classificationfamilies_by_id,
+):
+    test_classificationfamilies_by_id.return_value = (
+        mock_returns.classificationfamilies_by_id_success()
+    )
+    return klass.KlassSearchFamilies("320")

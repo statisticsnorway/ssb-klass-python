@@ -70,7 +70,7 @@ autodoc_typehints = "description"
 add_module_names = False
 
 # Ignore the docstrings of the __init__ methods on the classes, most info is in the class docstrings
-autoclass_content = "class"
+autoclass_content = "both"
 
 # Napoleon settings, changed from default
 # Cant find anything that removes duplicate "parameters settings"
