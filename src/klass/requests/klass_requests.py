@@ -27,7 +27,7 @@ from klass.requests.validate import validate_params
 # ##########
 
 
-def get_json(url: str, params: ParamsAfterType) -> dict[str, Any]:
+def get_json(url: str, params: ParamsAfterType) -> Any:
     """Simplify getting the JSON out of a GET request to the KLASS API.
 
     Used in most of the following functions.
@@ -44,16 +44,8 @@ def get_json(url: str, params: ParamsAfterType) -> dict[str, Any]:
         print("Full URL, check during testing:", req.prepare().url)
     response = requests.Session().send(req.prepare())
     response.raise_for_status()
-    return response.json()
-
-
-def convert_return_type(
-    data: dict[str, Any], return_type: str = "pandas"
-) -> dict[str, Any] | pd.DataFrame:
-    """Differentiate between returning as raw json or convert to DataFrame."""
-    if return_type == "json":
-        return data
-    return pd.json_normalize(data)
+    result: Any = response.json()
+    return result
 
 
 def convert_datestring(date: str | datetime, return_type: str = "isoklass") -> str:
@@ -157,7 +149,7 @@ def codes(
     if include_future:
         params["includeFuture"] = include_future
     params_final: ParamsAfterType = validate_params(params)
-    return convert_return_type(get_json(url, params_final)["codes"], "pandas")
+    return pd.json_normalize(get_json(url, params_final)["codes"])
 
 
 def codes_at(
@@ -184,7 +176,7 @@ def codes_at(
     if include_future:
         params["includeFuture"] = include_future
     params_final: ParamsAfterType = validate_params(params)
-    return convert_return_type(get_json(url, params_final)["codes"], "pandas")
+    return pd.json_normalize(get_json(url, params_final)["codes"])
 
 
 def version_by_id(
@@ -235,9 +227,7 @@ def variant(
     if include_future:
         params["includeFuture"] = include_future
     params_final: ParamsAfterType = validate_params(params)
-    result: pd.DataFrame = convert_return_type(
-        get_json(url, params_final)["codes"], "pandas"
-    )
+    result: pd.DataFrame = pd.json_normalize(get_json(url, params_final)["codes"])
     return result
 
 
@@ -270,9 +260,7 @@ def variant_at(
         params["includeFuture"] = include_future
 
     params_final: ParamsAfterType = validate_params(params)
-    result: pd.DataFrame = convert_return_type(
-        get_json(url, params_final)["codes"], "pandas"
-    )
+    result: pd.DataFrame = pd.json_normalize(get_json(url, params_final)["codes"])
     return result
 
 
@@ -378,9 +366,7 @@ def changes(
     if include_future:
         params["includeFuture"] = include_future
     params_final: ParamsAfterType = validate_params(params)
-    result: pd.DataFrame = convert_return_type(
-        get_json(url, params_final)["codeChanges"], "pandas"
-    )
+    result: pd.DataFrame = pd.json_normalize(get_json(url, params_final)["codeChanges"])
     return result
 
 
