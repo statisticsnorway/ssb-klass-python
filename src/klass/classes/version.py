@@ -1,8 +1,8 @@
 import pandas as pd
 
 from ..requests.klass_requests import version_by_id
-from ..requests.types import T_correspondenceTables
-from ..requests.types import T_version_by_id
+from ..requests.types import CorrespondenceTablesType
+from ..requests.types import VersionByIDType
 from .correspondence import KlassCorrespondence
 from .variant import KlassVariant
 
@@ -67,7 +67,7 @@ class KlassVersion:
         self.language = language.lower()
         self.include_future = include_future
 
-        result: T_version_by_id = version_by_id(
+        result: VersionByIDType = version_by_id(
             version_id,
             language=language,
             include_future=include_future,
@@ -87,11 +87,11 @@ class KlassVersion:
             self.publications: str = result["publications"]
         if "derivedFrom" in result:
             self.derivedFrom: str = result["derivedFrom"]
-        self.correspondenceTables: list[T_correspondenceTables] = result[
+        self.correspondenceTables: list[CorrespondenceTablesType] = result[
             "correspondenceTables"
         ]
         if "classificationVariants" in result:
-            self.classificationVariants: list[T_correspondenceTables]
+            self.classificationVariants: list[CorrespondenceTablesType]
         self.changelogs: list[dict[str, str]] = result["changelogs"]
         self.levels: list[dict[str, int | str]] = result["levels"]
         self.classificationItems: list[dict[str, str | None]] = result[

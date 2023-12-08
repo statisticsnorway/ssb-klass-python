@@ -2,13 +2,13 @@ from datetime import datetime
 
 import klass.config as config
 from klass.requests.sections import sections_dict
-from klass.requests.types import T_params_after
-from klass.requests.types import T_params_before
+from klass.requests.types import ParamsAfterType
+from klass.requests.types import ParamsBeforeType
 
 
-def validate_params(params: T_params_before) -> T_params_after:
+def validate_params(params: ParamsBeforeType) -> ParamsAfterType:
     """Links parameters to their validate-functions."""
-    new_params: T_params_after = {}
+    new_params: ParamsAfterType = {}
     if "language" in params:
         new_params["language"] = validate_language(params["language"])
     if "includeFuture" in params:

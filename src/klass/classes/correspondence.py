@@ -7,8 +7,8 @@ import pandas as pd
 
 from klass.requests.klass_requests import correspondence_table_by_id
 from klass.requests.klass_requests import corresponds
+from klass.requests.types import CorrespondsType
 from klass.requests.types import T_correspondanceMaps
-from klass.requests.types import T_corresponds
 
 
 class KlassCorrespondence:
@@ -161,7 +161,7 @@ class KlassCorrespondence:
         ):
             if self.contain_quarter:
                 self.to_date = self._last_date_of_quarter()
-            result: T_corresponds = corresponds(
+            result: CorrespondsType = corresponds(
                 source_classification_id=self.source_classification_id,
                 target_classification_id=self.target_classification_id,
                 from_date=self.from_date,

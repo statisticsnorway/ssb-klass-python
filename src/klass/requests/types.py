@@ -3,8 +3,8 @@ from typing import TypedDict
 from typing_extensions import NotRequired
 
 # Keeping these two as non-class, declarative, as the API operates with the parameter "from", which is a reserved keyword in Python
-T_params_before = TypedDict(
-    "T_params_before",
+ParamsBeforeType = TypedDict(
+    "ParamsBeforeType",
     {
         "language": NotRequired[str],
         "includeFuture": NotRequired[bool],  # Will be converted to lowercase string
@@ -22,8 +22,8 @@ T_params_before = TypedDict(
         "query": NotRequired[str],
     },
 )
-T_params_after = TypedDict(
-    "T_params_after",
+ParamsAfterType = TypedDict(
+    "ParamsAfterType",
     {
         "language": NotRequired[str],
         "includeFuture": NotRequired[str],
@@ -43,7 +43,7 @@ T_params_after = TypedDict(
 )
 
 
-class T_correspondenceTables(TypedDict):
+class CorrespondenceTablesType(TypedDict):
     """The type in the correspondanceTables attribute."""
 
     name: str
@@ -58,7 +58,7 @@ class T_correspondenceTables(TypedDict):
     _links: dict[str, dict[str, str]]
 
 
-class T_version_part(TypedDict):
+class VersionPartType(TypedDict):
     """The type version part of the classification_by_id function."""
 
     version_id: NotRequired[int]
@@ -70,7 +70,7 @@ class T_version_part(TypedDict):
     _links: dict[str, dict[str, str]]
 
 
-class T_variants_by_id(TypedDict):
+class VariantsByIdType(TypedDict):
     """The type returned by the variants_by_id function."""
 
     validTo: NotRequired[str]
@@ -84,14 +84,14 @@ class T_variants_by_id(TypedDict):
     published: list[str]
     validFrom: str
     introduction: str
-    correspondenceTables: list[T_correspondenceTables]
+    correspondenceTables: list[CorrespondenceTablesType]
     changelogs: list[dict[str, str]]
     levels: list[dict[str, int | str]]
     classificationItems: list[dict[str, str | None]]
     _links: dict[str, dict[str, str]]
 
 
-class T_classification_part_with_type(TypedDict):
+class ClassificationPartWithType(TypedDict):
     """Type for each of the classifications returned by a classificationfamilies-search."""
 
     classification_id: NotRequired[str]
@@ -101,15 +101,15 @@ class T_classification_part_with_type(TypedDict):
     _links: dict[str, dict[str, str]]
 
 
-class T_classifications(TypedDict):
+class ClassificationsType(TypedDict):
     """The type returned by the classifications function."""
 
-    _embedded: dict[str, list[T_classification_part_with_type]]
+    _embedded: dict[str, list[ClassificationPartWithType]]
     _links: dict[str, dict[str, str]]
     page: dict[str, int]
 
 
-class T_classification_by_id(TypedDict):
+class ClassificationsByIdType(TypedDict):
     """The type returned by the classification_by_id function."""
 
     name: str
@@ -123,11 +123,11 @@ class T_classification_by_id(TypedDict):
     contactPerson: dict[str, str]
     owningSection: str
     statisticalUnits: list[str]
-    versions: list[T_version_part]
+    versions: list[VersionPartType]
     _links: dict[str, dict[str, str]]
 
 
-class T_classification_search_resultspart(TypedDict):
+class ClassificationSearchResultsPartType(TypedDict):
     """Type for each of the classifications returned by a classificationfamilies-search."""
 
     classification_id: NotRequired[int]
@@ -137,15 +137,15 @@ class T_classification_search_resultspart(TypedDict):
     _links: dict[str, dict[str, str]]
 
 
-class T_classification_search(TypedDict):
+class ClassificationSearchType(TypedDict):
     """The type returned by the classification_search function."""
 
-    _embedded: dict[str, list[T_classification_search_resultspart]]
+    _embedded: dict[str, list[ClassificationSearchResultsPartType]]
     _links: dict[str, dict[str, str]]
     page: dict[str, int]
 
 
-class T_version_by_id(TypedDict):
+class VersionByIDType(TypedDict):
     """The type returned by the version_by_id function."""
 
     name: str
@@ -159,8 +159,8 @@ class T_version_by_id(TypedDict):
     legalBase: NotRequired[str]
     publications: NotRequired[str]
     derivedFrom: NotRequired[str]
-    correspondenceTables: list[T_correspondenceTables]
-    classificationVariants: NotRequired[list[T_correspondenceTables]]
+    correspondenceTables: list[CorrespondenceTablesType]
+    classificationVariants: NotRequired[list[CorrespondenceTablesType]]
     changelogs: list[dict[str, str]]
     levels: list[dict[str, int | str]]
     classificationItems: list[dict[str, str | None]]
@@ -170,7 +170,7 @@ class T_version_by_id(TypedDict):
 T_correspondanceItems = dict[str, str]
 
 
-class T_corresponds(TypedDict):
+class CorrespondsType(TypedDict):
     """The type returned by the corresponds function."""
 
     correspondenceItems: list[T_correspondanceItems]
@@ -179,7 +179,7 @@ class T_corresponds(TypedDict):
 T_correspondanceMaps = list[dict[str, str]]
 
 
-class T_correspondence_table_id(TypedDict):
+class CorrespondenceTableIdType(TypedDict):
     """The type returned by the correspondence_table_by_id function."""
 
     name: str
@@ -199,7 +199,7 @@ class T_correspondence_table_id(TypedDict):
     correspondenceMaps: T_correspondanceMaps
 
 
-class T_classificationfamilies_part_with_number(TypedDict):
+class ClassificationFamiliesPartWithNumberType(TypedDict):
     """Type for each of the classifications returned by a classificationfamilies-search."""
 
     family_id: NotRequired[str]
@@ -208,16 +208,16 @@ class T_classificationfamilies_part_with_number(TypedDict):
     _links: dict[str, dict[str, str]]
 
 
-class T_classificationfamilies(TypedDict):
+class ClassificationFamiliesType(TypedDict):
     """The type returned by the classificationfamilies function."""
 
-    _embedded: dict[str, list[T_classificationfamilies_part_with_number]]
+    _embedded: dict[str, list[ClassificationFamiliesPartWithNumberType]]
     _links: dict[str, dict[str, str]]
 
 
-class T_classificationfamilies_by_id(TypedDict):
+class ClassificationFamiliesByIdType(TypedDict):
     """Type for the whole return value of a classificationfamilies-search."""
 
     name: str
-    classifications: list[T_classification_part_with_type]
+    classifications: list[ClassificationPartWithType]
     _links: dict[str, dict[str, str]]

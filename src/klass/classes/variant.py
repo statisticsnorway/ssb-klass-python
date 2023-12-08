@@ -3,8 +3,8 @@ import pandas as pd
 from klass.requests.klass_requests import variant
 from klass.requests.klass_requests import variant_at
 from klass.requests.klass_requests import variants_by_id
-from klass.requests.types import T_correspondenceTables
-from klass.requests.types import T_variants_by_id
+from klass.requests.types import CorrespondenceTablesType
+from klass.requests.types import VariantsByIdType
 
 
 class KlassVariant:
@@ -99,7 +99,7 @@ class KlassVariant:
             The level of the dataset to keep
             For example: 0
         """
-        result: T_variants_by_id = variants_by_id(self.variant_id, self.language)
+        result: VariantsByIdType = variants_by_id(self.variant_id, self.language)
         self.name: str = result["name"]
         if "validTo" in result:
             self.validTo: str = result["validTo"]
@@ -115,7 +115,7 @@ class KlassVariant:
         self.published: list[str] = result["published"]
         self.validFrom: str = result["validFrom"]
         self.introduction: str = result["introduction"]
-        self.correspondenceTables: list[T_correspondenceTables] = result[
+        self.correspondenceTables: list[CorrespondenceTablesType] = result[
             "correspondenceTables"
         ]
         self.changelogs: list[dict[str, str]] = result["changelogs"]
