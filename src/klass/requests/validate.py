@@ -1,5 +1,7 @@
 from datetime import datetime
 
+import dateutil
+
 import klass.config as config
 from klass.requests.sections import sections_dict
 from klass.requests.types import ParamsAfterType
@@ -48,10 +50,13 @@ def validate_params(params: ParamsBeforeType) -> ParamsAfterType:
 def validate_date(date: str) -> str:
     """Validate a date-string against the expected format."""
     try:
-        datetime.strptime(date, "%Y-%m-%d")
+        new_date: str = datetime.strptime(date, r"%Y-%m-%d").strftime(r"%Y-%m-%d")
     except ValueError as e:
-        raise ValueError("Incorrect data format, should be YYYY-MM-DD") from e
-    return date
+        try:
+            new_date = dateutil.parser.parse(date).strftime(r"%Y-%m-%d")
+        except ValueError:
+            raise ValueError("Incorrect data format, should be YYYY-MM-DD") from e
+    return new_date
 
 
 def validate_language(language: str) -> str:

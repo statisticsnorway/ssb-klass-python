@@ -27,11 +27,6 @@ class KlassClassification:
     you first need to get the classification at a specific time (a KlassVersion)
     by using get_version() for example.
 
-    Args:
-        classification_id (str): The classification_id of the classification. For example: '36'
-        language (str): The language of the classification. "nb", "nn" or "en".
-        include_future (bool): Whether to include future versions of the classification.
-
     Attributes:
         versions (list): A list of the data the Classifications has on its versions.
             Versions represent the changes to the classifications codelists placed in time.
@@ -59,7 +54,13 @@ class KlassClassification:
     def __init__(
         self, classification_id: str, language: str = "nb", include_future: bool = False
     ):
-        """Get the data for the classification from the API."""
+        """Get the data for the classification from the API.
+
+        Args:
+            classification_id (str): The classification_id of the classification. For example: '36'
+            language (str): The language of the classification. "nb", "nn" or "en".
+            include_future (bool): Whether to include future versions of the classification.
+        """
         self.classification_id = classification_id
         self.language = language
         self.include_future = include_future

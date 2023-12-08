@@ -10,13 +10,6 @@ from klass.requests.types import ClassificationSearchResultsPartType
 class KlassSearchClassifications:
     """Use to search for classifications.
 
-    Args:
-        query (str): The search query.
-        include_codelists (bool): Whether to include codelists in the search results.
-        ssbsection (str): The SSB section who owns the classification you are searching for.
-        no_dupes (bool): Whether to remove duplicates from the search results.
-            (Usually caused by languages showing up multiple times)
-
     Attributes:
         classifications (list): A list of KlassClassification objects.
         query (str): The search query.
@@ -32,7 +25,15 @@ class KlassSearchClassifications:
         ssbsection: str = "",
         no_dupes: bool = False,
     ):
-        """Get data from the KLASS-api, setting it as attributes on this object."""
+        """Get data from the KLASS-api, setting it as attributes on this object.
+
+        Args:
+            query (str): The search query.
+            include_codelists (bool): Whether to include codelists in the search results.
+            ssbsection (str): The SSB section who owns the classification you are searching for.
+            no_dupes (bool): Whether to remove duplicates from the search results.
+                (Usually caused by languages showing up multiple times)
+        """
         self.query = query
         self.include_codelists = include_codelists
         self.ssbsection = ssbsection
@@ -152,14 +153,7 @@ class KlassSearchClassifications:
 
 
 class KlassSearchFamilies:
-    """Search for families in the Klass API.
-
-    Args:
-        ssbsection (str): The SSB section who owns the family you are searching for.
-        include_codelists (bool): Whether to include codelists in the search.
-        language (str): The language to use in the search.
-            Default: "nb" for Norwegian, "nn" for Nynorsk, "en" for English.
-    """
+    """Search for families in the Klass API."""
 
     def __init__(
         self,
@@ -167,7 +161,14 @@ class KlassSearchFamilies:
         include_codelists: bool = False,
         language: str = "nb",
     ):
-        """Get data from the KLASS-api, setting it as attributes on this object."""
+        """Get data from the KLASS-api, setting it as attributes on this object.
+
+        Args:
+            ssbsection (str): The SSB section who owns the family you are searching for.
+            include_codelists (bool): Whether to include codelists in the search.
+            language (str): The language to use in the search.
+                Default: "nb" for Norwegian, "nn" for Nynorsk, "en" for English.
+        """
         self.ssbsection = ssbsection
         self.include_codelists = include_codelists
         self.language = language

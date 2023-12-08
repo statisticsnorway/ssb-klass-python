@@ -13,12 +13,6 @@ class KlassVersion:
 
     For example, the ID of NUS valid in 2023 is 1954, while the ID of NUS without being time-specific is 36.
 
-    Args:
-        version_id (str): The ID of the version.
-        select_level (int, optional): The level in the codelist-data to keep. Defaults to 0.
-        language (str, optional): The language of the version. Defaults to "nb", can be set to "en", or "nn".
-        include_future (bool, optional): If the version should include future versions. Defaults to False.
-
     Attributes:
         data (pd.DataFrame): The codelist of the classification-version as a pandas dataframe.
         name (str): The name of the version.
@@ -42,7 +36,14 @@ class KlassVersion:
         language: str = "nb",
         include_future: bool = False,
     ):
-        """Set up the object with data from the KLASS-API."""
+        """Set up the object with data from the KLASS-API.
+
+        Args:
+            version_id (str): The ID of the version.
+            select_level (int, optional): The level in the codelist-data to keep. Defaults to 0.
+            language (str, optional): The language of the version. Defaults to "nb", can be set to "en", or "nn".
+            include_future (bool, optional): If the version should include future versions. Defaults to False.
+        """
         self.version_id = version_id
         self.select_level = select_level
         self.language = language.lower()

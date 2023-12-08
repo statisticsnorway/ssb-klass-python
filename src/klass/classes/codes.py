@@ -13,16 +13,6 @@ class KlassCodes:
 
     The codelist is owned by the Classification through a Version, and will be valid for a time period.
 
-    Args:
-        classification_id (str): The classification ID.
-        from_date (str): The start date of the time period. "YYYY-MM-DD".
-        to_date (str): The end date of the time period. "YYYY-MM-DD".
-        select_codes (str): A list of codes to be selected.
-        select_level (str): A list of levels to be selected.
-        presentation_name_pattern (str): A pattern for filtering the code names.
-        language (str): The language of the code names. Defaults to "nb".
-        include_future (bool): Whether to include future codes. Defaults to False.
-
     Attributes:
         data (pd.DataFrame): The pandas DataFrame of the codes.
         classification_id (str): The classification ID.
@@ -49,7 +39,18 @@ class KlassCodes:
         language: str = "nb",
         include_future: bool = False,
     ):
-        """Get the data from the KLASS-api belonging to the code-list."""
+        """Get the data from the KLASS-api belonging to the code-list.
+
+        Args:
+            classification_id (str): The classification ID.
+            from_date (str): The start date of the time period. "YYYY-MM-DD".
+            to_date (str): The end date of the time period. "YYYY-MM-DD".
+            select_codes (str): A list of codes to be selected.
+            select_level (str): A list of levels to be selected.
+            presentation_name_pattern (str): A pattern for filtering the code names.
+            language (str): The language of the code names. Defaults to "nb".
+            include_future (bool): Whether to include future codes. Defaults to False.
+        """
         self.classification_id = classification_id
         if not from_date:
             from_date = datetime.now().strftime("%Y-%m-%d")
