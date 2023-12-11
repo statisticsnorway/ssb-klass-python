@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 
 import dateutil
 
@@ -50,7 +50,9 @@ def validate_params(params: ParamsBeforeType) -> ParamsAfterType:
 def validate_date(date: str) -> str:
     """Validate a date-string against the expected format."""
     try:
-        new_date: str = datetime.strptime(date, r"%Y-%m-%d").strftime(r"%Y-%m-%d")
+        new_date: str = datetime.datetime.strptime(date, r"%Y-%m-%d").strftime(
+            r"%Y-%m-%d"
+        )
     except ValueError as e:
         try:
             new_date = dateutil.parser.parse(date).strftime(r"%Y-%m-%d")
@@ -117,8 +119,34 @@ def validate_alnum_spaces(variant_name: str) -> str:
 
 
 def validate_time_iso8601(datestring: str) -> str:
-    """Convert string to datetime, at the same time, datetime throws an error if format not matches."""
-    datetime.strptime(datestring[:-5] + "000", "%Y-%m-%dT%H:%M:%S.%f")
+    """Validate date-string by checking against datetime format YYYY-MM-DDThh:mm:ss.SSS+00:00.
+
+    If no match, will try to convert it using dateutil.parser.parse to a datetime that includes milliseconds.
+    """
+    try_conversion = False
+    try:
+        datetime.datetime.strptime(datestring[:-5] + "000", "%Y-%m-%dT%H:%M:%S.%f%z")
+    except Exception as e:
+        try_conversion = True
+        print(e)
+    if (
+        not datestring[-5:]
+        .replace(".", "")
+        .replace(":", "")
+        .replace("+", "")
+        .replace("-", "")
+        .isnumeric()
+    ):
+        try_conversion = True
+    if try_conversion:
+        if datestring[-3] != ":":
+            date_time = datetime.datetime.fromisoformat(
+                datestring[:-2] + ":" + datestring[-2:]
+            )
+        else:
+            date_time = datetime.datetime.fromisoformat(datestring)
+        date_time.replace(tzinfo=datetime.timezone(datetime.timedelta(hours=1)))
+        datestring = date_time.isoformat("T", "milliseconds")
     return datestring
 
 

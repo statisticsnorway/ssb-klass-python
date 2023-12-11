@@ -4,6 +4,7 @@ import klass.config as config
 
 
 def base_request(content: str, status_code: int = 200) -> requests.Response:
+    content = content.replace("\n", "")
     response = requests.Response()
     response.status_code = status_code
     response._content = bytes(
@@ -43,6 +44,17 @@ def classification_search_fake_content():
   "next": {"href": "https://data.ssb.no/api/klass/v1/classifications/search?query=1&includeCodelists=false&page=0&size=20"},
   "last": {"href": "https://data.ssb.no/api/klass/v1/classifications/search?query=1&includeCodelists=false&page=0&size=20"}},
  "page": {"size": 20, "totalElements": 1, "totalPages": 1, "number": 0}}"""
+    )
+
+
+def classification_search_noresults_fake_content():
+    return base_request(
+        """{"_embedded": {"searchResults": []},
+ "_links": {"first": {"href": "https://data.ssb.no/api/klass/v1/classifications/search?query=1&includeCodelists=false&page=0&size=20"},
+  "self": {"href": "https://data.ssb.no/api/klass/v1/classifications/search?query=1&includeCodelists=false"},
+  "next": {"href": "https://data.ssb.no/api/klass/v1/classifications/search?query=1&includeCodelists=false&page=0&size=20"},
+  "last": {"href": "https://data.ssb.no/api/klass/v1/classifications/search?query=1&includeCodelists=false&page=0&size=20"}},
+ "page": {"size": 20, "totalElements": 0, "totalPages": 1, "number": 0}}"""
     )
 
 
@@ -87,7 +99,7 @@ def classification_by_id_fake_content():
 
 def codes_fake_content():
     return base_request(
-        '{"codes":[{"code":"1","parentCode":null,"level":"1","name":"Mann","shortName":"","presentationName":"","validFrom":null,"validTo":null,"notes":""}]}'
+        '{"codes":[{"code":"1","parentCode":null,"level":"1","name":"Mann","shortName":"","presentationName":"","validFrom":"2021-01-01","validTo":"2022-01-01","notes":""}]}'
     )
 
 

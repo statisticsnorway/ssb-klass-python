@@ -51,15 +51,33 @@ def get_json(url: str, params: ParamsAfterType) -> Any:
 
 
 def convert_datestring(date: str | datetime, return_type: str = "isoklass") -> str:
-    """Use dateutil to guess the format of a time sent in, and convert it to the expected string format of the API."""
+    """First try dateutil to guess the format of a simple time sent in, secondary try the fromisoformat.
+
+    Convert it to the expected string format of the API.
+    """
     if isinstance(date, str):
-        date = dateutil.parser.parse(date)
-    date_time = date.replace(tzinfo=timezone(timedelta(hours=1)))
+        try:
+            date_time: datetime = dateutil.parser.parse(date)
+        except dateutil.parser._parser.ParserError:
+            date_time = datetime.fromisoformat(date)
+    else:
+        date_time = date
+    date_time = date_time.replace(tzinfo=timezone(timedelta(hours=1)))
     if return_type == "isoklass":
-        return date_time.strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + date.strftime("%z")
+        # We only want 3 digits of milliseconds.
+        utc_offset = date_time.strftime("%z")
+        if not utc_offset:
+            utc_offset = "+00:00"
+        elif utc_offset[-3] != ":":
+            utc_offset = utc_offset[:-2] + ":" + utc_offset[-2:]
+        return (
+            date_time.strftime("%Y-%m-%dT%H:%M:%S.")
+            + date_time.strftime("%f")[:3]
+            + utc_offset
+        )
     elif return_type == "yyyy-mm-dd":
         return date_time.strftime("%Y-%m-%d")
-    raise ValueError("Unrecognized datetimestring return type")
+    raise ValueError(f"Unrecognized datetimestring return type: {date}")
 
 
 def convert_section(section: str) -> str:
@@ -82,7 +100,7 @@ def classifications(
     params: ParamsBeforeType = {
         "includeCodelists": include_codelists,
     }
-    if changed_since == "":
+    if changed_since != "":
         params["changedSince"] = convert_datestring(
             date=changed_since, return_type="isoklass"
         )

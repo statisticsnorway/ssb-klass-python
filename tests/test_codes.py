@@ -54,7 +54,12 @@ def test_codes_pivot_level(
 
 
 def test_codes_has_str_repr(klass_codes_at_success):
+    klass_codes_at_success.from_date = "2023-01-01"
+    klass_codes_at_success.language = "en"
+    klass_codes_at_success.include_future = True
     assert klass_codes_at_success.__str__()
     assert klass_codes_at_success.__repr__()
     assert len(klass_codes_at_success.__str__())
     assert len(klass_codes_at_success.__repr__())
+    print(klass_codes_at_success)
+    repr(klass_codes_at_success)

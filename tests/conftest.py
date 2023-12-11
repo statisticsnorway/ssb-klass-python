@@ -22,10 +22,17 @@ def klass_classification_success(test_changes, tesClassificationsByIdType):
 
 @pytest.fixture
 @mock.patch("klass.classes.search.classification_search")
-def klass_classification_search_success(tesClassificationSearchType):
-    tesClassificationSearchType.return_value = (
+def klass_classification_search_success(test_classification_search):
+    test_classification_search.return_value = (
         mock_returns.classification_search_success()
     )
+    return klass.KlassSearchClassifications("Nus")
+
+
+@pytest.fixture
+@mock.patch("klass.classes.search.classification_search")
+def klass_classification_search_empty(test_classification_search):
+    test_classification_search.return_value = mock_returns.classification_search_empty()
     return klass.KlassSearchClassifications("Nus")
 
 
