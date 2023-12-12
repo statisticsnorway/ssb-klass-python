@@ -78,6 +78,7 @@ class KlassSearchClassifications:
         """
         classification_replace: list[ClassificationSearchResultsPartType] = []
         seen = []
+        # Allows for the search to be an empty list, if we got something weird back
         if len(classifications) and isinstance(classifications, list):
             for cl in classifications:
                 cl = {
@@ -207,9 +208,11 @@ class KlassSearchFamilies:
         self.families = result["_embedded"]["classificationFamilies"]
         self.links = result["_links"]
         families_replace = []
-        for fam in self.families:
-            fam["family_id"] = fam["_links"]["self"]["href"].split("/")[-1]
-            families_replace.append(fam)
+        # Allows for the search to be an empty list, if we got something weird back
+        if isinstance(self.families, list) and len(self.families):
+            for fam in self.families:
+                fam["family_id"] = fam["_links"]["self"]["href"].split("/")[-1]
+                families_replace.append(fam)
         self.families = families_replace
         return self
 
