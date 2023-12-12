@@ -4,6 +4,7 @@ from klass.classes.classification import KlassClassification
 from klass.classes.family import KlassFamily
 from klass.requests.klass_requests import classification_search
 from klass.requests.klass_requests import classificationfamilies
+from klass.requests.types import ClassificationFamiliesPartWithNumberType
 from klass.requests.types import ClassificationSearchResultsPartType
 
 
@@ -58,9 +59,12 @@ class KlassSearchClassifications:
         )
 
         self.links = result["_links"]
-        self.classifications = self._clean_classifications(
-            result["_embedded"]["searchResults"], self.no_dupes
-        )
+        if "_embedded" in result:
+            self.classifications = self._clean_classifications(
+                result["_embedded"]["searchResults"], self.no_dupes
+            )
+        else:
+            self.classifications = []
 
     @staticmethod
     def _clean_classifications(
@@ -205,7 +209,12 @@ class KlassSearchFamilies:
             include_codelists=self.include_codelists,
             language=self.language,
         )
-        self.families = result["_embedded"]["classificationFamilies"]
+        if "_embedded" in result:
+            self.families: list[ClassificationFamiliesPartWithNumberType] = result[
+                "_embedded"
+            ]["classificationFamilies"]
+        else:
+            self.families = []
         self.links = result["_links"]
         families_replace = []
         # Allows for the search to be an empty list, if we got something weird back
