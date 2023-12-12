@@ -84,7 +84,10 @@ def convert_datestring(date: str | datetime, return_type: str = "isoklass") -> s
 def convert_section(section: str) -> str:
     """Get the full section-name-string (that the API needs) from just a provided section-number/numeric string."""
     if " " not in str(section):
-        return sections_dict()[str(section)]
+        sections = sections_dict()
+        return sections.get(
+            str(section), "Section: {section} not in KLASS-sections? {sections}"
+        )
     return section
 
 
