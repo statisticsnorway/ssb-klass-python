@@ -53,4 +53,4 @@ def test_gui_display(klass_classification_search_success):
 
 
 def test_classification_search_can_be_empty(klass_classification_search_empty):
-    klass_classification_search_empty.classifications = []
+    assert klass_classification_search_empty.classifications == []

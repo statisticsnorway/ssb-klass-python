@@ -78,7 +78,7 @@ class KlassSearchClassifications:
         """
         classification_replace: list[ClassificationSearchResultsPartType] = []
         seen = []
-        if len(classifications):
+        if len(classifications) and isinstance(classifications, list):
             for cl in classifications:
                 cl = {
                     "classification_id": int(
