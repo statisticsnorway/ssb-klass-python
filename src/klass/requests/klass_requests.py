@@ -6,6 +6,7 @@ from typing import Any
 import dateutil.parser
 import pandas as pd
 import requests
+from dateutil.parser import ParserError
 
 import klass.config as config
 from klass.requests.sections import sections_dict
@@ -58,7 +59,7 @@ def convert_datestring(date: str | datetime, return_type: str = "isoklass") -> s
     if isinstance(date, str):
         try:
             date_time: datetime = dateutil.parser.parse(date)
-        except dateutil.parser._parser.ParserError:
+        except ParserError:
             date_time = datetime.fromisoformat(date)
     else:
         date_time = date
