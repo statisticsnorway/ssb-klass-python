@@ -27,13 +27,7 @@ class KlassClassification:
     you first need to get the classification at a specific time (a KlassVersion)
     by using get_version() for example.
 
-    Args:
-        classification_id (str): The classification_id of the classification. For example: '36'
-        language (str): The language of the classification. "nb", "nn" or "en".
-        include_future (bool): Whether to include future versions of the classification.
-
     Attributes:
-    ----------
         versions (list): A list of the data the Classifications has on its versions.
             Versions represent the changes to the classifications codelists placed in time.
         name (str): The name of the classification.
@@ -52,8 +46,12 @@ class KlassClassification:
         include_future (bool): Whether to include future versions of the classification.
         _links (dict): A dictionary containing the links to different possible endpoints using the classification.
 
+    Args:
+        classification_id (str): The classification_id of the classification. For example: '36'
+        language (str): The language of the classification. "nb", "nn" or "en".
+        include_future (bool): Whether to include future versions of the classification.
+
     Raises:
-    ------
         ValueError: If the language is not "no", "nb" or "en".
             If the include_future is not a bool.
     """

@@ -26,6 +26,14 @@ def classification_search_success(mock_response):
 
 
 @mock.patch.object(requests.Session, "send")
+def classification_search_empty(mock_response):
+    mock_response.return_value = (
+        mock_response_data.classification_search_noresults_fake_content()
+    )
+    return klass_requests.classification_search("Nus")
+
+
+@mock.patch.object(requests.Session, "send")
 def codes_at_success(mock_response):
     mock_response.return_value = mock_response_data.codes_at_fake_content()
     return klass_requests.codes_at("0", date="2023-01-01")

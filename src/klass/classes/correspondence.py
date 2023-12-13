@@ -21,7 +21,9 @@ class KlassCorrespondence:
     You can identify the correspondence by their individual ids,
     or by the source classification ID + the target classification ID + a specific time.
 
-    Args:
+    Attributes:
+        data (pd.DataFrame): The pandas DataFrame of the correspondences.
+        correspondence (list): The list of the correspondences returned by the API.
         correspondence_id (str): The ID of the correspondence.
         source_classification_id (str): The ID of the source classification.
         target_classification_id (str): The ID of the target classification.
@@ -32,9 +34,7 @@ class KlassCorrespondence:
         language (str): The language of the correspondence. "nb", "nn" or "en".
         include_future (bool): If the correspondence should include future correspondences.
 
-    Attributes:
-        data (pd.DataFrame): The pandas DataFrame of the correspondences.
-        correspondence (list): The list of the correspondences returned by the API.
+    Args:
         correspondence_id (str): The ID of the correspondence.
         source_classification_id (str): The ID of the source classification.
         target_classification_id (str): The ID of the target classification.

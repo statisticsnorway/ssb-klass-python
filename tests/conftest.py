@@ -22,10 +22,17 @@ def klass_classification_success(test_changes, tesClassificationsByIdType):
 
 @pytest.fixture
 @mock.patch("klass.classes.search.classification_search")
-def klass_classification_search_success(tesClassificationSearchType):
-    tesClassificationSearchType.return_value = (
+def klass_classification_search_success(test_classification_search):
+    test_classification_search.return_value = (
         mock_returns.classification_search_success()
     )
+    return klass.KlassSearchClassifications("Nus")
+
+
+@pytest.fixture
+@mock.patch("klass.classes.search.classification_search")
+def klass_classification_search_empty(test_classification_search):
+    test_classification_search.return_value = mock_returns.classification_search_empty()
     return klass.KlassSearchClassifications("Nus")
 
 
@@ -46,9 +53,21 @@ def klass_codes_at_success(test_codes_at):
 
 
 @pytest.fixture
+@mock.patch("klass.classes.version.version_by_id")
+def klass_version_success(test_version_success):
+    test_version_success.return_value = mock_returns.version_by_id_success()
+    return klass.KlassVersion(
+        "1954",
+        select_level="1",
+        language="en",
+        include_future=True,
+    )
+
+
+@pytest.fixture
 @mock.patch("klass.classes.variant.variants_by_id")
-def klass_variant_success(tesVariantsByIdType):
-    tesVariantsByIdType.return_value = mock_returns.variants_by_id_success()
+def klass_variant_success(test_variant_success):
+    test_variant_success.return_value = mock_returns.variants_by_id_success()
     return klass.KlassVariant(36)
 
 

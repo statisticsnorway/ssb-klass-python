@@ -4,17 +4,12 @@ from klass.classes.classification import KlassClassification
 from klass.classes.family import KlassFamily
 from klass.requests.klass_requests import classification_search
 from klass.requests.klass_requests import classificationfamilies
+from klass.requests.types import ClassificationFamiliesPartWithNumberType
+from klass.requests.types import ClassificationSearchResultsPartType
 
 
 class KlassSearchClassifications:
     """Use to search for classifications.
-
-    Args:
-        query (str): The search query.
-        include_codelists (bool): Whether to include codelists in the search results.
-        ssbsection (str): The SSB section who owns the classification you are searching for.
-        no_dupes (bool): Whether to remove duplicates from the search results.
-            (Usually caused by languages showing up multiple times)
 
     Attributes:
         classifications (list): A list of KlassClassification objects.
@@ -22,6 +17,13 @@ class KlassSearchClassifications:
         include_codelists (bool): Whether to include codelists in the search results.
         ssbsection (str): The SSB section who owns the classification you are searching for.
         no_dupes (bool): Whether to remove duplicates from the search results.
+
+    Args:
+        query (str): The search query.
+        include_codelists (bool): Whether to include codelists in the search results.
+        ssbsection (str): The SSB section who owns the classification you are searching for.
+        no_dupes (bool): Whether to remove duplicates from the search results.
+            (Usually caused by languages showing up multiple times)
     """
 
     def __init__(
@@ -56,28 +58,45 @@ class KlassSearchClassifications:
             ssbsection=self.ssbsection,
         )
 
-        self.classifications = result["_embedded"]["searchResults"]
-
         self.links = result["_links"]
-        if len(self.classifications):
-            classification_replace = []
-            for cl in self.classifications:
+        if "_embedded" in result:
+            self.classifications = self._clean_classifications(
+                result["_embedded"]["searchResults"], self.no_dupes
+            )
+        else:
+            self.classifications = []
+
+    @staticmethod
+    def _clean_classifications(
+        classifications: list[ClassificationSearchResultsPartType],
+        no_dupes: bool = False,
+    ) -> list[ClassificationSearchResultsPartType]:
+        """Extract id from each classification, removing dupes.
+
+        Args:
+            classifications (list): The classifications to clean.
+            no_dupes (bool): Set to True if you want equal results to be filtered out.
+
+        Returns:
+            list: The cleaned classifications.
+        """
+        classification_replace: list[ClassificationSearchResultsPartType] = []
+        seen = []
+        # Allows for the search to be an empty list, if we got something weird back
+        if len(classifications) and isinstance(classifications, list):
+            for cl in classifications:
                 cl = {
                     "classification_id": int(
                         cl["_links"]["self"]["href"].split("/")[-1]
                     ),
                     **cl,
                 }
-                classification_replace.append(cl)
-            self.classifications = classification_replace
-            if self.no_dupes:
-                classification_replace = []
-                seen = []
-                for cl in self.classifications:
-                    if cl["classification_id"] not in seen:
-                        classification_replace.append(cl)
-                        seen.append(cl["classification_id"])
-                self.classifications = classification_replace
+                if cl["classification_id"] not in seen and no_dupes:
+                    classification_replace.append(cl)
+                    seen.append(cl["classification_id"])
+                else:
+                    classification_replace.append(cl)
+        return classification_replace
 
     def __str__(self) -> str:
         """Print a readable representation of the SearchClassification-object. List the found classifications."""
@@ -141,7 +160,7 @@ class KlassSearchFamilies:
         ssbsection (str): The SSB section who owns the family you are searching for.
         include_codelists (bool): Whether to include codelists in the search.
         language (str): The language to use in the search.
-            Default: "nb" for Norwegian, "nn" for Nynorsk, "en" for English.
+    Default: "nb" for Norwegian, "nn" for Nynorsk, "en" for English.
     """
 
     def __init__(
@@ -190,12 +209,19 @@ class KlassSearchFamilies:
             include_codelists=self.include_codelists,
             language=self.language,
         )
-        self.families = result["_embedded"]["classificationFamilies"]
+        if "_embedded" in result:
+            self.families: list[ClassificationFamiliesPartWithNumberType] = result[
+                "_embedded"
+            ]["classificationFamilies"]
+        else:
+            self.families = []
         self.links = result["_links"]
         families_replace = []
-        for fam in self.families:
-            fam["family_id"] = fam["_links"]["self"]["href"].split("/")[-1]
-            families_replace.append(fam)
+        # Allows for the search to be an empty list, if we got something weird back
+        if isinstance(self.families, list) and len(self.families):
+            for fam in self.families:
+                fam["family_id"] = fam["_links"]["self"]["href"].split("/")[-1]
+                families_replace.append(fam)
         self.families = families_replace
         return self
 

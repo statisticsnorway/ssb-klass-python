@@ -13,12 +13,6 @@ class KlassVersion:
 
     For example, the ID of NUS valid in 2023 is 1954, while the ID of NUS without being time-specific is 36.
 
-    Args:
-        version_id (str): The ID of the version.
-        select_level (int, optional): The level in the codelist-data to keep. Defaults to 0.
-        language (str, optional): The language of the version. Defaults to "nb", can be set to "en", or "nn".
-        include_future (bool, optional): If the version should include future versions. Defaults to False.
-
     Attributes:
         data (pd.DataFrame): The codelist of the classification-version as a pandas dataframe.
         name (str): The name of the version.
@@ -33,6 +27,12 @@ class KlassVersion:
         publications (str): Where the classification is published (URL).
         derivedFrom (str): Notes on where the classification was derived from.
         correspondenceTables (list): A list of correspondence-tables of the version.
+
+    Args:
+        version_id (str): The ID of the version.
+        select_level (int, optional): The level in the codelist-data to keep. Defaults to 0.
+        language (str, optional): The language of the version. Defaults to "nb", can be set to "en", or "nn".
+        include_future (bool, optional): If the version should include future versions. Defaults to False.
     """
 
     def __init__(
@@ -138,9 +138,8 @@ class KlassVersion:
         Returns:
             self (KlassVersion): Returns self to make the method more easily chainable.
         """
-        if not select_level:
-            if self.select_level:
-                select_level = self.select_level
+        if not select_level and self.select_level:
+            select_level = self.select_level
         data = pd.json_normalize(self.classificationItems)
         level_map = {
             str(item["levelNumber"]): item["levelName"] for item in self.levels

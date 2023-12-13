@@ -19,11 +19,6 @@ class KlassVariant:
     It sets a new upper level of codes (amount of study points),
     for a set of lower-level existing codes (NUS codes, level 5).
 
-    Args:
-        variant_id (str): The variant_id of the variant. For example: '1959'.
-        select_level (int): The level of the dataset to keep. For example: 5.
-        language (str): The language of the variant to select. For example: 'nb'.
-
     Attributes:
         data (pd.DataFrame): The classificationItems as a pandas dataframe. Usually what you're after?
         variant_id (str): The variant_id of the variant. For example: '36'.
@@ -42,6 +37,11 @@ class KlassVariant:
         select_level (int): The level of the dataset to keep. For example: 0.
         language (str): The language of the variant to select. For example: 'nb'.
         _links (dict): The links returned from the API.
+
+    Args:
+        variant_id (str): The variant_id of the variant. For example: '1959'.
+        select_level (int): The level of the dataset to keep. For example: 5.
+        language (str): The language of the variant to select. For example: 'nb'.
     """
 
     def __init__(
@@ -93,9 +93,8 @@ class KlassVariant:
         self._links: dict[str, dict[str, str]] = result["_links"]
 
         df = pd.json_normalize(self.classificationItems)
-        if not select_level:
-            if self.select_level:
-                select_level = self.select_level
+        if not select_level and self.select_level:
+            select_level = self.select_level
         if select_level:
             self.data = df[df["level"] == str(select_level)]
         else:
@@ -131,7 +130,8 @@ class KlassVariantSearchByName:
     It does not have to be extensive (all filled out), but can, for example,
     redefine upper levels, for some lower-level codes.
 
-    Args:
+    Attributes:
+        data (pd.DataFrame): The codelists from the Variant as a pandas dataframe. Usually what you're after?
         classification_id (str): The classification ID.
         variant_name (str): The start of the variant name.
         from_date (str): The start of the date range.
@@ -144,8 +144,7 @@ class KlassVariantSearchByName:
         language (str): Language of the names, select "en", "nb" or "nn".
         include_future (bool): Whether to include future codes. Defaults to False.
 
-    Attributes:
-        data (pd.DataFrame): The codelists from the Variant as a pandas dataframe. Usually what you're after?
+    Args:
         classification_id (str): The classification ID.
         variant_name (str): The start of the variant name.
         from_date (str): The start of the date range.
