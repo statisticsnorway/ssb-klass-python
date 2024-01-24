@@ -109,7 +109,26 @@ def codes_fake_content():
         '"presentationName":"",'
         '"validFrom":"2021-01-01",'
         '"validTo":"2022-01-01",'
-        '"notes":""}]}'
+        '"notes":""},'
+        '{"code":"2",'
+        '"parentCode":"1",'
+        '"level":"2",'
+        '"name":"Gutt",'
+        '"shortName":"",'
+        '"presentationName":"",'
+        '"validFrom":"2021-01-01",'
+        '"validTo":"2022-01-01",'
+        '"notes":""},'
+        '{"code":"3",'
+        '"parentCode":"2",'
+        '"level":"3",'
+        '"name":"Babygutt",'
+        '"shortName":"",'
+        '"presentationName":"",'
+        '"validFrom":"2021-01-01",'
+        '"validTo":"2022-01-01",'
+        '"notes":""}'
+        "]}"
     )
 
 

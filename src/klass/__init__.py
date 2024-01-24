@@ -17,7 +17,7 @@ def _try_getting_pyproject_toml(e: Exception | None = None) -> str:
     else:
         passed_excep = e
     try:
-        version: str = toml.load("../pyproject.toml")["tool"]["poetry"]["version"]
+        version: str = toml.load("pyproject.toml")["tool"]["poetry"]["version"]
         return version
     except Exception as e:
         version_missing: str = "0.0.0"

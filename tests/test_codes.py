@@ -53,6 +53,14 @@ def test_codes_pivot_level(
     assert len(df)
 
 
+def test_codes_pivot_level_unordered(klass_codes_at_success):
+    klass_codes_at_success.data = klass_codes_at_success.data.sort_values(
+        by="level", ascending=False
+    )
+    df = klass_codes_at_success.pivot_level()
+    assert df.isna().sum().sum() == 0
+
+
 def test_codes_has_str_repr(klass_codes_at_success):
     klass_codes_at_success.from_date = "2023-01-01"
     klass_codes_at_success.language = "en"

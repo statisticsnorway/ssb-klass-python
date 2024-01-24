@@ -43,9 +43,9 @@ def klass_codes_at_success(test_codes_at):
     return klass.KlassCodes(
         36,
         from_date="2023-01-01",
-        to_date="2023-09-30",
-        select_codes="1",
-        select_level="1",
+        # to_date="2023-09-30", # This makes the class actually get from the API instead?
+        # select_codes="1",
+        # select_level="1",
         presentation_name_pattern=r"{code} - {name}",
         language="en",
         include_future=True,
