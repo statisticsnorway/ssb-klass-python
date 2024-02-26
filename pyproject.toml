@@ -16,7 +16,7 @@ Changelog = "https://github.com/statisticsnorway/ssb-klass-python/releases"
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
-dapla-toolbelt = ">=1.3.2"
+dapla-toolbelt = ">=2.0.6"
 python-dateutil = ">=2.8.2"
 toml = ">=0.10.2"
 ipywidgets = ">=8.0.6"
