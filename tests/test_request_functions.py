@@ -1,3 +1,4 @@
+import datetime
 from unittest import mock
 
 import pandas as pd
@@ -5,6 +6,13 @@ import requests
 
 import klass
 import tests
+
+
+def test_convert_datestring():
+    date_time = datetime.datetime.now()
+    date_str = klass.requests.klass_requests.convert_datestring(date_time)
+    assert isinstance(date_str, str)
+    assert len(date_str)
 
 
 @mock.patch.object(requests.Session, "send")

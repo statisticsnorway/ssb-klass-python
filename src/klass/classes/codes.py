@@ -212,7 +212,8 @@ class KlassCodes:
             keep = ["code", "name"]
         df = pd.DataFrame()
         lev_previous = 1
-        for lev in self.data["level"].unique():
+        sorted_levels = sorted(self.data["level"].unique())
+        for lev in sorted_levels:
             temp = self.data[self.data["level"] == lev].copy()
             temp.columns = [f"{c}_{lev}" for c in temp.columns]
             if len(df):

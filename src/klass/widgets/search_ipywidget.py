@@ -95,7 +95,7 @@ def format_classification_text(search_class: KlassSearchClassifications) -> str:
     print(f"{search_class.classifications=}")
     if len(search_class.classifications):
         for cl in search_class.classifications:
-            var_name = "_".join(
+            var_name = "".join(
                 cl["name"]
                 .split(":")[0]
                 .lower()
@@ -104,6 +104,8 @@ def format_classification_text(search_class: KlassSearchClassifications) -> str:
                 .replace("å", "aa")
                 .strip()
             )
+            if var_name[0].isnumeric():
+                var_name = "klass_" + var_name
             var_name_chars = [c if c.isalnum() else "_" for c in var_name]
             var_name_true = "".join([c for c in var_name_chars if c and c != " "])
             if len(var_name_true.split("_")) > 3:

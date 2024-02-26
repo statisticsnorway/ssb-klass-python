@@ -140,7 +140,7 @@ class ClassificationSearchResultsPartType(TypedDict):
 class ClassificationSearchType(TypedDict):
     """The type returned by the classification_search function."""
 
-    _embedded: dict[str, list[ClassificationSearchResultsPartType]]
+    _embedded: NotRequired[dict[str, list[ClassificationSearchResultsPartType]]]
     _links: dict[str, dict[str, str]]
     page: dict[str, int]
 
@@ -211,7 +211,7 @@ class ClassificationFamiliesPartWithNumberType(TypedDict):
 class ClassificationFamiliesType(TypedDict):
     """The type returned by the classificationfamilies function."""
 
-    _embedded: dict[str, list[ClassificationFamiliesPartWithNumberType]]
+    _embedded: NotRequired[dict[str, list[ClassificationFamiliesPartWithNumberType]]]
     _links: dict[str, dict[str, str]]
 
 
