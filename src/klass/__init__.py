@@ -6,6 +6,7 @@ Where data is possible to fit into pandas DataFrames, this will be preferred, bu
 """
 
 import importlib
+import importlib.metadata
 
 import toml
 
