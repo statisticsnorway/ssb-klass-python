@@ -41,7 +41,7 @@ class KlassVersion:
         select_level: int = 0,
         language: str = "nb",
         include_future: bool = False,
-    ):
+    ) -> None:
         """Set up the object with data from the KLASS-API."""
         self.version_id = version_id
         self.select_level = select_level

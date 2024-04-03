@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ssb-klass-python"
-version = "0.0.9"
+version = "0.0.10"
 description = "A Python package built on top of KLASS's API for retrieving classifications, codes, correspondences etc."
 authors = ["Carl Corneil, ssb-pythonistas <ssb-pythonistas@ssb.no>"]
 license = "MIT"
@@ -16,7 +16,7 @@ Changelog = "https://github.com/statisticsnorway/ssb-klass-python/releases"
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
-dapla-toolbelt = ">=1.3.2"
+dapla-toolbelt = ">=2.0.6"
 python-dateutil = ">=2.8.2"
 toml = ">=0.10.2"
 ipywidgets = ">=8.0.6"
@@ -30,7 +30,7 @@ types-toml = ">=0.10.8.7"
 
 [tool.poetry.group.dev.dependencies]
 pygments = ">=2.10.0"
-black = { extras = ["jupyter"], version = ">=23.1.0" }
+black = { extras = ["jupyter"], version = ">=24.3.0" }
 coverage = { extras = ["toml"], version = ">=6.2" }
 darglint = ">=1.8.1"
 furo = ">=2021.11.12"
@@ -55,6 +55,7 @@ myst-parser = { version = ">=0.16.1" }
 [tool.pytest.ini_options]
 pythonpath = ["src"]
 
+
 [tool.coverage.paths]
 source = ["src", "*/site-packages"]
 tests = ["tests", "*/tests"]
@@ -62,6 +63,7 @@ tests = ["tests", "*/tests"]
 [tool.coverage.run]
 branch = true
 source = ["klass", "tests"]
+relative_files = true
 
 [tool.coverage.report]
 show_missing = true
@@ -85,11 +87,22 @@ ignore_missing_imports = true
 force-exclude = true  # Apply excludes to pre-commit
 show-fixes = true
 src = ["src", "tests"]
-target-version = "py39"  # Minimum Python version supported
+target-version = "py310"  # Minimum Python version supported
+
+include = ["*.py", "*.pyi", "**/pyproject.toml", "*.ipynb"]
+extend-exclude = [
+    "__pycache__",
+    "old",
+    ".ipynb_checkpoints",
+    "noxfile.py",
+    "docs/conf.py",
+]
 
 # Ruff rules may be customized as desired: https://docs.astral.sh/ruff/rules/
+[tool.ruff.lint]
 select = [
     "A",    # prevent using keywords that clobber python builtins
+    "ANN",  # check type annotations
     "B",    # bugbear: security warnings
     "D",    # documentation
     "E",    # pycodestyle
@@ -101,43 +114,42 @@ select = [
 ]
 ignore = [
     "ANN101", # Supress missing-type-self.
-    "D100",   # Supress undocumented-public-module. Only doc of public api required.
-    "E402",   # Supress module-import-not-at-top-of-file, needed in jupyter notebooks.
-    "E501",   # Supress line-too-long warnings: trust black's judgement on this one.
-]
-include = ["*.py", "*.pyi", "**/pyproject.toml", "*.ipynb"]
-extend-exclude = [
-    "__pycache__",
-    "old",
-    ".ipynb_checkpoints",
-    "noxfile.py",
-    "docs/conf.py",
-    "*.ipynb",  # Custom ignore for klass-package, notebooks are only for "demo", waiting for a B018 ignore on notebooks in ruff
-    # https://github.com/astral-sh/ruff/pull/8872 <- has been merged in main, but not yet released?
+    "ANN102", # Supress missing-type-cls.
+    "ANN202", # Don't requiere return type annotation for private functions.
+    "ANN401", # Allow type annotation with type Any.
+     "D100",   # Supress undocumented-public-module. Only doc of public api required.
+     "E402",   # Supress module-import-not-at-top-of-file, needed in jupyter notebooks.
+     "E501",   # Supress line-too-long warnings: trust black's judgement on this one.
 ]
 
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 force-single-line = true
 
-[tool.ruff.mccabe]
+[tool.ruff.lint.mccabe]
 max-complexity = 15
 
-[tool.ruff.pydocstyle]
+[tool.ruff.lint.pydocstyle]
 convention = "google"  # You can also use "numpy".
 
-[tool.ruff.pep8-naming]
+[tool.ruff.lint.pep8-naming]
 classmethod-decorators = ["classmethod", "validator", "root_validator", "pydantic.validator"]
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 "*/__init__.py" = ["F401"]
 "**/tests/*" = [
-    # asserts are encouraged in pytest
-    "S101",
-    # return annotations don't add value for test functions
-    "ANN201",
-    # docstrings are overkill for test functions
+    "ANN001",  # type annotations don't add value for test functions
+    "ANN002",  # type annotations don't add value for test functions
+    "ANN003",  # type annotations don't add value for test functions
+    "ANN201",  # type annotations don't add value for test functions
+    "ANN204",  # type annotations don't add value for test functions
+    "ANN205",  # type annotations don't add value for test functions
+    "ANN206",  # type annotations don't add value for test functions
+    "D100",    # docstrings are overkill for test functions
+    "D101",
+    "D102",
     "D103",
     "D100",
+    "S101",    # asserts are encouraged in pytest
 ]
 
 [build-system]

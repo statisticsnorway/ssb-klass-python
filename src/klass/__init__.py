@@ -6,11 +6,11 @@ Where data is possible to fit into pandas DataFrames, this will be preferred, bu
 """
 
 import importlib
+import importlib.metadata
 
 import toml
 
 
-# Split into function for testing
 def _try_getting_pyproject_toml(e: Exception | None = None) -> str:
     if e is None:
         passed_excep: Exception = Exception("")
@@ -34,42 +34,64 @@ except importlib.metadata.PackageNotFoundError as e:
     __version__ = _try_getting_pyproject_toml(e)
 
 
-__all__ = []
+from klass.classes.classification import KlassClassification
+from klass.classes.codes import KlassCodes
+from klass.classes.correspondence import KlassCorrespondence
+from klass.classes.family import KlassFamily
+from klass.classes.search import KlassSearchClassifications
+from klass.classes.search import KlassSearchFamilies
+from klass.classes.variant import KlassVariant
+from klass.classes.variant import KlassVariantSearchByName
+from klass.classes.version import KlassVersion
+from klass.requests.klass_requests import changes
+from klass.requests.klass_requests import classification_by_id
+from klass.requests.klass_requests import classification_search
+from klass.requests.klass_requests import classificationfamilies
+from klass.requests.klass_requests import classificationfamilies_by_id
+from klass.requests.klass_requests import classifications
+from klass.requests.klass_requests import codes
+from klass.requests.klass_requests import codes_at
+from klass.requests.klass_requests import correspondence_table_by_id
+from klass.requests.klass_requests import corresponds
+from klass.requests.klass_requests import corresponds_at
+from klass.requests.klass_requests import variant
+from klass.requests.klass_requests import variant_at
+from klass.requests.klass_requests import variants_by_id
+from klass.requests.klass_requests import version_by_id
+from klass.requests.sections import sections_dict
+from klass.requests.sections import sections_list
+from klass.utility.classification import get_classification
+from klass.utility.codes import get_codes
+from klass.widgets.search_ipywidget import search_classification
 
-# Everything we want to be directly importable from under "klass"-package
-local_imports = {
-    "requests.klass_requests": [
-        "classifications",
-        "classification_search",
-        "classification_by_id",
-        "codes",
-        "codes_at",
-        "version_by_id",
-        "variant",
-        "variant_at",
-        "variants_by_id",
-        "corresponds",
-        "corresponds_at",
-        "correspondence_table_by_id",
-        "changes",
-        "classificationfamilies",
-        "classificationfamilies_by_id",
-    ],
-    "classes.codes": ["KlassCodes"],
-    "classes.correspondence": ["KlassCorrespondence"],
-    "classes.classification": ["KlassClassification"],
-    "classes.family": ["KlassFamily"],
-    "classes.search": ["KlassSearchClassifications", "KlassSearchFamilies"],
-    "requests.sections": ["sections_list", "sections_dict"],
-    "classes.variant": ["KlassVariant", "KlassVariantSearchByName"],
-    "classes.version": ["KlassVersion"],
-    "utility.codes": ["get_codes"],
-    "utility.classification": ["get_classification"],
-    "widgets.search_ipywidget": ["search_classification"],
-}
-
-# Loop that imports local files into this namespace and appends to __all__ for star imports
-for file, funcs in local_imports.items():
-    for func in funcs:
-        globals()[func] = getattr(importlib.import_module(f"klass.{file}", func), func)
-        __all__.append(func)
+__all__ = [
+    "classifications",
+    "classification_search",
+    "classification_by_id",
+    "codes",
+    "codes_at",
+    "version_by_id",
+    "variant",
+    "variant_at",
+    "variants_by_id",
+    "corresponds",
+    "corresponds_at",
+    "correspondence_table_by_id",
+    "changes",
+    "classificationfamilies",
+    "classificationfamilies_by_id",
+    "sections_list",
+    "sections_dict",
+    "KlassCodes",
+    "KlassCorrespondence",
+    "KlassClassification",
+    "KlassFamily",
+    "KlassSearchClassifications",
+    "KlassSearchFamilies",
+    "KlassVariant",
+    "KlassVariantSearchByName",
+    "KlassVersion",
+    "get_codes",
+    "get_classification",
+    "search_classification",
+]

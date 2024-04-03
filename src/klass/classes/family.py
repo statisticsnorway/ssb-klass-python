@@ -20,7 +20,7 @@ class KlassFamily:
         family_id (str): The ID of the family.
     """
 
-    def __init__(self, family_id: str):
+    def __init__(self, family_id: str) -> None:
         """Get the family data from the klass-api, setting it as attributes on the object."""
         self.family_id = family_id
         # Setting for mypy
