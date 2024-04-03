@@ -58,7 +58,7 @@ class KlassClassification:
 
     def __init__(
         self, classification_id: str, language: str = "nb", include_future: bool = False
-    ):
+    ) -> None:
         """Get the data for the classification from the API."""
         self.classification_id = classification_id
         self.language = language

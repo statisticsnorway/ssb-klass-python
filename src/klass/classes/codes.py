@@ -48,7 +48,7 @@ class KlassCodes:
         presentation_name_pattern: str = "",
         language: str = "nb",
         include_future: bool = False,
-    ):
+    ) -> None:
         """Get the data from the KLASS-api belonging to the code-list."""
         self.classification_id = classification_id
         if not from_date:
@@ -187,7 +187,7 @@ class KlassCodes:
                 value = "presentationName"
             else:
                 value = "name"
-        mapping = dict(zip(self.data[key], self.data[value]))
+        mapping = dict(zip(self.data[key], self.data[value], strict=False))
         if other:
             mapping = defaultdict(lambda: other, mapping)
         return mapping

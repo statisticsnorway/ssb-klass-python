@@ -56,7 +56,7 @@ class KlassCorrespondence:
         contain_quarter: int = 0,
         language: str = "nb",
         include_future: bool = False,
-    ):
+    ) -> None:
         """Get the correspondence-data from the API."""
         self.correspondence_id = correspondence_id
         self.source_classification_id = source_classification_id
@@ -197,7 +197,7 @@ class KlassCorrespondence:
         Returns:
             dict | defaultdict: The dictionary of the correspondence.
         """
-        mapping = dict(zip(self.data[key], self.data[value]))
+        mapping = dict(zip(self.data[key], self.data[value], strict=False))
         if other:
             mapping = defaultdict(lambda: other, mapping)
         return mapping

@@ -32,7 +32,7 @@ class KlassSearchClassifications:
         include_codelists: bool = True,  # Opposite default of API, cause why not
         ssbsection: str = "",
         no_dupes: bool = False,
-    ):
+    ) -> None:
         """Get data from the KLASS-api, setting it as attributes on this object."""
         self.query = query
         self.include_codelists = include_codelists
@@ -168,7 +168,7 @@ class KlassSearchFamilies:
         ssbsection: str = "",
         include_codelists: bool = False,
         language: str = "nb",
-    ):
+    ) -> None:
         """Get data from the KLASS-api, setting it as attributes on this object."""
         self.ssbsection = ssbsection
         self.include_codelists = include_codelists

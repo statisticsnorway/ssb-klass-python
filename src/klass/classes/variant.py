@@ -49,7 +49,7 @@ class KlassVariant:
         variant_id: str,
         select_level: int = 0,
         language: str = "nb",
-    ):
+    ) -> None:
         """Get the data from the KLASS-api to populate this objects attributes."""
         self.variant_id = variant_id
         self.select_level = select_level
@@ -169,7 +169,7 @@ class KlassVariantSearchByName:
         presentation_name_pattern: str = "",
         language: str = "nb",
         include_future: bool = False,
-    ):
+    ) -> None:
         """Get the data from the KLASS-api, setting it as attributes on the object."""
         self.classification_id = classification_id
         self.variant_name = variant_name
