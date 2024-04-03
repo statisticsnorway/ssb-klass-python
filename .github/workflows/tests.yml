@@ -17,14 +17,14 @@ jobs:
         include:
           - { python: "3.10", os: "ubuntu-latest", session: "pre-commit" }
           - { python: "3.11", os: "ubuntu-latest", session: "mypy" }
-          - { python: "3.10", os: "ubuntu-latest", session: "mypy" }
+          - { python: "3.12", os: "ubuntu-latest", session: "mypy" }
           - { python: "3.11", os: "ubuntu-latest", session: "tests" }
-          - { python: "3.10", os: "ubuntu-latest", session: "tests" }
-          - { python: "3.11", os: "windows-latest", session: "tests" }
-          - { python: "3.11", os: "macos-latest", session: "tests" }
-          - { python: "3.10", os: "ubuntu-latest", session: "typeguard" }
-          - { python: "3.11", os: "ubuntu-latest", session: "xdoctest" }
-          - { python: "3.10", os: "ubuntu-latest", session: "docs-build" }
+          - { python: "3.12", os: "ubuntu-latest", session: "tests" }
+          - { python: "3.12", os: "windows-latest", session: "tests" }
+          - { python: "3.12", os: "macos-latest", session: "tests" }
+          - { python: "3.11", os: "ubuntu-latest", session: "typeguard" }
+          - { python: "3.12", os: "ubuntu-latest", session: "xdoctest" }
+          - { python: "3.11", os: "ubuntu-latest", session: "docs-build" }
 
     env:
       NOXSESSION: ${{ matrix.session }}
@@ -98,7 +98,7 @@ jobs:
         if: always() && matrix.session == 'tests'
         uses: "actions/upload-artifact@v4"
         with:
-          name: coverage-data-${{ matrix.os }}-${{ matrix.python }}
+          name: coverage-data
           path: ".coverage.*"
 
       - name: Upload documentation
@@ -120,7 +120,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5.0.0
         with:
-          python-version: "3.11"
+          python-version: "3.12"
 
       - name: Upgrade pip
         run: |
@@ -141,7 +141,8 @@ jobs:
       - name: Download coverage data
         uses: actions/download-artifact@v4
         with:
-          name: coverage-data-ubuntu-latest-3.10
+          pattern: coverage-data-*
+          merge-multiple: true
 
       - name: Combine coverage data and display human readable report
         run: |
@@ -154,7 +155,9 @@ jobs:
       # Need to fix coverage source paths for SonarCloud scanning in GitHub actions.
       # Replace root path with /github/workspace (mounted in docker container).
       - name: Override coverage source paths for SonarCloud
-        run: sed -i "s/<source>\/home\/runner\/work\/ssb-klass-python\/ssb-klass-python/<source>\/github\/workspace/g" coverage.xml
+        run: |
+          sed -i "s/<source><\/source>/<source>\/github\/workspace<\/source>/g" coverage.xml
+          sed -i "s/<source>tests/<source>\/github\/workspace\/tests/g" coverage.xml
 
       - name: SonarCloud Scan
         env:
