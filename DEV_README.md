@@ -1,5 +1,11 @@
 # Project setup
 
+## Regenerate documentation into .rst files
+```bash
+poetry run sphinx-apidoc -T -f -t ./docs/templates -o ./docs ./src
+```
+Remove "types" from requests-modules after?
+
 ## Poetry venv
 Installing the dev-dependencies in a new environment can be done with the following command:
 ```bash

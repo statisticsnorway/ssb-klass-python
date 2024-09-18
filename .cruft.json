@@ -5,16 +5,16 @@
   "context": {
     "cookiecutter": {
       "project_name": "ssb-klass-python",
-      "package_name": "ssb_klass_python",
-      "friendly_name": "SSB Klass Python",
+      "package_name": "klass",
+      "friendly_name": "KLASS",
       "copyright_owner": "Statistics Norway",
-      "copyright_year": "2024",
-      "author": "Contact Person",
-      "email": "cfc@ssb.no",
+      "copyright_year": "2023",
+      "author": "Carl Corneil, ssb-pythonistas",
+      "email": "ssb-pythonistas@ssb.no",
       "github_organization": "statisticsnorway",
-      "version": "0.0.0",
+      "version": "0.0.7",
       "license": "MIT",
-      "development_status": "Development Status :: 1 - Planning",
+      "development_status": "Development Status :: 4 - Beta",
       "code_quality_level": "Medium",
       "_copy_without_render": [
         "*.rst_t"

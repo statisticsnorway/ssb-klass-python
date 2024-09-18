@@ -2,7 +2,8 @@ from unittest import mock
 
 import requests
 
-from klass.requests import klass_requests, sections
+from klass.requests import klass_requests
+from klass.requests import sections
 from tests import mock_response_data
 
 
@@ -21,6 +22,14 @@ def classification_by_id_success(mock_response):
 @mock.patch.object(requests.Session, "send")
 def classification_search_success(mock_response):
     mock_response.return_value = mock_response_data.classification_search_fake_content()
+    return klass_requests.classification_search("Nus")
+
+
+@mock.patch.object(requests.Session, "send")
+def classification_search_empty(mock_response):
+    mock_response.return_value = (
+        mock_response_data.classification_search_noresults_fake_content()
+    )
     return klass_requests.classification_search("Nus")
 
 
@@ -100,3 +109,9 @@ def classificationfamilies_by_id_success(mock_response):
 def sections_list_success(mock_response):
     mock_response.return_value = mock_response_data.sections_fake_content()
     return sections.sections_list()
+
+
+@mock.patch.object(requests.Session, "send")
+def sections_dict_success(mock_response):
+    mock_response.return_value = mock_response_data.sections_fake_content()
+    return sections.sections_dict()
