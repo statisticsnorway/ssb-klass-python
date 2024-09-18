@@ -1,7 +1,7 @@
 {
   "template": "https://github.com/statisticsnorway/ssb-project-template-stat",
-  "commit": "cb5e93fbcb298920b3d76770352d823840c49a38",
-  "checkout": "1.0.0",
+  "commit": "24a19b76382ade91935b86ab3ffe6f06de5794cd",
+  "checkout": null,
   "context": {
     "cookiecutter": {
       "full_name": "Carl Corneil",
