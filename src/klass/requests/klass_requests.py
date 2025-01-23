@@ -7,9 +7,6 @@ import dateutil.parser
 import pandas as pd
 import requests
 from dateutil.parser import ParserError
-
-import klass.config as config
-from klass.requests.sections import sections_dict
 from src.klass.requests.klass_types import ClassificationFamiliesByIdType
 from src.klass.requests.klass_types import ClassificationFamiliesType
 from src.klass.requests.klass_types import ClassificationsByIdType
@@ -21,6 +18,9 @@ from src.klass.requests.klass_types import ParamsAfterType
 from src.klass.requests.klass_types import ParamsBeforeType
 from src.klass.requests.klass_types import VariantsByIdType
 from src.klass.requests.klass_types import VersionByIDType
+
+import klass.config as config
+from klass.requests.sections import sections_dict
 from klass.requests.validate import validate_params
 
 # ##########

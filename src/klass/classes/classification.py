@@ -1,4 +1,6 @@
 import pandas as pd
+from src.klass.requests.klass_types import ClassificationsByIdType
+from src.klass.requests.klass_types import VersionPartType
 
 from klass.classes.codes import KlassCodes
 from klass.classes.correspondence import KlassCorrespondence
@@ -6,8 +8,6 @@ from klass.classes.variant import KlassVariantSearchByName
 from klass.classes.version import KlassVersion
 from klass.requests.klass_requests import changes
 from klass.requests.klass_requests import classification_by_id
-from src.klass.requests.klass_types import ClassificationsByIdType
-from src.klass.requests.klass_types import VersionPartType
 
 
 class KlassClassification:

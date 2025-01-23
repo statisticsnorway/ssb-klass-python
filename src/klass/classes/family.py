@@ -1,7 +1,8 @@
-from klass.classes.classification import KlassClassification
-from klass.requests.klass_requests import classificationfamilies_by_id
 from src.klass.requests.klass_types import ClassificationFamiliesByIdType
 from src.klass.requests.klass_types import ClassificationPartWithType
+
+from klass.classes.classification import KlassClassification
+from klass.requests.klass_requests import classificationfamilies_by_id
 
 
 class KlassFamily:
