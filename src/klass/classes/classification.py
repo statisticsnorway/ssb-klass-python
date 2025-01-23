@@ -287,7 +287,7 @@ class KlassClassification:
         language: str = "nb",
         include_future: bool = False,
     ) -> pd.DataFrame:
-        """Return a KlassChanges object of the classification at a specific time or in a specific time range.
+        """Return a dataframe of the classification at a specific time or in a specific time range.
 
         Different from get_codes(), this method does not return all codes,
         but only what has changed since the last update or within the time range.

@@ -91,10 +91,10 @@ class KlassSearchClassifications:
                     ),
                     **cl,
                 }
-                if cl["classification_id"] not in seen and no_dupes:
+                if cl["classification_id"] not in seen:
                     classification_replace.append(cl)
                     seen.append(cl["classification_id"])
-                else:
+                elif not no_dupes:
                     classification_replace.append(cl)
         return classification_replace
 
