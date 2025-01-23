@@ -9,18 +9,18 @@ import requests
 from dateutil.parser import ParserError
 
 import klass.config as config
+from klass.requests.klass_types import ClassificationFamiliesByIdType
+from klass.requests.klass_types import ClassificationFamiliesType
+from klass.requests.klass_types import ClassificationsByIdType
+from klass.requests.klass_types import ClassificationSearchType
+from klass.requests.klass_types import ClassificationsType
+from klass.requests.klass_types import CorrespondenceTableIdType
+from klass.requests.klass_types import CorrespondsType
+from klass.requests.klass_types import ParamsAfterType
+from klass.requests.klass_types import ParamsBeforeType
+from klass.requests.klass_types import VariantsByIdType
+from klass.requests.klass_types import VersionByIDType
 from klass.requests.sections import sections_dict
-from klass.requests.types import ClassificationFamiliesByIdType
-from klass.requests.types import ClassificationFamiliesType
-from klass.requests.types import ClassificationsByIdType
-from klass.requests.types import ClassificationSearchType
-from klass.requests.types import ClassificationsType
-from klass.requests.types import CorrespondenceTableIdType
-from klass.requests.types import CorrespondsType
-from klass.requests.types import ParamsAfterType
-from klass.requests.types import ParamsBeforeType
-from klass.requests.types import VariantsByIdType
-from klass.requests.types import VersionByIDType
 from klass.requests.validate import validate_params
 
 # ##########

@@ -4,8 +4,8 @@ from klass.classes.classification import KlassClassification
 from klass.classes.family import KlassFamily
 from klass.requests.klass_requests import classification_search
 from klass.requests.klass_requests import classificationfamilies
-from klass.requests.types import ClassificationFamiliesPartWithNumberType
-from klass.requests.types import ClassificationSearchResultsPartType
+from klass.requests.klass_types import ClassificationFamiliesPartWithNumberType
+from klass.requests.klass_types import ClassificationSearchResultsPartType
 
 
 class KlassSearchClassifications:

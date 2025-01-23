@@ -1,11 +1,11 @@
 import pandas as pd
 from typing_extensions import Self
 
-from ..requests.klass_requests import version_by_id
-from ..requests.types import CorrespondenceTablesType
-from ..requests.types import VersionByIDType
-from .correspondence import KlassCorrespondence
-from .variant import KlassVariant
+from klass.classes.correspondence import KlassCorrespondence
+from klass.classes.variant import KlassVariant
+from klass.requests.klass_requests import version_by_id
+from klass.requests.klass_types import CorrespondenceTablesType
+from klass.requests.klass_types import VersionByIDType
 
 
 class KlassVersion:
