@@ -20,7 +20,7 @@ jobs:
           fetch-depth: 2
 
       - name: Set up Python
-        uses: actions/setup-python@v5.2.0
+        uses: actions/setup-python@v5.3.0
         with:
           python-version: "3.12"
 
@@ -31,7 +31,8 @@ jobs:
 
       - name: Install Poetry
         run: |
-          pip install -c ${{ github.workspace }}/.github/workflows/constraints.txt poetry
+          pipx install --pip-args "-c ${{ github.workspace }}/.github/workflows/constraints.txt" poetry
+          pipx inject poetry poetry-plugin-export
           poetry --version
 
       - name: Check if there is a parent commit
@@ -60,11 +61,11 @@ jobs:
 
       - name: Publish package on PyPI
         if: steps.check-version.outputs.tag
-        uses: pypa/gh-action-pypi-publish@v1.10.3
+        uses: pypa/gh-action-pypi-publish@v1.12.3
 
       - name: Publish package on TestPyPI
         if: (! steps.check-version.outputs.tag)
-        uses: pypa/gh-action-pypi-publish@v1.10.3
+        uses: pypa/gh-action-pypi-publish@v1.12.3
         with:
           repository-url: https://test.pypi.org/legacy/
 
