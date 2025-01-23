@@ -1,8 +1,8 @@
 import datetime
 
 import dateutil
-from src.klass.requests.klass_types import ParamsAfterType
-from src.klass.requests.klass_types import ParamsBeforeType
+from klass.requests.klass_types import ParamsAfterType
+from klass.requests.klass_types import ParamsBeforeType
 
 import klass.config as config
 from klass.requests.sections import sections_dict

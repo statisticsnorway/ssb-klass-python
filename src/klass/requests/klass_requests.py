@@ -7,17 +7,17 @@ import dateutil.parser
 import pandas as pd
 import requests
 from dateutil.parser import ParserError
-from src.klass.requests.klass_types import ClassificationFamiliesByIdType
-from src.klass.requests.klass_types import ClassificationFamiliesType
-from src.klass.requests.klass_types import ClassificationsByIdType
-from src.klass.requests.klass_types import ClassificationSearchType
-from src.klass.requests.klass_types import ClassificationsType
-from src.klass.requests.klass_types import CorrespondenceTableIdType
-from src.klass.requests.klass_types import CorrespondsType
-from src.klass.requests.klass_types import ParamsAfterType
-from src.klass.requests.klass_types import ParamsBeforeType
-from src.klass.requests.klass_types import VariantsByIdType
-from src.klass.requests.klass_types import VersionByIDType
+from klass.requests.klass_types import ClassificationFamiliesByIdType
+from klass.requests.klass_types import ClassificationFamiliesType
+from klass.requests.klass_types import ClassificationsByIdType
+from klass.requests.klass_types import ClassificationSearchType
+from klass.requests.klass_types import ClassificationsType
+from klass.requests.klass_types import CorrespondenceTableIdType
+from klass.requests.klass_types import CorrespondsType
+from klass.requests.klass_types import ParamsAfterType
+from klass.requests.klass_types import ParamsBeforeType
+from klass.requests.klass_types import VariantsByIdType
+from klass.requests.klass_types import VersionByIDType
 
 import klass.config as config
 from klass.requests.sections import sections_dict

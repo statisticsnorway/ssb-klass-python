@@ -1,5 +1,5 @@
-from src.klass.requests.klass_types import ClassificationFamiliesPartWithNumberType
-from src.klass.requests.klass_types import ClassificationSearchResultsPartType
+from klass.requests.klass_types import ClassificationFamiliesPartWithNumberType
+from klass.requests.klass_types import ClassificationSearchResultsPartType
 from typing_extensions import Self
 
 from klass.classes.classification import KlassClassification

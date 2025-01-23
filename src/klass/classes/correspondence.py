@@ -4,8 +4,8 @@ from datetime import date
 
 import dateutil.parser
 import pandas as pd
-from src.klass.requests.klass_types import CorrespondsType
-from src.klass.requests.klass_types import T_correspondanceMaps
+from klass.requests.klass_types import CorrespondsType
+from klass.requests.klass_types import T_correspondanceMaps
 from typing_extensions import Self
 
 from klass.requests.klass_requests import correspondence_table_by_id

@@ -1,6 +1,6 @@
 import pandas as pd
-from src.klass.requests.klass_types import ClassificationsByIdType
-from src.klass.requests.klass_types import VersionPartType
+from klass.requests.klass_types import ClassificationsByIdType
+from klass.requests.klass_types import VersionPartType
 
 from klass.classes.codes import KlassCodes
 from klass.classes.correspondence import KlassCorrespondence
