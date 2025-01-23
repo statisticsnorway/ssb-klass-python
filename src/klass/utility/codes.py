@@ -1,6 +1,6 @@
 import pandas as pd
 
-from ..classes.codes import KlassCodes
+from klass.classes.codes import KlassCodes
 
 
 def get_codes(

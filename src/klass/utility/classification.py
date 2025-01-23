@@ -1,4 +1,4 @@
-from ..classes.classification import KlassClassification
+from klass.classes.classification import KlassClassification
 
 
 def get_classification(classification_id: str) -> KlassClassification:
