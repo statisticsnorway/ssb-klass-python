@@ -1,10 +1,10 @@
 import datetime
 
 import dateutil
-from klass.requests.klass_types import ParamsAfterType
-from klass.requests.klass_types import ParamsBeforeType
 
 import klass.config as config
+from klass.requests.klass_types import ParamsAfterType
+from klass.requests.klass_types import ParamsBeforeType
 from klass.requests.sections import sections_dict
 
 

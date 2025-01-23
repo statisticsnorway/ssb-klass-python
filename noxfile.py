@@ -142,7 +142,10 @@ def precommit(session: Session) -> None:
 @session(python=python_versions)
 def mypy(session: Session) -> None:
     """Type-check using mypy."""
-    args = session.posargs or ["--explicit-package-bases", "src"]  # , "tests"] #Ignoring tests for now
+    args = session.posargs or [
+        "--explicit-package-bases",
+        "src",
+    ]  # , "tests"] #Ignoring tests for now
     session.install(".")
     session.install("mypy", "pytest")
     session.run("mypy", *args)

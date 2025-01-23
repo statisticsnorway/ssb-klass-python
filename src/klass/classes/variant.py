@@ -1,10 +1,10 @@
 import pandas as pd
-from klass.requests.klass_types import CorrespondenceTablesType
-from klass.requests.klass_types import VariantsByIdType
 
 from klass.requests.klass_requests import variant
 from klass.requests.klass_requests import variant_at
 from klass.requests.klass_requests import variants_by_id
+from klass.requests.klass_types import CorrespondenceTablesType
+from klass.requests.klass_types import VariantsByIdType
 
 
 class KlassVariant:
