@@ -8,8 +8,8 @@ from typing_extensions import Self
 
 from klass.requests.klass_requests import correspondence_table_by_id
 from klass.requests.klass_requests import corresponds
-from klass.requests.types import CorrespondsType
-from klass.requests.types import T_correspondanceMaps
+from src.klass.requests.klass_types import CorrespondsType
+from src.klass.requests.klass_types import T_correspondanceMaps
 
 
 class KlassCorrespondence:

@@ -4,8 +4,8 @@ import dateutil
 
 import klass.config as config
 from klass.requests.sections import sections_dict
-from klass.requests.types import ParamsAfterType
-from klass.requests.types import ParamsBeforeType
+from src.klass.requests.klass_types import ParamsAfterType
+from src.klass.requests.klass_types import ParamsBeforeType
 
 
 def validate_params(params: ParamsBeforeType) -> ParamsAfterType:

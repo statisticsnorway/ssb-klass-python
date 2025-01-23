@@ -2,8 +2,8 @@ import pandas as pd
 from typing_extensions import Self
 
 from ..requests.klass_requests import version_by_id
-from ..requests.types import CorrespondenceTablesType
-from ..requests.types import VersionByIDType
+from ..requests.klass_types import CorrespondenceTablesType
+from ..requests.klass_types import VersionByIDType
 from .correspondence import KlassCorrespondence
 from .variant import KlassVariant
 

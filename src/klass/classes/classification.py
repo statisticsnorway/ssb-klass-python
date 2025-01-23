@@ -6,8 +6,8 @@ from klass.classes.variant import KlassVariantSearchByName
 from klass.classes.version import KlassVersion
 from klass.requests.klass_requests import changes
 from klass.requests.klass_requests import classification_by_id
-from klass.requests.types import ClassificationsByIdType
-from klass.requests.types import VersionPartType
+from src.klass.requests.klass_types import ClassificationsByIdType
+from src.klass.requests.klass_types import VersionPartType
 
 
 class KlassClassification:
