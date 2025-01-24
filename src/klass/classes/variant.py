@@ -1,4 +1,6 @@
+from collections import defaultdict
 import pandas as pd
+
 
 from klass.requests.klass_requests import variant
 from klass.requests.klass_requests import variant_at
@@ -237,3 +239,26 @@ class KlassVariantSearchByName:
             result += f", to the date {self.to_date}"
         result += f".\nPreview of the .data (frist 5 rows):\n{self.data[self.data.columns[:5]].head(5)}"
         return result
+    
+    def to_dict(
+        self,
+        key: str = "code",
+        value: str = "name",
+        other: str = "",
+    ) -> dict[str, str] | defaultdict[str, str]:
+        """Extract two columns from the data, turning them into a dict.
+
+        If you specify a value for "other", returns a defaultdict instead.
+
+        Args:
+            key (str): The name of the column with the values you want as keys.
+            value (str): The name of the column with the values you want as values in your dict.
+            other (str): If key is missing from dict, return this value instead, if you specify an OTHER-value.
+
+        Returns:
+            dict | defaultdict: The extracted columns as a dict or defaultdict.
+        """
+        mapping = dict(zip(self.data[key], self.data[value], strict=False))
+        if other:
+            mapping = defaultdict(lambda: other, mapping)
+        return mapping
