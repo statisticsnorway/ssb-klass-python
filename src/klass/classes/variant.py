@@ -243,22 +243,31 @@ class KlassVariantSearchByName:
     def to_dict(
         self,
         key: str = "code",
-        value: str = "name",
+        value: str = "parentCode",
         other: str = "",
+        remove_na: bool = True, 
+        select_level: int | None = None
     ) -> dict[str, str] | defaultdict[str, str]:
         """Extract two columns from the data, turning them into a dict.
 
         If you specify a value for "other", returns a defaultdict instead.
 
         Args:
-            key (str): The name of the column with the values you want as keys.
-            value (str): The name of the column with the values you want as values in your dict.
-            other (str): If key is missing from dict, return this value instead, if you specify an OTHER-value.
+            key: The name of the column with the values you want as keys.
+            value: The name of the column with the values you want as values in your dict.
+            other: If key is missing from dict, return this value instead, if you specify an OTHER-value.
+            remove_na: Set to False if you want to keep empty mappings over the key and value columns.
+            select_level: Usually you want level 2, not level 1, as level 1 just defines the variants codes / groups.
 
         Returns:
             dict | defaultdict: The extracted columns as a dict or defaultdict.
         """
-        mapping = dict(zip(self.data[key], self.data[value], strict=False))
+        limit_data = self.data
+        if remove_na:
+            limit_data = limit_data[limit_data[[key, value]].notna().all(axis=1)]
+        if select_level:
+            limit_data = limit_data[limit_data["level"].astype("string[pyarrow]") == str(select_level)]
+        mapping = dict(zip(limit_data[key], limit_data[value], strict=False))
         if other:
             mapping = defaultdict(lambda: other, mapping)
         return mapping
