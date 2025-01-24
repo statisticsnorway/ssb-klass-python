@@ -2,6 +2,7 @@ import pandas as pd
 
 from klass.classes.codes import KlassCodes
 from klass.classes.correspondence import KlassCorrespondence
+from klass.classes.variant import KlassVariant
 from klass.classes.variant import KlassVariantSearchByName
 from klass.classes.version import KlassVersion
 from klass.requests.klass_requests import changes
@@ -309,3 +310,29 @@ class KlassClassification:
             language=language,
             include_future=include_future,
         )
+
+    def get_latest_variant_by_name(self, variant_name: str) -> KlassVariant | None:
+        """Attempt to get a single variant from the classification using a search string.
+
+        Args:
+            variant_name: The string to search for amongst the variant names on this classification.
+
+        Raises:
+            ValueError: If the string is not specific enough, and more than a single variant is found.
+
+        Returns:
+            KlassVariant | None: The single variant we found with the search string. Or None if we found no matches.
+        """
+        variants = self.get_version().variants_simple()
+        results: list[str] = []
+        for k, v in variants.items():
+            if variant_name.lower() in v.lower():
+                results.append(k)
+        if len(results) > 1:
+            raise ValueError(
+                "Variant_name maybe not specific enough, getting multiple results."
+            )
+        if len(results) == 0:
+            return None
+        variant_id: str = results[0]
+        return KlassVariant(variant_id)
