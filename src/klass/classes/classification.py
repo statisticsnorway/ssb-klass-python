@@ -333,6 +333,8 @@ class KlassClassification:
                 "Variant_name maybe not specific enough, getting multiple results."
             )
         if len(results) == 0:
-            return None
+            raise ValueError(
+                "No result found, here are the names of the variants:" + ", ".join(variants.values())
+            )
         variant_id: str = results[0]
         return KlassVariant(variant_id)
