@@ -151,6 +151,7 @@ classmethod-decorators = ["classmethod", "validator", "root_validator", "pydanti
     "D100",
     "S101",    # asserts are encouraged in pytest
 ]
+"demo/*.py" = ["B018"]  # Ignore the useless expressions in the notebooks
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

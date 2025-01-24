@@ -1,6 +1,6 @@
 from collections import defaultdict
-import pandas as pd
 
+import pandas as pd
 
 from klass.requests.klass_requests import variant
 from klass.requests.klass_requests import variant_at
@@ -239,14 +239,14 @@ class KlassVariantSearchByName:
             result += f", to the date {self.to_date}"
         result += f".\nPreview of the .data (frist 5 rows):\n{self.data[self.data.columns[:5]].head(5)}"
         return result
-    
+
     def to_dict(
         self,
         key: str = "code",
         value: str = "parentCode",
         other: str = "",
-        remove_na: bool = True, 
-        select_level: int | None = None
+        remove_na: bool = True,
+        select_level: int | None = None,
     ) -> dict[str, str] | defaultdict[str, str]:
         """Extract two columns from the data, turning them into a dict.
 
@@ -266,7 +266,9 @@ class KlassVariantSearchByName:
         if remove_na:
             limit_data = limit_data[limit_data[[key, value]].notna().all(axis=1)]
         if select_level:
-            limit_data = limit_data[limit_data["level"].astype("string[pyarrow]") == str(select_level)]
+            limit_data = limit_data[
+                limit_data["level"].astype("string[pyarrow]") == str(select_level)
+            ]
         mapping = dict(zip(limit_data[key], limit_data[value], strict=False))
         if other:
             mapping = defaultdict(lambda: other, mapping)
