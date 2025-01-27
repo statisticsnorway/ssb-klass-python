@@ -137,7 +137,9 @@ class KlassClassification:
             KlassVersion: A KlassVersion object of the specified ID.
         """
         if not version_id:
-            version_id = sorted(self.versions, key = lambda x: x["validFrom"])[-1]["version_id"]
+            version_id = sorted(self.versions, key=lambda x: x["validFrom"])[-1][
+                "version_id"
+            ]
         if language == "":
             language = self.language
         if include_future is None:
@@ -334,7 +336,8 @@ class KlassClassification:
             )
         if len(results) == 0:
             raise ValueError(
-                "No result found, here are the names of the variants:" + ", ".join(variants.values())
+                "No result found, here are the names of the variants:"
+                + ", ".join(variants.values())
             )
         variant_id: str = results[0]
         return KlassVariant(variant_id)
