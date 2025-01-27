@@ -177,6 +177,42 @@ class KlassVersion:
         """
         return KlassVariant(variant_id, select_level, language)
 
+
+    def get_all_variants(self) -> list[KlassVariant]:
+        """Get all variants of version as a list of KlassVariants.
+        
+        Returns:
+            list[KlassVariant]: List of the variants we found.
+        
+        """
+        return [KlassVariant(id) for id in self.variants_simple()]
+    
+
+    def join_all_variants_on_data(self, shortname_len: int = 3) -> pd.DataFrame:
+        """Join the variants codes onto the main codes of the version.
+        
+        Args:
+            shortname_len: Amount of words from the variants that the new column names will be constructed from.
+
+        Returns:
+            pd.DataFrame: The joined pandas dataframe.
+
+        Raises:
+            If similar column names show up, raises and error, and suggests using more elements to create the column names.
+        """
+        data = self.data.copy()
+        all_variants = self.get_all_variants()
+        unique_codes_data = data["code"].unique()
+        unique_codes_data_dict = dict(zip(unique_codes_data, unique_codes_data, strict=True))
+        col_seen = list(data.columns)
+        for variant in all_variants:
+            mapping = unique_codes_data_dict | variant.to_dict(remove_na=True)
+            shortname = variant.create_shortname(shortname_len=shortname_len)
+            if shortname in col_seen:
+                raise ValueError(f"Colname {shortname} already seen, increase the shortname_len?")
+            data[shortname] = data["code"].map(mapping)
+        return data
+
     def correspondences_simple(self) -> dict[str, dict[str, str]]:
         """Get a simple dictionary of the correspondences.
 
@@ -235,3 +271,13 @@ class KlassVersion:
             language=language,
             include_future=include_future,
         )
+
+    def get_all_correspondences(self) -> list[KlassCorrespondence]:
+        """Get all correspondences of version as a list of KlassCorrespondences.
+        
+        Returns:
+            list[KlassCorrespondence]: List of the correspondences we found.
+        
+        """
+        return [KlassCorrespondence(id) for id in self.correspondences_simple()]
+        
