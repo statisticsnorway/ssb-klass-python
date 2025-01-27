@@ -57,9 +57,9 @@ class KlassVariant:
         self.select_level = select_level
         self.language = language
 
-        self.get_classification_codes()
+        self.get_variant()
 
-    def get_classification_codes(self, select_level: int = 0) -> None:
+    def get_variant(self, select_level: int = 0) -> None:
         """Get the data from the API, setting it as attributes on the object.
 
         The codes are put into the .data attribute.
