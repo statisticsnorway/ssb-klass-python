@@ -323,7 +323,11 @@ class KlassClassification:
         Returns:
             KlassVariant | None: The single variant we found with the search string. Or None if we found no matches.
         """
-        variants = self.get_version().variants_simple()
+        version = self.get_version()
+        print(version)
+        variants = version.variants_simple()
+        print(variants)
+       
         results: list[str] = []
         for k, v in variants.items():
             if variant_name.lower() in v.lower():
@@ -334,7 +338,7 @@ class KlassClassification:
             )
         if len(results) == 0:
             raise ValueError(
-                "No result found, here are the names of the variants:" + ", ".join(variants.values())
+                "No result found, here are the names of the variants:\n" + ",\n".join(variants.values())
             )
         variant_id: str = results[0]
         return KlassVariant(variant_id)
