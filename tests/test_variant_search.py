@@ -17,6 +17,7 @@ def test_variant_has_str_repr(klass_variant_search_success):
     print(klass_variant_search_success)
     repr(klass_variant_search_success)
 
+
 def test_variant_to_dict(klass_variant_search_success):
     dict_check = klass_variant_search_success.to_dict()
     default_dict_check = klass_variant_search_success.to_dict(other="other")

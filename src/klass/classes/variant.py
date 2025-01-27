@@ -117,14 +117,14 @@ class KlassVariant:
         result = f"This is a Klass Variant with the ID of {self.variant_id}."
         result += f"\nPreview of the .data (5 first rows):\n{self.data[self.data.columns[:5]].head(5)}"
         return result
-    
+
     def to_dict(
         self,
         key: str = "code",
         value: str = "parentCode",
         other: str = "",
         remove_na: bool = True,
-        select_level: int | None = None,
+        select_level: int = 0,
     ) -> dict[str, str] | defaultdict[str, str]:
         """Extract two columns from the data, turning them into a dict.
 
@@ -134,7 +134,7 @@ class KlassVariant:
             key: The name of the column with the values you want as keys.
             value: The name of the column with the values you want as values in your dict.
             other: If key is missing from dict, return this value instead, if you specify an OTHER-value.
-            remove_na: Set to False if you want to keep empty mappings over the key and value columns.
+            remove_na: Set to False if you want to keep empty mappings over the key and value columns. Empty is defined as empty strings or NA-types.
             select_level: Usually you want level 2, not level 1, as level 1 just defines the variants codes / groups.
 
         Returns:
@@ -142,7 +142,10 @@ class KlassVariant:
         """
         limit_data = self.data
         if remove_na:
-            limit_data = limit_data[limit_data[[key, value]].notna().all(axis=1)]
+            limit_data = limit_data[
+                (limit_data[[key, value]].notna().all(axis=1))
+                | (limit_data[[key, value]].astype("string") == "")
+            ]
         if select_level:
             limit_data = limit_data[
                 limit_data["level"].astype("string[pyarrow]") == str(select_level)
@@ -153,7 +156,7 @@ class KlassVariant:
         return mapping
 
 
-class KlassVariantSearchByName:
+class KlassVariantSearchByName(KlassVariant):
     """Look up a Variant based on the owning Classifications ID and the start of the Variants name.
 
     The name is put into a URL-parameter, so it might be sensitive to special characters,
@@ -201,7 +204,7 @@ class KlassVariantSearchByName:
         from_date: str,
         to_date: str = "",
         select_codes: str = "",
-        select_level: str = "",
+        select_level: int = 0,
         presentation_name_pattern: str = "",
         language: str = "nb",
         include_future: bool = False,
@@ -218,8 +221,11 @@ class KlassVariantSearchByName:
         self.include_future = include_future
         self.get_variant()
 
-    def get_variant(self) -> None:
+    def get_variant(self, select_level: int = 0) -> None:
         """Actually get the data from the API, called at the end of init."""
+        if select_level == 0:
+            select_level = self.select_level
+
         if self.to_date:
             self.data = variant(
                 classification_id=self.classification_id,
@@ -273,37 +279,3 @@ class KlassVariantSearchByName:
             result += f", to the date {self.to_date}"
         result += f".\nPreview of the .data (frist 5 rows):\n{self.data[self.data.columns[:5]].head(5)}"
         return result
-
-    def to_dict(
-        self,
-        key: str = "code",
-        value: str = "parentCode",
-        other: str = "",
-        remove_na: bool = True,
-        select_level: int | None = None,
-    ) -> dict[str, str] | defaultdict[str, str]:
-        """Extract two columns from the data, turning them into a dict.
-
-        If you specify a value for "other", returns a defaultdict instead.
-
-        Args:
-            key: The name of the column with the values you want as keys.
-            value: The name of the column with the values you want as values in your dict.
-            other: If key is missing from dict, return this value instead, if you specify an OTHER-value.
-            remove_na: Set to False if you want to keep empty mappings over the key and value columns.
-            select_level: Usually you want level 2, not level 1, as level 1 just defines the variants codes / groups.
-
-        Returns:
-            dict | defaultdict: The extracted columns as a dict or defaultdict.
-        """
-        limit_data = self.data
-        if remove_na:
-            limit_data = limit_data[limit_data[[key, value]].notna().all(axis=1)]
-        if select_level:
-            limit_data = limit_data[
-                limit_data["level"].astype("string[pyarrow]") == str(select_level)
-            ]
-        mapping = dict(zip(limit_data[key], limit_data[value], strict=False))
-        if other:
-            mapping = defaultdict(lambda: other, mapping)
-        return mapping

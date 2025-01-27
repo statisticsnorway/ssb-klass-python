@@ -137,7 +137,9 @@ class KlassClassification:
             KlassVersion: A KlassVersion object of the specified ID.
         """
         if not version_id:
-            version_id = sorted(self.versions, key = lambda x: x["validFrom"])[-1]["version_id"]
+            version_id = sorted(self.versions, key=lambda x: x["validFrom"])[-1][
+                "version_id"
+            ]
         if language == "":
             language = self.language
         if include_future is None:
@@ -163,7 +165,7 @@ class KlassClassification:
         from_date: str,
         to_date: str = "",
         select_codes: str = "",
-        select_level: str = "",
+        select_level: int = 0,
         presentation_name_pattern: str = "",
         language: str = "nb",
         include_future: bool = False,
@@ -180,7 +182,7 @@ class KlassClassification:
             to_date (str): The end date of the time period. "YYYY-MM-DD".
             select_codes (str): Limit the result to codes matching this pattern.
                 See rules: https://data.ssb.no/api/klass/v1/api-guide.html#_selectcodes.
-            select_level (str): The level of the version to keep in the data.
+            select_level (int): The level of the version to keep in the data.
             presentation_name_pattern (str): Used to build an alternative presentation name for the codes.
                 See rules: https://data.ssb.no/api/klass/v1/api-guide.html#_presentationnamepattern.
             language (str): The language of the version. "nn", "nb" or "en".
@@ -243,7 +245,7 @@ class KlassClassification:
         from_date: str = "",
         to_date: str = "",
         select_codes: str = "",
-        select_level: str = "",
+        select_level: int = 0,
         presentation_name_pattern: str = "",
         language: str = "",
         include_future: bool | None = None,
@@ -255,7 +257,7 @@ class KlassClassification:
             to_date (str): The end date of the time period. "YYYY-MM-DD".
             select_codes (str): Limit the result to codes matching this pattern.
                 See rules: https://data.ssb.no/api/klass/v1/api-guide.html#_selectcodes.
-            select_level (str): The level of the version to keep in the data.
+            select_level (int): The level of the version to keep in the data.
             presentation_name_pattern (str): Used to build an alternative presentation name for the codes.
                 See rules: https://data.ssb.no/api/klass/v1/api-guide.html#_presentationnamepattern.
             language (str): The language of the version. "nn", "nb" or "en".
@@ -324,10 +326,8 @@ class KlassClassification:
             KlassVariant | None: The single variant we found with the search string. Or None if we found no matches.
         """
         version = self.get_version()
-        print(version)
         variants = version.variants_simple()
-        print(variants)
-       
+
         results: list[str] = []
         for k, v in variants.items():
             if variant_name.lower() in v.lower():
@@ -338,7 +338,8 @@ class KlassClassification:
             )
         if len(results) == 0:
             raise ValueError(
-                "No result found, here are the names of the variants:\n" + ",\n".join(variants.values())
+                "No result found, here are the names of the variants:\n"
+                + ",\n".join(variants.values())
             )
         variant_id: str = results[0]
         return KlassVariant(variant_id)

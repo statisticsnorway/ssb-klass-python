@@ -148,7 +148,7 @@ def codes(
     from_date: str,
     to_date: str = "",
     select_codes: str = "",
-    select_level: str = "",
+    select_level: int = 0,
     presentation_name_pattern: str = "",
     language: str = "nb",
     include_future: bool = False,
@@ -164,7 +164,7 @@ def codes(
     if select_codes:
         params["selectCodes"] = select_codes
     if select_level:
-        params["selectLevel"] = select_level
+        params["selectLevel"] = str(select_level)
     if presentation_name_pattern:
         params["presentationNamePattern"] = presentation_name_pattern
     if language:
@@ -179,7 +179,7 @@ def codes_at(
     classification_id: str,
     date: str,
     select_codes: str = "",
-    select_level: str = "",
+    select_level: int = 0,
     presentation_name_pattern: str = "",
     language: str = "nb",
     include_future: bool = False,
@@ -191,7 +191,7 @@ def codes_at(
     if select_codes:
         params["selectCodes"] = select_codes
     if select_level:
-        params["selectLevel"] = select_level
+        params["selectLevel"] = str(select_level)
     if presentation_name_pattern:
         params["presentationNamePattern"] = presentation_name_pattern
     if language:
@@ -225,7 +225,7 @@ def variant(
     from_date: str,
     to_date: str = "",
     select_codes: str = "",
-    select_level: str = "",
+    select_level: int = 0,
     presentation_name_pattern: str = "",
     language: str = "nb",
     include_future: bool = False,
@@ -242,7 +242,7 @@ def variant(
     if select_codes:
         params["selectCodes"] = select_codes
     if select_level:
-        params["selectLevel"] = select_level
+        params["selectLevel"] = str(select_level)
     if presentation_name_pattern:
         params["presentationNamePattern"] = presentation_name_pattern
     if language:
@@ -259,7 +259,7 @@ def variant_at(
     variant_name: str,
     date: str,
     select_codes: str = "",
-    select_level: str = "",
+    select_level: int = 0,
     presentation_name_pattern: str = "",
     language: str = "nb",
     include_future: bool = False,
@@ -274,7 +274,7 @@ def variant_at(
     if select_codes:
         params["selectCodes"] = select_codes
     if select_level:
-        params["selectLevel"] = select_level
+        params["selectLevel"] = str(select_level)
     if presentation_name_pattern:
         params["presentationNamePattern"] = presentation_name_pattern
     if language:

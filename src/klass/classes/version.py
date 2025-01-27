@@ -30,7 +30,7 @@ class KlassVersion:
 
     Args:
         version_id (str): The ID of the version.
-        select_level (int, optional): The level in the codelist-data to keep. Defaults to 0.
+        select_level (int): The level in the codelist-data to keep. Defaults to 0 (keep all).
         language (str, optional): The language of the version. Defaults to "nb", can be set to "en", or "nn".
         include_future (bool, optional): If the version should include future versions. Defaults to False.
     """
