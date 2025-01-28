@@ -218,9 +218,11 @@ class KlassVersion:
             shortname = create_shortname(variant, shortname_len=shortname_len)
             if shortname in col_seen:
                 raise ValueError(f"Colname {shortname} already seen, increase the shortname_len?")
+            else:
+                col_seen += [shortname]
+
             data[shortname] = data[code_col_name].map(variant.to_dict(remove_na=True))
 
-        
         return data
 
     def correspondences_simple(self) -> dict[str, dict[str, str]]:
@@ -321,6 +323,8 @@ class KlassVersion:
             shortname = create_shortname(correspondence, shortname_len=shortname_len)
             if shortname in col_seen:
                 raise ValueError(f"Colname {shortname} already seen, increase the shortname_len?")
+            else:
+                col_seen += [shortname]
             data[shortname] = data[code_col_name].map(correspondence.to_dict(remove_na=True))
 
         
