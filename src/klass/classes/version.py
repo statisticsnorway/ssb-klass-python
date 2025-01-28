@@ -189,11 +189,16 @@ class KlassVersion:
         return [KlassVariant(variant_id) for variant_id in self.variants_simple()]
     
 
-    def join_all_variants_on_data(self, shortname_len: int = 3) -> pd.DataFrame:
+    def join_all_variants_on_data(self,
+                                  shortname_len: int = 3,
+                                  data_left: pd.DataFrame | None = None,
+                                  code_col_name: str = "code") -> pd.DataFrame:
         """Join the variants codes onto the main codes of the version.
         
         Args:
             shortname_len: Amount of words from the variants that the new column names will be constructed from.
+            data_left: A dataframe containing a column to join all the variants on.
+            code_col_name: The column in the data to join the code on.
 
         Returns:
             pd.DataFrame: The joined pandas dataframe.
@@ -201,17 +206,21 @@ class KlassVersion:
         Raises:
             If similar column names show up, raises and error, and suggests using more elements to create the column names.
         """
-        data = self.data.copy()
+        if isinstance(data_left, pd.DataFrame):
+            data = data_left.copy()
+        else:
+            data = self.data.copy()
+        # Remove all empty columns
+        data.isna().all()
         all_variants = self.get_all_variants()
-        unique_codes_data = data["code"].unique()
-        unique_codes_data_dict = dict(zip(unique_codes_data, unique_codes_data, strict=True))
         col_seen = list(data.columns)
         for variant in all_variants:
-            mapping = unique_codes_data_dict | variant.to_dict(remove_na=True)
             shortname = create_shortname(variant, shortname_len=shortname_len)
             if shortname in col_seen:
                 raise ValueError(f"Colname {shortname} already seen, increase the shortname_len?")
-            data[shortname] = data["code"].map(mapping)
+            data[shortname] = data[code_col_name].map(variant.to_dict(remove_na=True))
+
+        
         return data
 
     def correspondences_simple(self) -> dict[str, dict[str, str]]:
@@ -282,3 +291,37 @@ class KlassVersion:
         """
         return [KlassCorrespondence(corr_id) for corr_id in self.correspondences_simple()]
         
+    
+    def join_all_correspondences_on_data(self,
+                                         shortname_len: int = 3,
+                                         data_left: pd.DataFrame | None = None,
+                                         code_col_name: str = "code") -> pd.DataFrame:
+        """Join the correspondences codes onto the main codes of the version.
+        
+        Args:
+            shortname_len: Amount of words from the variants that the new column names will be constructed from.
+            data_left: A dataframe containing a column to join all the correspondences on.
+            code_col_name: The column in the data to join the code on.
+
+        Returns:
+            pd.DataFrame: The joined pandas dataframe.
+
+        Raises:
+            If similar column names show up, raises and error, and suggests using more elements to create the column names.
+        """
+        if isinstance(data_left, pd.DataFrame):
+            data = data_left.copy()
+        else:
+            data = self.data.copy()
+        # Remove all empty columns
+        data.isna().all()
+        all_correspondences = self.get_all_correspondences()
+        col_seen = list(data.columns)
+        for correspondence in all_correspondences:
+            shortname = create_shortname(correspondence, shortname_len=shortname_len)
+            if shortname in col_seen:
+                raise ValueError(f"Colname {shortname} already seen, increase the shortname_len?")
+            data[shortname] = data[code_col_name].map(correspondence.to_dict(remove_na=True))
+
+        
+        return data
