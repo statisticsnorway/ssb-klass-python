@@ -20,6 +20,20 @@ def create_shortname(elem: Any, shortname_len: int = 3) -> str:
         raise ValueError("Object is missing target/name attribute.")
     else:
         name = elem.name
+    replace = {"og ": "",
+               "and ": "", 
+               "(": "", 
+               ")": "", 
+               "Æ": "Ae",
+               "Ø": "Oe",
+               "Å": "Aa",
+               "æ": "ae",
+               "ø": "oe",
+               "å": "aa",
+               }
+    for k, v in replace.items():
+        name = name.replace(k, v)
+
     parts = name.split(" ")
     if len(parts) < shortname_len:
         shortname_len = len(parts)
