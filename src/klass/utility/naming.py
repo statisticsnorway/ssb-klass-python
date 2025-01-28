@@ -2,10 +2,10 @@ from typing import Any
 
 
 def create_shortname(elem: Any, shortname_len: int = 3) -> str:
-    """Create a column name from an object that has a name attribute.
+    """Create a column name from an object that has a target or name attribute.
     
     Args:
-        elem: The object that has the name attribute.
+        elem: The object that has the target/name attribute.
         shortname_len: The amount of elements from the name attribute to use in the shortname.
 
     Returns:
@@ -14,9 +14,12 @@ def create_shortname(elem: Any, shortname_len: int = 3) -> str:
     Raises:
         ValueError: If the object is missing a name attribute.
     """
-    if not hasattr(elem, "name"):
-        raise ValueError("Object is missing name attribute.")
-    name = elem.name
+    if hasattr(elem, "target"):
+        name = elem.target
+    elif not hasattr(elem, "name"):
+        raise ValueError("Object is missing target/name attribute.")
+    else:
+        name = elem.name
     parts = name.split(" ")
     if len(parts) < shortname_len:
         shortname_len = len(parts)
