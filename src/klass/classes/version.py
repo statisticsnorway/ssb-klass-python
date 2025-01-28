@@ -1,6 +1,7 @@
 import pandas as pd
 from typing_extensions import Self
 
+from klass.utility.naming import create_shortname
 from klass.classes.correspondence import KlassCorrespondence
 from klass.classes.variant import KlassVariant
 from klass.requests.klass_requests import version_by_id
@@ -185,7 +186,7 @@ class KlassVersion:
             list[KlassVariant]: List of the variants we found.
         
         """
-        return [KlassVariant(id) for id in self.variants_simple()]
+        return [KlassVariant(variant_id) for variant_id in self.variants_simple()]
     
 
     def join_all_variants_on_data(self, shortname_len: int = 3) -> pd.DataFrame:
@@ -207,7 +208,7 @@ class KlassVersion:
         col_seen = list(data.columns)
         for variant in all_variants:
             mapping = unique_codes_data_dict | variant.to_dict(remove_na=True)
-            shortname = variant.create_shortname(shortname_len=shortname_len)
+            shortname = create_shortname(variant, shortname_len=shortname_len)
             if shortname in col_seen:
                 raise ValueError(f"Colname {shortname} already seen, increase the shortname_len?")
             data[shortname] = data["code"].map(mapping)
@@ -279,5 +280,5 @@ class KlassVersion:
             list[KlassCorrespondence]: List of the correspondences we found.
         
         """
-        return [KlassCorrespondence(id) for id in self.correspondences_simple()]
+        return [KlassCorrespondence(corr_id) for corr_id in self.correspondences_simple()]
         
