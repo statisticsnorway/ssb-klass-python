@@ -14,12 +14,14 @@ def create_shortname(elem: Any, shortname_len: int = 3) -> str:
     Raises:
         ValueError: If the object is missing a name attribute.
     """
-    if hasattr(elem, "target"):
+    if hasattr(elem, "target") and elem.target:
         name = elem.target
-    elif not hasattr(elem, "name"):
-        raise ValueError("Object is missing target/name attribute.")
+    elif not hasattr(elem, "name") or not elem.name:
+        raise ValueError("Object is missing valid target/name attribute.")
     else:
         name = elem.name
+    print(name)
+    name = name.lower()
     replace = {
         k: ""
         for k in [
@@ -28,9 +30,6 @@ def create_shortname(elem: Any, shortname_len: int = 3) -> str:
     } | {
         "og ": "",
         "and ": "",
-        "Æ": "Ae",
-        "Ø": "Oe",
-        "Å": "Aa",
         "æ": "ae",
         "ø": "oe",
         "å": "aa",
