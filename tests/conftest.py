@@ -58,7 +58,7 @@ def klass_version_success(test_version_success):
     test_version_success.return_value = mock_returns.version_by_id_success()
     return klass.KlassVersion(
         "1954",
-        select_level="1",
+        select_level=1,
         language="en",
         include_future=True,
     )

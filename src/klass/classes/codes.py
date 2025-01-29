@@ -24,7 +24,7 @@ class KlassCodes:
         from_date (str): The start date of the time period. "YYYY-MM-DD".
         to_date (str): The end date of the time period. "YYYY-MM-DD".
         select_codes (str): A list of codes to be selected.
-        select_level (str): A list of levels to be selected.
+        select_level (int): The level to keep in the data.
         presentation_name_pattern (str): A pattern for filtering the code names.
         language (str): The language of the code names. Defaults to "nb".
         include_future (bool): Whether to include future codes. Defaults to False.
@@ -44,7 +44,7 @@ class KlassCodes:
         from_date: str = "",
         to_date: str = "",
         select_codes: str = "",
-        select_level: str = "",
+        select_level: int = 0,
         presentation_name_pattern: str = "",
         language: str = "nb",
         include_future: bool = False,

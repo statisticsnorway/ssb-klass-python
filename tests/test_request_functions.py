@@ -73,7 +73,7 @@ def test_codes(mock_response):
     from_date = "2022-01-01"
     to_date = "2022-12-31"
     select_codes = "1"
-    select_level = "1"
+    select_level = 1
     presentation_name_pattern = "{name} - {code}"
     language = "nn"
     include_future = True
@@ -103,7 +103,7 @@ def test_codes_at(mock_response):
     classification_id = "36"
     date = "2022-01-01"
     select_codes = "1"
-    select_level = "1"
+    select_level = 1
     presentation_name_pattern = "{name} - {code}"
     language = "nn"
     include_future = True
@@ -151,7 +151,7 @@ def test_variant(mock_response):
     from_date = "2022-01-01"
     to_date = "2022-12-31"
     select_codes = "1"
-    select_level = "1"
+    select_level = 1
     presentation_name_pattern = "{name} - {code}"
     language = "nn"
     include_future = True
@@ -182,7 +182,7 @@ def test_variant_at(mock_response):
     variant_name = "Variant name"
     date = "2022-01-01"
     select_codes = "1"
-    select_level = "1"
+    select_level = 1
     presentation_name_pattern = "{name} - {code}"
     language = "nn"
     include_future = True
