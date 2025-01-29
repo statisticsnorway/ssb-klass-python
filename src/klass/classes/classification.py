@@ -366,7 +366,6 @@ class KlassClassification:
             pd.DataFrame: The data from the version, or from data sent to data_left, with the variants and correspondences joined on.
         """
         return self.get_version(version_id).join_all_variants_correspondences_on_data(
-            version_id,
             shortname_len,
             data_left,
             code_col_name,
