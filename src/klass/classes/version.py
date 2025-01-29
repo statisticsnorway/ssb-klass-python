@@ -1,3 +1,5 @@
+from concurrent.futures import ThreadPoolExecutor
+
 import pandas as pd
 from typing_extensions import Self
 
@@ -185,7 +187,8 @@ class KlassVersion:
             list[KlassVariant]: List of the variants we found.
 
         """
-        return [KlassVariant(variant_id) for variant_id in self.variants_simple()]
+        with ThreadPoolExecutor() as executor:
+            return list(executor.map(KlassVariant, self.variants_simple()))
 
     def join_all_variants_on_data(
         self,
@@ -207,7 +210,7 @@ class KlassVersion:
             pd.DataFrame: The joined pandas dataframe.
 
         Raises:
-            If similar column names show up, raises and error, and suggests using more elements to create the column names.
+            ValueError: If similar column names show up, raises and error, and suggests using more elements to create the column names.
         """
         if isinstance(data_left, pd.DataFrame):
             data = data_left.copy()
@@ -302,9 +305,10 @@ class KlassVersion:
             list[KlassCorrespondence]: List of the correspondences we found.
 
         """
-        return [
-            KlassCorrespondence(corr_id) for corr_id in self.correspondences_simple()
-        ]
+        with ThreadPoolExecutor() as executor:
+            return list(
+                executor.map(KlassCorrespondence, self.correspondences_simple())
+            )
 
     def join_all_correspondences_on_data(
         self,
@@ -326,7 +330,7 @@ class KlassVersion:
             pd.DataFrame: The joined pandas dataframe.
 
         Raises:
-            If similar column names show up, raises and error, and suggests using more elements to create the column names.
+            ValueError: If similar column names show up, raises and error, and suggests using more elements to create the column names.
         """
         if isinstance(data_left, pd.DataFrame):
             data = data_left.copy()

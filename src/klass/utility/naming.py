@@ -21,7 +21,10 @@ def create_shortname(elem: Any, shortname_len: int = 3) -> str:
     else:
         name = elem.name
     replace = {
-        k: "" for k in [chr(i) for i in range(33, 127) if not chr(i).isalnum()]
+        k: ""
+        for k in [
+            chr(i) for i in range(33, 127) if not chr(i).isalnum() and chr(i) != "-"
+        ]
     } | {
         "og ": "",
         "and ": "",
