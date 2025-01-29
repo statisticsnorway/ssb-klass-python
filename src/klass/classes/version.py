@@ -192,13 +192,16 @@ class KlassVersion:
     def join_all_variants_on_data(self,
                                   shortname_len: int = 3,
                                   data_left: pd.DataFrame | None = None,
-                                  code_col_name: str = "code") -> pd.DataFrame:
+                                  code_col_name: str = "code",
+                                  include_cols: list[str] | None = None) -> pd.DataFrame:
         """Join the variants codes onto the main codes of the version.
         
         Args:
             shortname_len: Amount of words from the variants that the new column names will be constructed from.
             data_left: A dataframe containing a column to join all the variants on.
             code_col_name: The column in the data to join the code on.
+            include_cols: A list of the columns from the variants you want to include when adding to the data.
+                The "parentCode" is included by default, but you can add ["name"] here to add the label of the variant code.
 
         Returns:
             pd.DataFrame: The joined pandas dataframe.
@@ -210,6 +213,7 @@ class KlassVersion:
             data = data_left.copy()
         else:
             data = self.data.copy()
+        
         # Remove all empty columns
         data.isna().all()
         all_variants = self.get_all_variants()
@@ -222,7 +226,10 @@ class KlassVersion:
                 col_seen += [shortname]
 
             data[shortname] = data[code_col_name].map(variant.to_dict(remove_na=True))
-
+            if include_cols:
+                for col in include_cols:
+                    if col in variant.data.columns:
+                        data[f"{shortname}_{col}"] = data[code_col_name].map(variant.to_dict(value=col, remove_na=True))
         return data
 
     def correspondences_simple(self) -> dict[str, dict[str, str]]:
@@ -297,14 +304,17 @@ class KlassVersion:
     def join_all_correspondences_on_data(self,
                                          shortname_len: int = 3,
                                          data_left: pd.DataFrame | None = None,
-                                         code_col_name: str = "code") -> pd.DataFrame:
+                                         code_col_name: str = "code",
+                                         include_cols: list[str] | None = None) -> pd.DataFrame:
         """Join the correspondences codes onto the main codes of the version.
         
         Args:
-            shortname_len: Amount of words from the variants that the new column names will be constructed from.
+            shortname_len: Amount of words from the correspondences that the new column names will be constructed from.
             data_left: A dataframe containing a column to join all the correspondences on.
             code_col_name: The column in the data to join the code on.
-
+            include_cols: A list of the columns from the correspondences you want to include when adding to the data.
+                The "targetCode" is included by default, but you can add ["targetName"] here to add the label of the correspondence code for example.
+        
         Returns:
             pd.DataFrame: The joined pandas dataframe.
 
@@ -326,6 +336,32 @@ class KlassVersion:
             else:
                 col_seen += [shortname]
             data[shortname] = data[code_col_name].map(correspondence.to_dict(remove_na=True))
+            if include_cols:
+                for col in include_cols:
+                    if col in correspondence.data.columns:
+                        data[f"{shortname}_{col}"] = data[code_col_name].map(correspondence.to_dict(value=col, remove_na=True))
+
+        return data
+    
+    def join_all_variants_correspondences_on_data(
+            self,
+            shortname_len: int = 3,
+            data_left: pd.DataFrame | None = None,
+            code_col_name: str = "code",
+            include_cols: list[str] | None = None) -> pd.DataFrame:
+        """Join both variants and correspondences onto the main code data of the version.
+        
+        Args:
+            shortname_len: Amount of words from the correspondences that the new column names will be constructed from.
+            data_left: A dataframe containing a column to join all the correspondences on. If None will get data from the version.
+            code_col_name: The column in the data to join the code on.
+            include_cols: A list of the columns from the correspondences and variants you want to include when adding to the data.
+                The "targetCode" from correspondences and "parentCode" from variants is included by default, but you can add ["targetName", "name"] here to add the label of the correspondences and varians for example.
+        
+        Returns:
+            pd.DataFrame: The data from the version, or from data sent to data_left, with the variants and correspondences joined on.
+        """
+        data = self.join_all_variants_on_data(shortname_len,data_left, code_col_name, include_cols)
+        return self.join_all_correspondences_on_data(shortname_len, data, code_col_name, include_cols)
 
         
-        return data

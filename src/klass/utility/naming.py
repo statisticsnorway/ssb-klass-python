@@ -29,6 +29,7 @@ def create_shortname(elem: Any, shortname_len: int = 3) -> str:
                "æ": "ae",
                "ø": "oe",
                "å": "aa",
+               "-": "_",  # Overloads the one coming from the first dict
                })
     for k, v in replace.items():
         name = name.replace(k, v)

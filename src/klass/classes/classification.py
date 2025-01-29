@@ -343,3 +343,32 @@ class KlassClassification:
             )
         variant_id: str = results[0]
         return KlassVariant(variant_id)
+
+    def join_all_variants_correspondences_on_data(
+            self,
+            version_id: int = 0,
+            shortname_len: int = 3,
+            data_left: pd.DataFrame | None = None,
+            code_col_name: str = "code",
+            include_cols: list[str] | None = None) -> pd.DataFrame:
+        """Join both variants and correspondences onto the main code data of the version.
+        
+        Args:
+            version_id: If you want, specify the ID of the version. If 0, will get the "latest" version for the classification.
+            shortname_len: Amount of words from the correspondences that the new column names will be constructed from.
+            data_left: A dataframe containing a column to join all the correspondences on. If None will get data from the version.
+            code_col_name: The column in the data to join the code on.
+            include_cols: A list of the columns from the correspondences and variants you want to include when adding to the data.
+                The "targetCode" from correspondences and "parentCode" from variants is included by default, but you can add ["targetName", "name"] here to add the label of the correspondences and varians for example.
+        
+        Returns:
+            pd.DataFrame: The data from the version, or from data sent to data_left, with the variants and correspondences joined on.
+        """
+        return (self
+                .get_version(version_id)
+                .join_all_variants_correspondences_on_data(version_id,
+                                                        shortname_len,
+                                                        data_left,
+                                                        code_col_name,
+                                                        include_cols,
+                                                        ))
