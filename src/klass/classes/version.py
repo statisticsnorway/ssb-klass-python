@@ -1,4 +1,4 @@
-from concurrent.futures import ProcessPoolExecutor
+from concurrent.futures import ThreadPoolExecutor
 
 import pandas as pd
 from typing_extensions import Self
@@ -189,8 +189,7 @@ class KlassVersion:
             list[KlassVariant]: List of the variants we found.
 
         """
-        with ProcessPoolExecutor() as executor:
-            return list(executor.map(KlassVariant, self.variants_simple()))
+        return [KlassVariant(variant_id) for variant_id in self.variants_simple()]
 
     def join_all_variants_on_data(
         self,
@@ -309,10 +308,7 @@ class KlassVersion:
             list[KlassCorrespondence]: List of the correspondences we found.
 
         """
-        with ProcessPoolExecutor() as executor:
-            return list(
-                executor.map(KlassCorrespondence, self.correspondences_simple())
-            )
+        return [KlassCorrespondence(correspondence_id) for correspondence_id in self.correspondences_simple()]
 
     def join_all_correspondences_on_data(
         self,
