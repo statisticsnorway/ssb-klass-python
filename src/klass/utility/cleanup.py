@@ -14,6 +14,6 @@ def drop_empty_columns(data: pd.DataFrame) -> pd.DataFrame:
     drop_cols = list(cols_na[cols_na].index)
     string_cols = data.select_dtypes(["object", "string"])
     for col in string_cols.columns:
-        if (string_cols[col] == "").all():
+        if ((string_cols[col] == "") | string_cols[col].isna()).all():
             drop_cols.append(col)
     return data.drop(columns=drop_cols)
