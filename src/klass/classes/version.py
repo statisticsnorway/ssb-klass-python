@@ -1,5 +1,3 @@
-from concurrent.futures import ThreadPoolExecutor
-
 import pandas as pd
 from typing_extensions import Self
 
@@ -308,7 +306,10 @@ class KlassVersion:
             list[KlassCorrespondence]: List of the correspondences we found.
 
         """
-        return [KlassCorrespondence(correspondence_id) for correspondence_id in self.correspondences_simple()]
+        return [
+            KlassCorrespondence(correspondence_id)
+            for correspondence_id in self.correspondences_simple()
+        ]
 
     def join_all_correspondences_on_data(
         self,
