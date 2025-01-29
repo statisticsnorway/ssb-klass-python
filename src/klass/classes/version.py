@@ -1,4 +1,4 @@
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ProcessPoolExecutor
 
 import pandas as pd
 from typing_extensions import Self
@@ -183,11 +183,13 @@ class KlassVersion:
     def get_all_variants(self) -> list[KlassVariant]:
         """Get all variants of version as a list of KlassVariants.
 
+        Can be quite slow, as it is doing a request to the KLASS-API for every variant.
+
         Returns:
             list[KlassVariant]: List of the variants we found.
 
         """
-        with ThreadPoolExecutor() as executor:
+        with ProcessPoolExecutor() as executor:
             return list(executor.map(KlassVariant, self.variants_simple()))
 
     def join_all_variants_on_data(
@@ -198,6 +200,8 @@ class KlassVersion:
         include_cols: list[str] | None = None,
     ) -> pd.DataFrame:
         """Join the variants codes onto the main codes of the version.
+
+        Can be quite slow, as it is doing a request to the KLASS-API for every variant.
 
         Args:
             shortname_len: Amount of words from the variants that the new column names will be constructed from.
@@ -305,7 +309,7 @@ class KlassVersion:
             list[KlassCorrespondence]: List of the correspondences we found.
 
         """
-        with ThreadPoolExecutor() as executor:
+        with ProcessPoolExecutor() as executor:
             return list(
                 executor.map(KlassCorrespondence, self.correspondences_simple())
             )
@@ -318,6 +322,8 @@ class KlassVersion:
         include_cols: list[str] | None = None,
     ) -> pd.DataFrame:
         """Join the correspondences codes onto the main codes of the version.
+
+        Can be quite slow, as it is doing a request to the KLASS-API for every correspondence.
 
         Args:
             shortname_len: Amount of words from the correspondences that the new column names will be constructed from.
@@ -368,6 +374,8 @@ class KlassVersion:
         include_cols: list[str] | None = None,
     ) -> pd.DataFrame:
         """Join both variants and correspondences onto the main code data of the version.
+
+        Can be quite slow, as it is doing a request to the KLASS-API for every correspondence and variant.
 
         Args:
             shortname_len: Amount of words from the correspondences that the new column names will be constructed from.

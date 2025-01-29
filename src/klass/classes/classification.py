@@ -354,6 +354,8 @@ class KlassClassification:
     ) -> pd.DataFrame:
         """Join both variants and correspondences onto the main code data of the version.
 
+        Can be quite slow, as it is doing a request to the KLASS-API for every variant and Correspondence.
+        
         Args:
             version_id: If you want, specify the ID of the version. If 0, will get the "latest" version for the classification.
             shortname_len: Amount of words from the correspondences that the new column names will be constructed from.
