@@ -181,6 +181,8 @@ class KlassCorrespondence:
         key: str = "sourceCode",
         value: str = "targetCode",
         other: str = "",
+        remove_na: bool = True,
+        select_level: int = 0,
     ) -> dict[str, str | None] | defaultdict[str, str | None]:
         """Extract two columns from the data, turning them into a dict.
 
@@ -193,11 +195,23 @@ class KlassCorrespondence:
             key (str): The name of the column with the values you want as keys.
             value (str): The name of the column with the values you want as values in your dict.
             other (str): The value to use for keys that don't exist in the data.
+            remove_na: Set to False if you want to keep empty mappings over the key and value columns. Empty is defined as empty strings or NA-types.
+            select_level: Keep only a specific level defines the variants codes / groups.
 
         Returns:
             dict | defaultdict: The dictionary of the correspondence.
         """
-        mapping = dict(zip(self.data[key], self.data[value], strict=False))
+        limit_data = self.data
+        if remove_na:
+            limit_data = limit_data[
+                (limit_data[[key, value]].notna().all(axis=1))
+                | (limit_data[[key, value]].astype("string") == "")
+            ]
+        if select_level:
+            limit_data = limit_data[
+                limit_data["level"].astype("string[pyarrow]") == str(select_level)
+            ]
+        mapping = dict(zip(limit_data[key], limit_data[value], strict=False))
         if other:
             mapping = defaultdict(lambda: other, mapping)
         return mapping

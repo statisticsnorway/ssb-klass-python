@@ -2,6 +2,7 @@ import pandas as pd
 
 from klass.classes.codes import KlassCodes
 from klass.classes.correspondence import KlassCorrespondence
+from klass.classes.variant import KlassVariant
 from klass.classes.variant import KlassVariantSearchByName
 from klass.classes.version import KlassVersion
 from klass.requests.klass_requests import changes
@@ -136,7 +137,9 @@ class KlassClassification:
             KlassVersion: A KlassVersion object of the specified ID.
         """
         if not version_id:
-            version_id = self.versions[0]["version_id"]
+            version_id = sorted(self.versions, key=lambda x: x["validFrom"])[-1][
+                "version_id"
+            ]
         if language == "":
             language = self.language
         if include_future is None:
@@ -162,7 +165,7 @@ class KlassClassification:
         from_date: str,
         to_date: str = "",
         select_codes: str = "",
-        select_level: str = "",
+        select_level: int = 0,
         presentation_name_pattern: str = "",
         language: str = "nb",
         include_future: bool = False,
@@ -179,7 +182,7 @@ class KlassClassification:
             to_date (str): The end date of the time period. "YYYY-MM-DD".
             select_codes (str): Limit the result to codes matching this pattern.
                 See rules: https://data.ssb.no/api/klass/v1/api-guide.html#_selectcodes.
-            select_level (str): The level of the version to keep in the data.
+            select_level (int): The level of the version to keep in the data.
             presentation_name_pattern (str): Used to build an alternative presentation name for the codes.
                 See rules: https://data.ssb.no/api/klass/v1/api-guide.html#_presentationnamepattern.
             language (str): The language of the version. "nn", "nb" or "en".
@@ -242,7 +245,7 @@ class KlassClassification:
         from_date: str = "",
         to_date: str = "",
         select_codes: str = "",
-        select_level: str = "",
+        select_level: int = 0,
         presentation_name_pattern: str = "",
         language: str = "",
         include_future: bool | None = None,
@@ -254,7 +257,7 @@ class KlassClassification:
             to_date (str): The end date of the time period. "YYYY-MM-DD".
             select_codes (str): Limit the result to codes matching this pattern.
                 See rules: https://data.ssb.no/api/klass/v1/api-guide.html#_selectcodes.
-            select_level (str): The level of the version to keep in the data.
+            select_level (int): The level of the version to keep in the data.
             presentation_name_pattern (str): Used to build an alternative presentation name for the codes.
                 See rules: https://data.ssb.no/api/klass/v1/api-guide.html#_presentationnamepattern.
             language (str): The language of the version. "nn", "nb" or "en".
@@ -308,4 +311,65 @@ class KlassClassification:
             to_date=to_date,
             language=language,
             include_future=include_future,
+        )
+
+    def get_latest_variant_by_name(self, variant_name: str) -> KlassVariant | None:
+        """Attempt to get a single variant from the classification using a search string.
+
+        Args:
+            variant_name: The string to search for amongst the variant names on this classification.
+
+        Raises:
+            ValueError: If the string is not specific enough, and zero, or more than a single variant is found.
+
+        Returns:
+            KlassVariant | None: The single variant we found with the search string. Or None if we found no matches.
+        """
+        version = self.get_version()
+        variants = version.variants_simple()
+
+        results: list[str] = []
+        for k, v in variants.items():
+            if variant_name.lower() in v.lower():
+                results.append(k)
+        if len(results) > 1:
+            raise ValueError(
+                "Variant_name maybe not specific enough, getting multiple results."
+            )
+        if len(results) == 0:
+            raise ValueError(
+                "No result found, here are the names of the variants:\n"
+                + ",\n".join(variants.values())
+            )
+        variant_id: str = results[0]
+        return KlassVariant(variant_id)
+
+    def join_all_variants_correspondences_on_data(
+        self,
+        version_id: int = 0,
+        shortname_len: int = 3,
+        data_left: pd.DataFrame | None = None,
+        code_col_name: str = "code",
+        include_cols: list[str] | None = None,
+    ) -> pd.DataFrame:
+        """Join both variants and correspondences onto the main code data of the version.
+
+        Can be quite slow, as it is doing a request to the KLASS-API for every variant and Correspondence.
+
+        Args:
+            version_id: If you want, specify the ID of the version. If 0, will get the "latest" version for the classification.
+            shortname_len: Amount of words from the correspondences that the new column names will be constructed from.
+            data_left: A dataframe containing a column to join all the correspondences on. If None will get data from the version.
+            code_col_name: The column in the data to join the code on.
+            include_cols: A list of the columns from the correspondences and variants you want to include when adding to the data.
+                The "targetCode" from correspondences and "parentCode" from variants is included by default, but you can add ["targetName", "name"] here to add the label of the correspondences and varians for example.
+
+        Returns:
+            pd.DataFrame: The data from the version, or from data sent to data_left, with the variants and correspondences joined on.
+        """
+        return self.get_version(version_id).join_all_variants_correspondences_on_data(
+            shortname_len,
+            data_left,
+            code_col_name,
+            include_cols,
         )

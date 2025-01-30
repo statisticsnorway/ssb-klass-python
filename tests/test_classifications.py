@@ -42,3 +42,19 @@ def test_get_version_from_classification(
     assert isinstance(version, klass.KlassVersion)
     assert isinstance(version.data, pd.DataFrame)
     assert len(version.data)
+
+
+@mock.patch("klass.KlassVariant")
+@mock.patch.object(klass.KlassClassification, "get_version")
+def test_get_variant_with_only_search_string(
+    mock_get_version,
+    klassvariant_mock,
+    klass_classification_success,
+    klass_version_success,
+    klass_variant_success,
+):
+    mock_get_version.return_value = klass_version_success
+    klassvariant_mock.return_value = klass_variant_success
+    variant = klass_classification_success.get_latest_variant_by_name("fagskole")
+    assert isinstance(variant.data, pd.DataFrame)
+    assert len(variant.data) > 0
