@@ -147,7 +147,15 @@ def mypy(session: Session) -> None:
         "src",
     ]  # , "tests"] #Ignoring tests for now
     session.install(".")
-    session.install("mypy", "pytest", "pandas-stubs", "types-requests", "types-python-dateutil", "types-toml", "typing-extensions")
+    session.install(
+        "mypy",
+        "pytest",
+        "pandas-stubs",
+        "types-requests",
+        "types-python-dateutil",
+        "types-toml",
+        "typing-extensions",
+    )
     session.run("mypy", *args)
     if not session.posargs:
         session.run("mypy", f"--python-executable={sys.executable}", "noxfile.py")
@@ -191,7 +199,16 @@ def coverage(session: Session) -> None:
 def typeguard(session: Session) -> None:
     """Runtime type checking using Typeguard."""
     session.install(".")
-    session.install("pytest", "typeguard", "pygments", "pandas-stubs", "types-requests", "types-python-dateutil", "types-toml", "typing-extensions")
+    session.install(
+        "pytest",
+        "typeguard",
+        "pygments",
+        "pandas-stubs",
+        "types-requests",
+        "types-python-dateutil",
+        "types-toml",
+        "typing-extensions",
+    )
     session.run("pytest", f"--typeguard-packages={package}", *session.posargs)
 
 
