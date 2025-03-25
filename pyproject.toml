@@ -21,8 +21,8 @@ toml = ">=0.10.2"
 ipywidgets = ">=8.0.6"
 pandas = ">=1.5.3"
 requests = ">=2.31.0"
-ipython = "<9"                # IPython v9 removes Python 3.10 support
-typing-extensions = "^4.12.2"
+ipython = "<9"                 # IPython v9 removes Python 3.10 support
+typing-extensions = ">=4.12.2"
 
 [tool.poetry.group.dev.dependencies]
 pygments = ">=2.10.0"
@@ -45,10 +45,9 @@ sphinx-autobuild = ">=2021.3.14"
 sphinx-autodoc-typehints = ">=1.24.0"
 sphinx-click = ">=3.0.2"
 typeguard = ">=2.13.3"
-typing-extensions = "*"
 xdoctest = { extras = ["colors"], version = ">=0.15.10" }
 myst-parser = { version = ">=0.16.1" }
-deptry = "^0.23.0"
+deptry = ">=0.23.0"
 # Stubs for Mypy
 pandas-stubs = ">=2.1.1.230928"
 types-requests = ">=2.31.0.10"
