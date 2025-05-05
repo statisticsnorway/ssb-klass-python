@@ -1,6 +1,11 @@
-from typing import TypedDict
+from typing import Literal
+from typing import TypeAlias
 
 from typing_extensions import NotRequired
+from typing_extensions import TypedDict
+
+Language: TypeAlias = Literal["nb", "nn", "en"]
+OptionalLanguage: TypeAlias = Language | Literal[""] | None
 
 # Keeping these two as non-class, declarative, as the API operates with the parameter "from", which is a reserved keyword in Python
 ParamsBeforeType = TypedDict(
@@ -15,7 +20,7 @@ ParamsBeforeType = TypedDict(
         "selectLevel": NotRequired[str],
         "presentationNamePattern": NotRequired[str],
         "variantName": NotRequired[str],
-        "targetClassificationId": NotRequired[str],
+        "targetClassificationId": NotRequired[str | int],
         "ssbSection": NotRequired[str],
         "includeCodelists": NotRequired[bool],  # Will be converted to lowercase string
         "changedSince": NotRequired[str],
@@ -25,7 +30,7 @@ ParamsBeforeType = TypedDict(
 ParamsAfterType = TypedDict(
     "ParamsAfterType",
     {
-        "language": NotRequired[str],
+        "language": NotRequired[Language],
         "includeFuture": NotRequired[str],
         "from": NotRequired[str],  # Cant convert to class cause of this thingy
         "to": NotRequired[str],
@@ -116,7 +121,7 @@ class ClassificationsByIdType(TypedDict):
     classificationType: str
     lastModified: str
     description: str
-    primaryLanguage: str
+    primaryLanguage: Language | Literal[""]
     copyrighted: bool
     includeShortName: bool
     includeNotes: bool

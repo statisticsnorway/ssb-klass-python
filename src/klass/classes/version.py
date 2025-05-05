@@ -1,12 +1,14 @@
 import pandas as pd
 from typing_extensions import Self
+from typing_extensions import overload
 
-from klass.classes.correspondence import KlassCorrespondence
-from klass.classes.variant import KlassVariant
-from klass.requests.klass_requests import version_by_id
-from klass.requests.klass_types import CorrespondenceTablesType
-from klass.requests.klass_types import VersionByIDType
-from klass.utility.naming import create_shortname
+from ..requests.klass_requests import version_by_id
+from ..requests.klass_types import CorrespondenceTablesType
+from ..requests.klass_types import Language
+from ..requests.klass_types import VersionByIDType
+from ..utility.naming import create_shortname
+from .correspondence import KlassCorrespondence
+from .variant import KlassVariant
 
 
 class KlassVersion:
@@ -38,9 +40,9 @@ class KlassVersion:
 
     def __init__(
         self,
-        version_id: str,
-        select_level: int = 0,
-        language: str = "nb",
+        version_id: str | int,
+        select_level: int | None = None,
+        language: Language = "nb",
         include_future: bool = False,
     ) -> None:
         """Set up the object with data from the KLASS-API."""
@@ -128,7 +130,7 @@ class KlassVersion:
         )
         return result
 
-    def get_classification_codes(self, select_level: int = 0) -> Self:
+    def get_classification_codes(self, select_level: int | None = None) -> Self:
         """Get the codelists of the version. Inserts the result into the KlassVersions .data attribute, instead of returning it.
 
         Run as a part of the class initialization.
@@ -139,8 +141,7 @@ class KlassVersion:
         Returns:
             self (KlassVersion): Returns self to make the method more easily chainable.
         """
-        if not select_level and self.select_level:
-            select_level = self.select_level
+        select_level = select_level if select_level else self.select_level
         data = pd.json_normalize(self.classificationItems)
         level_map = {
             str(item["levelNumber"]): item["levelName"] for item in self.levels
@@ -164,7 +165,9 @@ class KlassVersion:
 
     @staticmethod
     def get_variant(
-        variant_id: str, select_level: int = 0, language: str = "nb"
+        variant_id: str | int,
+        select_level: int | None = None,
+        language: Language = "nb",
     ) -> KlassVariant:
         """Get a specific variant.
 
@@ -263,14 +266,40 @@ class KlassVersion:
         return tables
 
     @staticmethod
+    @overload
     def get_correspondence(
-        correspondence_id: str = "",
-        source_classification_id: str = "",
-        target_classification_id: str = "",
-        from_date: str = "",
-        to_date: str = "",
+        correspondence_id: str | int = ...,
+        source_classification_id: None = ...,
+        target_classification_id: None = ...,
+        from_date: None = ...,
+        to_date: None = ...,
+        contain_quarter: int = ...,
+        language: Language = ...,
+        include_future: bool = ...,
+    ) -> KlassCorrespondence: ...
+
+    @staticmethod
+    @overload
+    def get_correspondence(
+        correspondence_id: None = ...,
+        source_classification_id: str | int = ...,
+        target_classification_id: str | int = ...,
+        from_date: str = ...,
+        to_date: str | None = ...,
+        contain_quarter: int = ...,
+        language: Language = ...,
+        include_future: bool = ...,
+    ) -> KlassCorrespondence: ...
+
+    @staticmethod
+    def get_correspondence(
+        correspondence_id: str | int | None = None,
+        source_classification_id: str | int | None = None,
+        target_classification_id: str | int | None = None,
+        from_date: str | None = None,
+        to_date: str | None = None,
         contain_quarter: int = 0,
-        language: str = "nb",
+        language: Language = "nb",
         include_future: bool = False,
     ) -> KlassCorrespondence:
         """Get a specific correspondence.
@@ -289,15 +318,15 @@ class KlassVersion:
             KlassCorrespondence: A correspondence object with the specified ID, language, and dates.
         """
         return KlassCorrespondence(
-            correspondence_id=correspondence_id,
-            source_classification_id=source_classification_id,
-            target_classification_id=target_classification_id,
-            from_date=from_date,
-            to_date=to_date,
+            correspondence_id=correspondence_id,  # type: ignore [arg-type]
+            source_classification_id=source_classification_id,  # type: ignore [arg-type]
+            target_classification_id=target_classification_id,  # type: ignore [arg-type]
+            from_date=from_date,  # type: ignore [arg-type]
+            to_date=to_date,  # type: ignore [arg-type]
             contain_quarter=contain_quarter,
             language=language,
             include_future=include_future,
-        )
+        )  # type: ignore [misc]
 
     def get_all_correspondences(self) -> list[KlassCorrespondence]:
         """Get all correspondences of version as a list of KlassCorrespondences.

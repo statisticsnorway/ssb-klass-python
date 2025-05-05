@@ -2,11 +2,12 @@ from collections import defaultdict
 
 import pandas as pd
 
-from klass.requests.klass_requests import variant
-from klass.requests.klass_requests import variant_at
-from klass.requests.klass_requests import variants_by_id
-from klass.requests.klass_types import CorrespondenceTablesType
-from klass.requests.klass_types import VariantsByIdType
+from ..requests.klass_requests import variant
+from ..requests.klass_requests import variant_at
+from ..requests.klass_requests import variants_by_id
+from ..requests.klass_types import CorrespondenceTablesType
+from ..requests.klass_types import Language
+from ..requests.klass_types import VariantsByIdType
 
 
 class KlassVariant:
@@ -48,14 +49,14 @@ class KlassVariant:
 
     def __init__(
         self,
-        variant_id: str,
-        select_level: int = 0,
-        language: str = "nb",
+        variant_id: str | int,
+        select_level: int | None = None,
+        language: Language = "nb",
     ) -> None:
         """Get the data from the KLASS-api to populate this objects attributes."""
         self.variant_id = variant_id
         self.select_level = select_level
-        self.language = language
+        self.language: Language = language
 
         self.get_variant()
 
@@ -122,9 +123,9 @@ class KlassVariant:
         self,
         key: str = "code",
         value: str = "parentCode",
-        other: str = "",
+        other: str | None = None,
         remove_na: bool = True,
-        select_level: int = 0,
+        select_level: int | None = None,
     ) -> dict[str, str] | defaultdict[str, str]:
         """Extract two columns from the data, turning them into a dict.
 
@@ -199,14 +200,14 @@ class KlassVariantSearchByName(KlassVariant):
 
     def __init__(
         self,
-        classification_id: str,
+        classification_id: str | int,
         variant_name: str,
         from_date: str,
-        to_date: str = "",
-        select_codes: str = "",
-        select_level: int = 0,
-        presentation_name_pattern: str = "",
-        language: str = "nb",
+        to_date: str | None = None,
+        select_codes: str | None = None,
+        select_level: int | None = None,
+        presentation_name_pattern: str | None = None,
+        language: Language = "nb",
         include_future: bool = False,
     ) -> None:
         """Get the data from the KLASS-api, setting it as attributes on the object."""
@@ -221,9 +222,9 @@ class KlassVariantSearchByName(KlassVariant):
         self.include_future = include_future
         self.get_variant()
 
-    def get_variant(self, select_level: int = 0) -> None:
+    def get_variant(self, select_level: int | None = None) -> None:
         """Actually get the data from the API, called at the end of init."""
-        if select_level == 0:
+        if not select_level:
             select_level = self.select_level
 
         if self.to_date:

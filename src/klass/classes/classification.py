@@ -1,14 +1,19 @@
-import pandas as pd
+from typing import Literal
 
-from klass.classes.codes import KlassCodes
-from klass.classes.correspondence import KlassCorrespondence
-from klass.classes.variant import KlassVariant
-from klass.classes.variant import KlassVariantSearchByName
-from klass.classes.version import KlassVersion
-from klass.requests.klass_requests import changes
-from klass.requests.klass_requests import classification_by_id
-from klass.requests.klass_types import ClassificationsByIdType
-from klass.requests.klass_types import VersionPartType
+import pandas as pd
+from typing_extensions import Self
+
+from ..requests.klass_requests import changes
+from ..requests.klass_requests import classification_by_id
+from ..requests.klass_types import ClassificationsByIdType
+from ..requests.klass_types import Language
+from ..requests.klass_types import OptionalLanguage
+from ..requests.klass_types import VersionPartType
+from .codes import KlassCodes
+from .correspondence import KlassCorrespondence
+from .variant import KlassVariant
+from .variant import KlassVariantSearchByName
+from .version import KlassVersion
 
 
 class KlassClassification:
@@ -58,11 +63,14 @@ class KlassClassification:
     """
 
     def __init__(
-        self, classification_id: str, language: str = "nb", include_future: bool = False
+        self: Self,
+        classification_id: str | int,
+        language: Language = "nb",
+        include_future: bool = False,
     ) -> None:
         """Get the data for the classification from the API."""
         self.classification_id = classification_id
-        self.language = language
+        self.language: Language = language
         self.include_future = include_future
         result: ClassificationsByIdType = classification_by_id(
             classification_id, language=language, include_future=include_future
@@ -71,7 +79,7 @@ class KlassClassification:
         self.classificationType: str = result.get("classificationType", "")
         self.lastModified: str = result.get("lastModified", "")
         self.description: str = result.get("description", "")
-        self.primaryLanguage: str = result.get("primaryLanguage", "")
+        self.primaryLanguage: Language | Literal[""] = result.get("primaryLanguage", "")
         self.copyrighted: bool = result.get("copyrighted", True)
         self.includeShortName: bool = result.get("includeShortName", False)
         self.includeNotes: bool = result.get("includeNotes", False)
@@ -117,9 +125,9 @@ class KlassClassification:
 
     def get_version(
         self,
-        version_id: int = 0,
-        select_level: int = 0,
-        language: str = "",
+        version_id: int | None = None,
+        select_level: int | None = None,
+        language: OptionalLanguage = None,
         include_future: bool | None = None,
     ) -> KlassVersion:
         """Return a KlassVersion object of the classification based on ID.
@@ -140,7 +148,7 @@ class KlassClassification:
             version_id = sorted(self.versions, key=lambda x: x["validFrom"])[-1][
                 "version_id"
             ]
-        if language == "":
+        if not language:
             language = self.language
         if include_future is None:
             include_future = self.include_future
@@ -163,11 +171,11 @@ class KlassClassification:
         self,
         name: str,
         from_date: str,
-        to_date: str = "",
-        select_codes: str = "",
-        select_level: int = 0,
-        presentation_name_pattern: str = "",
-        language: str = "nb",
+        to_date: str | None = None,
+        select_codes: str | None = None,
+        select_level: int | None = None,
+        presentation_name_pattern: str | None = None,
+        language: Language = "nb",
         include_future: bool = False,
     ) -> KlassVariantSearchByName:
         """Get a KlassVariant by searching for its name under the Variants owned by the current classification.
@@ -206,10 +214,10 @@ class KlassClassification:
 
     def get_correspondence_to(
         self,
-        target_classification_id: str,
+        target_classification_id: str | int,
         from_date: str,
-        to_date: str = "",
-        language: str = "",
+        to_date: str | None = None,
+        language: OptionalLanguage = None,
         include_future: bool | None = None,
     ) -> KlassCorrespondence:
         """Treats the current classification as a source of correspondences, specifying the target's ID and a date.
@@ -227,7 +235,7 @@ class KlassClassification:
             KlassCorrespondence: A KlassCorrespondence object of the correspondences
             between the current classification and the target classification.
         """
-        if language == "":
+        if not language:
             language = self.language
         if include_future is None:
             include_future = self.include_future
@@ -242,12 +250,12 @@ class KlassClassification:
 
     def get_codes(
         self,
-        from_date: str = "",
-        to_date: str = "",
-        select_codes: str = "",
-        select_level: int = 0,
-        presentation_name_pattern: str = "",
-        language: str = "",
+        from_date: str | None = None,
+        to_date: str | None = None,
+        select_codes: str | None = None,
+        select_level: int | None = None,
+        presentation_name_pattern: str | None = None,
+        language: OptionalLanguage = None,
         include_future: bool | None = None,
     ) -> KlassCodes:
         """Return a KlassCodes object of the classification at a specific time or in a specific time range.
@@ -267,7 +275,7 @@ class KlassClassification:
             KlassCodes: A KlassCodes object of the classification at a specific time or in a specific time range.
         """
         # If not passed to method, grab these from the Classification
-        if language == "":
+        if not language:
             language = self.language
         if include_future is None:
             include_future = self.include_future
@@ -286,8 +294,8 @@ class KlassClassification:
     def get_changes(
         self,
         from_date: str,
-        to_date: str = "",
-        language: str = "nb",
+        to_date: str | None = None,
+        language: OptionalLanguage = "nb",
         include_future: bool = False,
     ) -> pd.DataFrame:
         """Return a dataframe of the classification at a specific time or in a specific time range.
@@ -313,7 +321,7 @@ class KlassClassification:
             include_future=include_future,
         )
 
-    def get_latest_variant_by_name(self, variant_name: str) -> KlassVariant | None:
+    def get_latest_variant_by_name(self, variant_name: str) -> KlassVariant:
         """Attempt to get a single variant from the classification using a search string.
 
         Args:
@@ -323,7 +331,7 @@ class KlassClassification:
             ValueError: If the string is not specific enough, and zero, or more than a single variant is found.
 
         Returns:
-            KlassVariant | None: The single variant we found with the search string. Or None if we found no matches.
+            KlassVariant: The single variant we found with the search string. Raises if we found no matches.
         """
         version = self.get_version()
         variants = version.variants_simple()
@@ -346,7 +354,7 @@ class KlassClassification:
 
     def join_all_variants_correspondences_on_data(
         self,
-        version_id: int = 0,
+        version_id: int | None = None,
         shortname_len: int = 3,
         data_left: pd.DataFrame | None = None,
         code_col_name: str = "code",
@@ -357,7 +365,7 @@ class KlassClassification:
         Can be quite slow, as it is doing a request to the KLASS-API for every variant and Correspondence.
 
         Args:
-            version_id: If you want, specify the ID of the version. If 0, will get the "latest" version for the classification.
+            version_id: If you want, specify the ID of the version. If None, will get the "latest" version for the classification.
             shortname_len: Amount of words from the correspondences that the new column names will be constructed from.
             data_left: A dataframe containing a column to join all the correspondences on. If None will get data from the version.
             code_col_name: The column in the data to join the code on.

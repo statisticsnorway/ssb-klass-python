@@ -4,8 +4,9 @@ from datetime import datetime
 import pandas as pd
 from typing_extensions import Self
 
-from klass.requests.klass_requests import codes
-from klass.requests.klass_requests import codes_at
+from ..requests.klass_requests import codes
+from ..requests.klass_requests import codes_at
+from ..requests.klass_types import Language
 
 
 class KlassCodes:
@@ -40,13 +41,13 @@ class KlassCodes:
 
     def __init__(
         self,
-        classification_id: str = "",
-        from_date: str = "",
-        to_date: str = "",
-        select_codes: str = "",
-        select_level: int = 0,
-        presentation_name_pattern: str = "",
-        language: str = "nb",
+        classification_id: str | int,
+        from_date: str | None = None,
+        to_date: str | None = None,
+        select_codes: str | None = None,
+        select_level: int | None = None,
+        presentation_name_pattern: str | None = None,
+        language: Language = "nb",
         include_future: bool = False,
     ) -> None:
         """Get the data from the KLASS-api belonging to the code-list."""
@@ -58,7 +59,7 @@ class KlassCodes:
         self.select_codes = select_codes
         self.select_level = select_level
         self.presentation_name_pattern = presentation_name_pattern
-        self.language = language
+        self.language: Language = language
         self.include_future = include_future
         self.get_codes()
 
@@ -97,7 +98,7 @@ class KlassCodes:
 
     def change_dates(
         self,
-        from_date: str = "",
+        from_date: str | None = None,
         to_date: str = "",
         include_future: bool | None = None,
     ) -> Self:
@@ -166,8 +167,8 @@ class KlassCodes:
     def to_dict(
         self,
         key: str = "code",
-        value: str = "",  # default is "name" if not set
-        other: str = "",
+        value: str | None = None,  # default is "name" if not set
+        other: str | None = None,
     ) -> dict[str, str] | defaultdict[str, str]:
         """Extract two columns from the data, turning them into a dict.
 

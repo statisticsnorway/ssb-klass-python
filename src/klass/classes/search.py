@@ -1,11 +1,12 @@
 from typing_extensions import Self
 
-from klass.classes.classification import KlassClassification
-from klass.classes.family import KlassFamily
-from klass.requests.klass_requests import classification_search
-from klass.requests.klass_requests import classificationfamilies
-from klass.requests.klass_types import ClassificationFamiliesPartWithNumberType
-from klass.requests.klass_types import ClassificationSearchResultsPartType
+from ..requests.klass_requests import classification_search
+from ..requests.klass_requests import classificationfamilies
+from ..requests.klass_types import ClassificationFamiliesPartWithNumberType
+from ..requests.klass_types import ClassificationSearchResultsPartType
+from ..requests.klass_types import Language
+from .classification import KlassClassification
+from .family import KlassFamily
 
 
 class KlassSearchClassifications:
@@ -123,7 +124,9 @@ class KlassSearchClassifications:
 
     @staticmethod
     def get_classification(
-        classification_id: str, language: str = "nb", include_future: bool = False
+        classification_id: str | int,
+        language: Language = "nb",
+        include_future: bool = False,
     ) -> KlassClassification:
         """Get a Classification from the search object.
 
@@ -167,7 +170,7 @@ class KlassSearchFamilies:
         self,
         ssbsection: str = "",
         include_codelists: bool = False,
-        language: str = "nb",
+        language: Language = "nb",
     ) -> None:
         """Get data from the KLASS-api, setting it as attributes on this object."""
         self.ssbsection = ssbsection
@@ -225,7 +228,7 @@ class KlassSearchFamilies:
         self.families = families_replace
         return self
 
-    def get_family(self, family_id: str = "0") -> KlassFamily:
+    def get_family(self, family_id: str | int | None = None) -> KlassFamily:
         """Return a KlassFamily object of the family with the given ID.
 
         If no ID is given, chooses the first Family returned by the search.
