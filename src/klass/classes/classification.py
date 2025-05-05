@@ -53,9 +53,9 @@ class KlassClassification:
         _links (dict): A dictionary containing the links to different possible endpoints using the classification.
 
     Args:
-        classification_id (str): The classification_id of the classification. For example: '36'
-        language (str): The language of the classification. "nb", "nn" or "en".
-        include_future (bool): Whether to include future versions of the classification.
+        classification_id: The classification_id of the classification. For example: '36'
+        language: The language of the classification. "nb", "nn" or "en".
+        include_future: Whether to include future versions of the classification.
 
     Raises:
         ValueError: If the language is not "no", "nb" or "en".
@@ -136,10 +136,10 @@ class KlassClassification:
         If no ID is specified, will get the first version under the attribute .versions on this class.
 
         Args:
-            version_id (int): The version ID of the version.
-            select_level (int): The level of the version to keep in the data.
-            language (str): The language of the version. "nn", "nb" or "en".
-            include_future (bool): Whether to include future versions of the version.
+            version_id: The version ID of the version.
+            select_level: The level of the version to keep in the data.
+            language: The language of the version. "nn", "nb" or "en".
+            include_future: Whether to include future versions of the version.
 
         Returns:
             KlassVersion: A KlassVersion object of the specified ID.
@@ -185,16 +185,16 @@ class KlassClassification:
         redefine upper levels for some lower-level codes.
 
         Args:
-            name (str): The start of the name of the variant.
-            from_date (str): The start date of the time period. "YYYY-MM-DD".
-            to_date (str): The end date of the time period. "YYYY-MM-DD".
-            select_codes (str): Limit the result to codes matching this pattern.
+            name: The start of the name of the variant.
+            from_date: The start date of the time period. "YYYY-MM-DD".
+            to_date: The end date of the time period. "YYYY-MM-DD".
+            select_codes: Limit the result to codes matching this pattern.
                 See rules: https://data.ssb.no/api/klass/v1/api-guide.html#_selectcodes.
-            select_level (int): The level of the version to keep in the data.
-            presentation_name_pattern (str): Used to build an alternative presentation name for the codes.
+            select_level: The level of the version to keep in the data.
+            presentation_name_pattern: Used to build an alternative presentation name for the codes.
                 See rules: https://data.ssb.no/api/klass/v1/api-guide.html#_presentationnamepattern.
-            language (str): The language of the version. "nn", "nb" or "en".
-            include_future (bool): Whether to include future versions of the version.
+            language: The language of the version. "nn", "nb" or "en".
+            include_future: Whether to include future versions of the version.
 
         Returns:
             KlassVariantSearchByName: A KlassVariantSearchByName object based on the classification's ID
@@ -225,11 +225,11 @@ class KlassClassification:
         Returns a KlassCorrespondence object of the correspondences.
 
         Args:
-            target_classification_id (str): The classification ID of the target classification.
-            from_date (str): The start date of the time period. "YYYY-MM-DD".
-            to_date (str): The end date of the time period. "YYYY-MM-DD".
-            language (str): The language of the correspondences. "nn", "nb" or "en".
-            include_future (bool): Whether to include future correspondences.
+            target_classification_id: The classification ID of the target classification.
+            from_date: The start date of the time period. "YYYY-MM-DD".
+            to_date: The end date of the time period. "YYYY-MM-DD".
+            language: The language of the correspondences. "nn", "nb" or "en".
+            include_future: Whether to include future correspondences.
 
         Returns:
             KlassCorrespondence: A KlassCorrespondence object of the correspondences
@@ -261,15 +261,15 @@ class KlassClassification:
         """Return a KlassCodes object of the classification at a specific time or in a specific time range.
 
         Args:
-            from_date (str): The start date of the time period. "YYYY-MM-DD".
-            to_date (str): The end date of the time period. "YYYY-MM-DD".
-            select_codes (str): Limit the result to codes matching this pattern.
+            from_date: The start date of the time period. "YYYY-MM-DD".
+            to_date: The end date of the time period. "YYYY-MM-DD".
+            select_codes: Limit the result to codes matching this pattern.
                 See rules: https://data.ssb.no/api/klass/v1/api-guide.html#_selectcodes.
-            select_level (int): The level of the version to keep in the data.
-            presentation_name_pattern (str): Used to build an alternative presentation name for the codes.
+            select_level: The level of the version to keep in the data.
+            presentation_name_pattern: Used to build an alternative presentation name for the codes.
                 See rules: https://data.ssb.no/api/klass/v1/api-guide.html#_presentationnamepattern.
-            language (str): The language of the version. "nn", "nb" or "en".
-            include_future (bool): Whether to include future versions of the version.
+            language: The language of the version. "nn", "nb" or "en".
+            include_future: Whether to include future versions of the version.
 
         Returns:
             KlassCodes: A KlassCodes object of the classification at a specific time or in a specific time range.
@@ -304,10 +304,10 @@ class KlassClassification:
         but only what has changed since the last update or within the time range.
 
         Args:
-            from_date (str): The start date of the time period. "YYYY-MM-DD".
-            to_date (str): The end date of the time period. "YYYY-MM-DD".
-            language (str): The language of the version. "nn", "nb" or "en".
-            include_future (bool): Whether to include future versions of the version.
+            from_date: The start date of the time period. "YYYY-MM-DD".
+            to_date: The end date of the time period. "YYYY-MM-DD".
+            language: The language of the version. "nn", "nb" or "en".
+            include_future: Whether to include future versions of the version.
 
         Returns:
             pd.DataFrame: A pandas DataFrame of the changes in the classification at a specific time

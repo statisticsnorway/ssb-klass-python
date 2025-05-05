@@ -32,10 +32,10 @@ class KlassVersion:
         correspondenceTables (list): A list of correspondence-tables of the version.
 
     Args:
-        version_id (str): The ID of the version.
-        select_level (int): The level in the codelist-data to keep. Defaults to 0 (keep all).
-        language (str, optional): The language of the version. Defaults to "nb", can be set to "en", or "nn".
-        include_future (bool, optional): If the version should include future versions. Defaults to False.
+        version_id: The ID of the version.
+        select_level: The level in the codelist-data to keep. Defaults to 0 (keep all).
+        language: The language of the version. Defaults to "nb", can be set to "en", or "nn".
+        include_future: If the version should include future versions. Defaults to False.
     """
 
     def __init__(
@@ -136,7 +136,7 @@ class KlassVersion:
         Run as a part of the class initialization.
 
         Args:
-            select_level (int): The level of the version to keep in the data. Setting to 0 keeps all levels.
+            select_level: The level of the version to keep in the data. Setting to 0 keeps all levels.
 
         Returns:
             self (KlassVersion): Returns self to make the method more easily chainable.
@@ -172,9 +172,9 @@ class KlassVersion:
         """Get a specific variant.
 
         Args:
-            variant_id (str): The ID of the variant.
-            select_level (int): The level of the variant to keep in the data. Setting to 0 keeps all levels.
-            language (str): The language of the variant.
+            variant_id: The ID of the variant.
+            select_level: The level of the variant to keep in the data. Setting to 0 keeps all levels.
+            language: The language of the variant.
 
         Returns:
             KlassVariant: A variant object with the specified ID and language.
@@ -305,14 +305,14 @@ class KlassVersion:
         """Get a specific correspondence.
 
         Args:
-            correspondence_id (str): The ID of the correspondence.
-            source_classification_id (str): The ID of the source classification.
-            target_classification_id (str): The ID of the target classification.
-            from_date (str): The start date of the correspondence.
-            to_date (str): The end date of the correspondence.
-            contain_quarter (int): The number of quarters the correspondence should contain.
-            language (str): The language of the correspondence. "nb", "nn" or "en".
-            include_future (bool): If the correspondence should include future correspondences.
+            correspondence_id: The ID of the correspondence.
+            source_classification_id: The ID of the source classification.
+            target_classification_id: The ID of the target classification.
+            from_date: The start date of the correspondence.
+            to_date: The end date of the correspondence.
+            contain_quarter: The number of quarters the correspondence should contain.
+            language: The language of the correspondence. "nb", "nn" or "en".
+            include_future: If the correspondence should include future correspondences.
 
         Returns:
             KlassCorrespondence: A correspondence object with the specified ID, language, and dates.

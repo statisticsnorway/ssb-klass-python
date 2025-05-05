@@ -17,7 +17,7 @@ class KlassFamily:
         _links (dict): A dictionary of API links referencing itself.
 
     Args:
-        family_id (str): The ID of the family.
+        family_id: The ID of the family.
     """
 
     def __init__(self, family_id: str | int) -> None:
@@ -63,7 +63,7 @@ And contains the following classifications:
         """Get a classification from the family.
 
         Args:
-            classification_id (str): The ID of the classification.
+            classification_id: The ID of the classification.
                 If not given, the first classification in the family is returned based on its ID.
 
         Returns:

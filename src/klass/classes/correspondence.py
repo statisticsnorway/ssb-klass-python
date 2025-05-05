@@ -37,15 +37,15 @@ class KlassCorrespondence:
         include_future (bool): If the correspondence should include future correspondences.
 
     Args:
-        correspondence_id (str): The ID of the correspondence.
-        source_classification_id (str): The ID of the source classification.
-        target_classification_id (str): The ID of the target classification.
-        from_date (str): The start date of the correspondence.
-        to_date (str, optional): The end date of the correspondence.
-        contain_quarter (int): The number of quarters the correspondence should contain,
+        correspondence_id: The ID of the correspondence.
+        source_classification_id: The ID of the source classification.
+        target_classification_id: The ID of the target classification.
+        from_date: The start date of the correspondence.
+        to_date: The end date of the correspondence.
+        contain_quarter: The number of quarters the correspondence should contain,
             this replaces the to_date during initialization.
-        language (str): The language of the correspondence. "nb", "nn" or "en".
-        include_future (bool): If the correspondence should include future correspondences.
+        language: The language of the correspondence. "nb", "nn" or "en".
+        include_future: If the correspondence should include future correspondences.
     """
 
     @overload
@@ -194,7 +194,10 @@ class KlassCorrespondence:
         Uses the attribute "contain_quarter" to determine which quarter to use.
 
         Returns:
-            str: The last date of the quarter.
+            The last date of the quarter.
+
+        Raises:
+            ValueError: if from date is missing
         """
         if not self.from_date:
             raise ValueError(
@@ -224,9 +227,9 @@ class KlassCorrespondence:
         'targetCode', 'targetName', 'targetShortName', 'validFrom', 'validTo'.
 
         Args:
-            key (str): The name of the column with the values you want as keys.
-            value (str): The name of the column with the values you want as values in your dict.
-            other (str): The value to use for keys that don't exist in the data.
+            key: The name of the column with the values you want as keys.
+            value: The name of the column with the values you want as values in your dict.
+            other: The value to use for keys that don't exist in the data.
             remove_na: Set to False if you want to keep empty mappings over the key and value columns. Empty is defined as empty strings or NA-types.
             select_level: Keep only a specific level defines the variants codes / groups.
 

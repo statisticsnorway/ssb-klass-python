@@ -20,10 +20,10 @@ class KlassSearchClassifications:
         no_dupes (bool): Whether to remove duplicates from the search results.
 
     Args:
-        query (str): The search query.
-        include_codelists (bool): Whether to include codelists in the search results.
-        ssbsection (str): The SSB section who owns the classification you are searching for.
-        no_dupes (bool): Whether to remove duplicates from the search results.
+        query: The search query.
+        include_codelists: Whether to include codelists in the search results.
+        ssbsection: The SSB section who owns the classification you are searching for.
+        no_dupes: Whether to remove duplicates from the search results.
             (Usually caused by languages showing up multiple times)
     """
 
@@ -75,8 +75,8 @@ class KlassSearchClassifications:
         """Extract id from each classification, removing dupes.
 
         Args:
-            classifications (list): The classifications to clean.
-            no_dupes (bool): Set to True if you want equal results to be filtered out.
+            classifications: The classifications to clean.
+            no_dupes: Set to True if you want equal results to be filtered out.
 
         Returns:
             list: The cleaned classifications.
@@ -131,10 +131,10 @@ class KlassSearchClassifications:
         """Get a Classification from the search object.
 
         Args:
-            classification_id (str): The classification ID to get.
-            language (str): The language to get the classification in.
+            classification_id: The classification ID to get.
+            language: The language to get the classification in.
                 Default: "nb" for Norwegian, "nn" for Nynorsk, "en" for English.
-            include_future (bool): Whether to include future codelists.
+            include_future: Whether to include future codelists.
 
         Returns:
             KlassClassification: The classification object.
@@ -160,9 +160,9 @@ class KlassSearchFamilies:
     """Search for families in the Klass API.
 
     Args:
-        ssbsection (str): The SSB section who owns the family you are searching for.
-        include_codelists (bool): Whether to include codelists in the search.
-        language (str): The language to use in the search.
+        ssbsection: The SSB section who owns the family you are searching for.
+        include_codelists: Whether to include codelists in the search.
+        language: The language to use in the search.
     Default: "nb" for Norwegian, "nn" for Nynorsk, "en" for English.
     """
 
@@ -234,7 +234,7 @@ class KlassSearchFamilies:
         If no ID is given, chooses the first Family returned by the search.
 
         Args:
-            family_id (str): The family ID to get.
+            family_id: The family ID to get.
 
         Returns:
             KlassFamily: The family object.

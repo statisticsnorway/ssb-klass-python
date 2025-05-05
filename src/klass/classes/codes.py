@@ -21,14 +21,14 @@ class KlassCodes:
         to_date (str): The end date of the time period. "YYYY-MM-DD".
 
     Args:
-        classification_id (str): The classification ID.
-        from_date (str): The start date of the time period. "YYYY-MM-DD".
-        to_date (str): The end date of the time period. "YYYY-MM-DD".
-        select_codes (str): A list of codes to be selected.
-        select_level (int): The level to keep in the data.
-        presentation_name_pattern (str): A pattern for filtering the code names.
-        language (str): The language of the code names. Defaults to "nb".
-        include_future (bool): Whether to include future codes. Defaults to False.
+        classification_id: The classification ID.
+        from_date: The start date of the time period. "YYYY-MM-DD".
+        to_date: The end date of the time period. "YYYY-MM-DD".
+        select_codes: A list of codes to be selected.
+        select_level: The level to keep in the data.
+        presentation_name_pattern: A pattern for filtering the code names.
+        language: The language of the code names. Defaults to "nb".
+        include_future: Whether to include future codes. Defaults to False.
 
     Raises:
         ValueError: If from_date or to_date is not a valid date or date-string YYYY-MM-DD.
@@ -105,9 +105,9 @@ class KlassCodes:
         """Change the dates of the codelist and get the data again based on new dates.
 
         Args:
-            from_date (str): The start date of the time period. "YYYY-MM-DD".
-            to_date (str): The end date of the time period. "YYYY-MM-DD".
-            include_future (bool): Whether to include future codes.
+            from_date: The start date of the time period. "YYYY-MM-DD".
+            to_date: The end date of the time period. "YYYY-MM-DD".
+            include_future: Whether to include future codes.
 
         Returns:
             self (KlassSearchFamilies): Returns self to make the method more easily chainable.
@@ -129,7 +129,7 @@ class KlassCodes:
         the date specified by self.from_date.
 
         Args:
-            raise_on_empty_data (bool): Whether to raise an error if the returned dataframe is empty. Defaults to True.
+            raise_on_empty_data: Whether to raise an error if the returned dataframe is empty. Defaults to True.
 
         Returns:
             self (KlassSearchFamilies): Returns self to make the method more easily chainable.
@@ -175,9 +175,9 @@ class KlassCodes:
         If you specify a value for "other", returns a defaultdict instead.
 
         Args:
-            key (str): The name of the column with the values you want as keys.
-            value (str): The name of the column with the values you want as values in your dict.
-            other (str): If key is missing from dict, return this value instead, if you specify an OTHER-value.
+            key: The name of the column with the values you want as keys.
+            value: The name of the column with the values you want as values in your dict.
+            other: If key is missing from dict, return this value instead, if you specify an OTHER-value.
 
         Returns:
             dict | defaultdict: The extracted columns as a dict or defaultdict.
@@ -202,7 +202,7 @@ class KlassCodes:
         First envisioned by @mfmssb
 
         Args:
-            keep (list[str]): The start of the names of the columns you want to keep when done.
+            keep: The start of the names of the columns you want to keep when done.
                 Default is ["code", "name"], but other possibilities are "presentationName",
                 "level", "shortName", "validTo", "validFrom", and "notes".
 

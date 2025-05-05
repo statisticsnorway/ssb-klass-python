@@ -42,9 +42,9 @@ class KlassVariant:
         _links (dict): The links returned from the API.
 
     Args:
-        variant_id (str): The variant_id of the variant. For example: '1959'.
-        select_level (int): The level of the dataset to keep. For example: 5.
-        language (str): The language of the variant to select. For example: 'nb'.
+        variant_id: The variant_id of the variant. For example: '1959'.
+        select_level: The level of the dataset to keep. For example: 5.
+        language: The language of the variant to select. For example: 'nb'.
     """
 
     def __init__(
@@ -67,7 +67,7 @@ class KlassVariant:
         Other keys are added dynamically to the object, like classificationItems.
 
         Args:
-            select_level (int): The level of the dataset to keep. For example: 0.
+            select_level: The level of the dataset to keep. For example: 0.
         """
         result: VariantsByIdType = variants_by_id(self.variant_id, self.language)
         self.name: str = result["name"]
@@ -185,17 +185,17 @@ class KlassVariantSearchByName(KlassVariant):
         include_future (bool): Whether to include future codes. Defaults to False.
 
     Args:
-        classification_id (str): The classification ID.
-        variant_name (str): The start of the variant name.
-        from_date (str): The start of the date range.
-        to_date (str): The end of the date range.
-        select_codes (str): Limit the result to codes matching this pattern.
+        classification_id: The classification ID.
+        variant_name: The start of the variant name.
+        from_date: The start of the date range.
+        to_date: The end of the date range.
+        select_codes: Limit the result to codes matching this pattern.
             See rules: https://data.ssb.no/api/klass/v1/api-guide.html#_selectcodes
-        select_level (str): The level of codes to keep in the dataset.
-        presentation_name_pattern (str): Used to build an alternative presentation name for the codes.
+        select_level: The level of codes to keep in the dataset.
+        presentation_name_pattern: Used to build an alternative presentation name for the codes.
             See rules: https://data.ssb.no/api/klass/v1/api-guide.html#_presentationnamepattern
-        language (str): Language of the names, select "en", "nb" or "nn".
-        include_future (bool): Whether to include future codes. Defaults to False.
+        language: Language of the names, select "en", "nb" or "nn".
+        include_future: Whether to include future codes. Defaults to False.
     """
 
     def __init__(
