@@ -18,6 +18,9 @@ ParamsBeforeType = TypedDict(
         "date": NotRequired[str],
         "selectCodes": NotRequired[str],
         "selectLevel": NotRequired[str],
+        "level": NotRequired[
+            str
+        ],  # Mirrors "selectLevel" on variant and variantAt - Remove in future if API is fixed to follow docs?
         "presentationNamePattern": NotRequired[str],
         "variantName": NotRequired[str],
         "targetClassificationId": NotRequired[str | int],
@@ -37,6 +40,9 @@ ParamsAfterType = TypedDict(
         "date": NotRequired[str],
         "selectCodes": NotRequired[str],
         "selectLevel": NotRequired[str],
+        "level": NotRequired[
+            str
+        ],  # Mirrors "selectLevel" on variant and variantAt - Remove in future if API is fixed to follow docs?
         "presentationNamePattern": NotRequired[str],
         "variantName": NotRequired[str],
         "targetClassificationId": NotRequired[str],

@@ -246,7 +246,9 @@ def variant(
     if select_codes:
         params["selectCodes"] = select_codes
     if select_level:
-        params["selectLevel"] = str(select_level)
+        params["level"] = str(
+            select_level
+        )  # Difference between API and docs, docs says "selectLevel", but API just has "level" implemented
     if presentation_name_pattern:
         params["presentationNamePattern"] = presentation_name_pattern
     if language:
@@ -278,7 +280,9 @@ def variant_at(
     if select_codes:
         params["selectCodes"] = select_codes
     if select_level:
-        params["selectLevel"] = str(select_level)
+        params["level"] = str(
+            select_level
+        )  # Difference between API and docs, docs says "selectLevel", but API just has "level" implemented
     if presentation_name_pattern:
         params["presentationNamePattern"] = presentation_name_pattern
     if language:
