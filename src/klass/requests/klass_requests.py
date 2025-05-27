@@ -19,7 +19,9 @@ from ..requests.klass_types import CorrespondsType
 from ..requests.klass_types import Language
 from ..requests.klass_types import OptionalLanguage
 from ..requests.klass_types import ParamsAfterType
+from ..requests.klass_types import ParamsAfterTypeWrongLevel
 from ..requests.klass_types import ParamsBeforeType
+from ..requests.klass_types import ParamsBeforeTypeWrongLevel
 from ..requests.klass_types import VariantsByIdType
 from ..requests.klass_types import VersionByIDType
 from ..requests.sections import sections_dict
@@ -237,7 +239,7 @@ def variant(
     """Get from the variant-endpoint."""
     url = config.BASE_URL + URL_PART_CLASS + str(classification_id) + "/variant"
     from_date = convert_datestring(from_date, "yyyy-mm-dd")
-    params: ParamsBeforeType = {
+    params: ParamsBeforeTypeWrongLevel = {
         "variantName": variant_name,
         "from": from_date,
     }
@@ -253,7 +255,7 @@ def variant(
         params["language"] = language
     if include_future:
         params["includeFuture"] = include_future
-    params_final: ParamsAfterType = validate_params(params)
+    params_final: ParamsAfterTypeWrongLevel = validate_params(params)
     result: pd.DataFrame = pd.json_normalize(get_json(url, params_final)["codes"])
     return result
 
@@ -271,7 +273,7 @@ def variant_at(
     """Get from the variantAt-endpoint."""
     url = config.BASE_URL + URL_PART_CLASS + str(classification_id) + "/variantAt"
     date = convert_datestring(date, "yyyy-mm-dd")
-    params: ParamsBeforeType = {
+    params: ParamsBeforeTypeWrongLevel = {
         "variantName": variant_name,
         "date": date,
     }
@@ -286,7 +288,7 @@ def variant_at(
     if include_future:
         params["includeFuture"] = include_future
 
-    params_final: ParamsAfterType = validate_params(params)
+    params_final: ParamsAfterTypeWrongLevel = validate_params(params)
     result: pd.DataFrame = pd.json_normalize(get_json(url, params_final)["codes"])
     return result
 

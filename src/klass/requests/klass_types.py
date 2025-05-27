@@ -27,6 +27,25 @@ ParamsBeforeType = TypedDict(
         "query": NotRequired[str],
     },
 )
+ParamsBeforeTypeWrongLevel = TypedDict(
+    "ParamsBeforeType",
+    {
+        "language": NotRequired[str],
+        "includeFuture": NotRequired[bool],  # Will be converted to lowercase string
+        "from": NotRequired[str],  # Cant convert to class cause of this thingy
+        "to": NotRequired[str],
+        "date": NotRequired[str],
+        "selectCodes": NotRequired[str],
+        "level": NotRequired[str],  # If this diff is no longer needed, delete this whole type
+        "presentationNamePattern": NotRequired[str],
+        "variantName": NotRequired[str],
+        "targetClassificationId": NotRequired[str | int],
+        "ssbSection": NotRequired[str],
+        "includeCodelists": NotRequired[bool],  # Will be converted to lowercase string
+        "changedSince": NotRequired[str],
+        "query": NotRequired[str],
+    },
+)
 ParamsAfterType = TypedDict(
     "ParamsAfterType",
     {
@@ -37,6 +56,25 @@ ParamsAfterType = TypedDict(
         "date": NotRequired[str],
         "selectCodes": NotRequired[str],
         "selectLevel": NotRequired[str],
+        "presentationNamePattern": NotRequired[str],
+        "variantName": NotRequired[str],
+        "targetClassificationId": NotRequired[str],
+        "ssbSection": NotRequired[str],
+        "includeCodelists": NotRequired[str],
+        "changedSince": NotRequired[str],
+        "query": NotRequired[str],
+    },
+)
+ParamsAfterTypeWrongLevel = TypedDict(
+    "ParamsAfterType",
+    {
+        "language": NotRequired[Language],
+        "includeFuture": NotRequired[str],
+        "from": NotRequired[str],  # Cant convert to class cause of this thingy
+        "to": NotRequired[str],
+        "date": NotRequired[str],
+        "selectCodes": NotRequired[str],
+        "level": NotRequired[str],
         "presentationNamePattern": NotRequired[str],
         "variantName": NotRequired[str],
         "targetClassificationId": NotRequired[str],

@@ -27,6 +27,8 @@ def validate_params(params: ParamsBeforeType) -> ParamsAfterType:
         new_params["selectCodes"] = validate_select_codes(params["selectCodes"])
     if "selectLevel" in params:
         new_params["selectLevel"] = validate_whole_number(params["selectLevel"])
+    if "level" in params:
+        new_params["selectLevel"] = validate_whole_number(params["level"])
     if "presentationNamePattern" in params:
         new_params["presentationNamePattern"] = validate_presentation_name_patterns(
             params["presentationNamePattern"]
