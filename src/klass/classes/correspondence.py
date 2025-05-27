@@ -5,11 +5,13 @@ from datetime import date
 import dateutil.parser
 import pandas as pd
 from typing_extensions import Self
+from typing_extensions import overload
 
-from klass.requests.klass_requests import correspondence_table_by_id
-from klass.requests.klass_requests import corresponds
-from klass.requests.klass_types import CorrespondsType
-from klass.requests.klass_types import T_correspondanceMaps
+from ..requests.klass_requests import correspondence_table_by_id
+from ..requests.klass_requests import corresponds
+from ..requests.klass_types import CorrespondsType
+from ..requests.klass_types import Language
+from ..requests.klass_types import T_correspondanceMaps
 
 
 class KlassCorrespondence:
@@ -35,26 +37,52 @@ class KlassCorrespondence:
         include_future (bool): If the correspondence should include future correspondences.
 
     Args:
-        correspondence_id (str): The ID of the correspondence.
-        source_classification_id (str): The ID of the source classification.
-        target_classification_id (str): The ID of the target classification.
-        from_date (str): The start date of the correspondence.
-        to_date (str, optional): The end date of the correspondence.
-        contain_quarter (int): The number of quarters the correspondence should contain,
+        correspondence_id: The ID of the correspondence.
+        source_classification_id: The ID of the source classification.
+        target_classification_id: The ID of the target classification.
+        from_date: The start date of the correspondence.
+        to_date: The end date of the correspondence.
+        contain_quarter: The number of quarters the correspondence should contain,
             this replaces the to_date during initialization.
-        language (str): The language of the correspondence. "nb", "nn" or "en".
-        include_future (bool): If the correspondence should include future correspondences.
+        language: The language of the correspondence. "nb", "nn" or "en".
+        include_future: If the correspondence should include future correspondences.
     """
 
+    @overload
     def __init__(
-        self,
-        correspondence_id: str = "",
-        source_classification_id: str = "",
-        target_classification_id: str = "",
-        from_date: str = "",
-        to_date: str = "",
+        self: Self,
+        correspondence_id: str | int = ...,
+        source_classification_id: None = ...,
+        target_classification_id: None = ...,
+        from_date: None = ...,
+        to_date: None = ...,
+        contain_quarter: int = ...,
+        language: Language = ...,
+        include_future: bool = ...,
+    ) -> None: ...
+
+    @overload
+    def __init__(
+        self: Self,
+        correspondence_id: None = ...,
+        source_classification_id: str | int = ...,
+        target_classification_id: str | int = ...,
+        from_date: str = ...,
+        to_date: str | None = ...,
+        contain_quarter: int = ...,
+        language: Language = ...,
+        include_future: bool = ...,
+    ) -> None: ...
+
+    def __init__(
+        self: Self,
+        correspondence_id: str | int | None = None,
+        source_classification_id: str | int | None = None,
+        target_classification_id: str | int | None = None,
+        from_date: str | None = None,
+        to_date: str | None = None,
         contain_quarter: int = 0,
-        language: str = "nb",
+        language: Language = "nb",
         include_future: bool = False,
     ) -> None:
         """Get the correspondence-data from the API."""
@@ -64,7 +92,7 @@ class KlassCorrespondence:
         self.from_date = from_date
         self.to_date = to_date
         self.contain_quarter = contain_quarter
-        self.language = language
+        self.language: Language = language
         self.include_future = include_future
 
         self.get_correspondence()
@@ -166,8 +194,15 @@ class KlassCorrespondence:
         Uses the attribute "contain_quarter" to determine which quarter to use.
 
         Returns:
-            str: The last date of the quarter.
+            The last date of the quarter.
+
+        Raises:
+            ValueError: if from date is missing
         """
+        if not self.from_date:
+            raise ValueError(
+                "Can't calculate the last date of the quarter without from_date"
+            )
         from_date = dateutil.parser.parse(self.from_date)
         year = from_date.year
         last_month_of_quarter = 3 * self.contain_quarter
@@ -180,9 +215,9 @@ class KlassCorrespondence:
         self,
         key: str = "sourceCode",
         value: str = "targetCode",
-        other: str = "",
+        other: str | None = None,
         remove_na: bool = True,
-        select_level: int = 0,
+        select_level: int | None = None,
     ) -> dict[str, str | None] | defaultdict[str, str | None]:
         """Extract two columns from the data, turning them into a dict.
 
@@ -192,9 +227,9 @@ class KlassCorrespondence:
         'targetCode', 'targetName', 'targetShortName', 'validFrom', 'validTo'.
 
         Args:
-            key (str): The name of the column with the values you want as keys.
-            value (str): The name of the column with the values you want as values in your dict.
-            other (str): The value to use for keys that don't exist in the data.
+            key: The name of the column with the values you want as keys.
+            value: The name of the column with the values you want as values in your dict.
+            other: The value to use for keys that don't exist in the data.
             remove_na: Set to False if you want to keep empty mappings over the key and value columns. Empty is defined as empty strings or NA-types.
             select_level: Keep only a specific level defines the variants codes / groups.
 

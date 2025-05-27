@@ -1,11 +1,12 @@
 from typing_extensions import Self
 
-from klass.classes.classification import KlassClassification
-from klass.classes.family import KlassFamily
-from klass.requests.klass_requests import classification_search
-from klass.requests.klass_requests import classificationfamilies
-from klass.requests.klass_types import ClassificationFamiliesPartWithNumberType
-from klass.requests.klass_types import ClassificationSearchResultsPartType
+from ..requests.klass_requests import classification_search
+from ..requests.klass_requests import classificationfamilies
+from ..requests.klass_types import ClassificationFamiliesPartWithNumberType
+from ..requests.klass_types import ClassificationSearchResultsPartType
+from ..requests.klass_types import Language
+from .classification import KlassClassification
+from .family import KlassFamily
 
 
 class KlassSearchClassifications:
@@ -19,10 +20,10 @@ class KlassSearchClassifications:
         no_dupes (bool): Whether to remove duplicates from the search results.
 
     Args:
-        query (str): The search query.
-        include_codelists (bool): Whether to include codelists in the search results.
-        ssbsection (str): The SSB section who owns the classification you are searching for.
-        no_dupes (bool): Whether to remove duplicates from the search results.
+        query: The search query.
+        include_codelists: Whether to include codelists in the search results.
+        ssbsection: The SSB section who owns the classification you are searching for.
+        no_dupes: Whether to remove duplicates from the search results.
             (Usually caused by languages showing up multiple times)
     """
 
@@ -74,8 +75,8 @@ class KlassSearchClassifications:
         """Extract id from each classification, removing dupes.
 
         Args:
-            classifications (list): The classifications to clean.
-            no_dupes (bool): Set to True if you want equal results to be filtered out.
+            classifications: The classifications to clean.
+            no_dupes: Set to True if you want equal results to be filtered out.
 
         Returns:
             list: The cleaned classifications.
@@ -123,15 +124,17 @@ class KlassSearchClassifications:
 
     @staticmethod
     def get_classification(
-        classification_id: str, language: str = "nb", include_future: bool = False
+        classification_id: str | int,
+        language: Language = "nb",
+        include_future: bool = False,
     ) -> KlassClassification:
         """Get a Classification from the search object.
 
         Args:
-            classification_id (str): The classification ID to get.
-            language (str): The language to get the classification in.
+            classification_id: The classification ID to get.
+            language: The language to get the classification in.
                 Default: "nb" for Norwegian, "nn" for Nynorsk, "en" for English.
-            include_future (bool): Whether to include future codelists.
+            include_future: Whether to include future codelists.
 
         Returns:
             KlassClassification: The classification object.
@@ -157,9 +160,9 @@ class KlassSearchFamilies:
     """Search for families in the Klass API.
 
     Args:
-        ssbsection (str): The SSB section who owns the family you are searching for.
-        include_codelists (bool): Whether to include codelists in the search.
-        language (str): The language to use in the search.
+        ssbsection: The SSB section who owns the family you are searching for.
+        include_codelists: Whether to include codelists in the search.
+        language: The language to use in the search.
     Default: "nb" for Norwegian, "nn" for Nynorsk, "en" for English.
     """
 
@@ -167,7 +170,7 @@ class KlassSearchFamilies:
         self,
         ssbsection: str = "",
         include_codelists: bool = False,
-        language: str = "nb",
+        language: Language = "nb",
     ) -> None:
         """Get data from the KLASS-api, setting it as attributes on this object."""
         self.ssbsection = ssbsection
@@ -225,13 +228,13 @@ class KlassSearchFamilies:
         self.families = families_replace
         return self
 
-    def get_family(self, family_id: str = "0") -> KlassFamily:
+    def get_family(self, family_id: str | int | None = None) -> KlassFamily:
         """Return a KlassFamily object of the family with the given ID.
 
         If no ID is given, chooses the first Family returned by the search.
 
         Args:
-            family_id (str): The family ID to get.
+            family_id: The family ID to get.
 
         Returns:
             KlassFamily: The family object.

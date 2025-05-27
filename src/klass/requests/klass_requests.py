@@ -8,20 +8,22 @@ import pandas as pd
 import requests
 from dateutil.parser import ParserError
 
-import klass.config as config
-from klass.requests.klass_types import ClassificationFamiliesByIdType
-from klass.requests.klass_types import ClassificationFamiliesType
-from klass.requests.klass_types import ClassificationsByIdType
-from klass.requests.klass_types import ClassificationSearchType
-from klass.requests.klass_types import ClassificationsType
-from klass.requests.klass_types import CorrespondenceTableIdType
-from klass.requests.klass_types import CorrespondsType
-from klass.requests.klass_types import ParamsAfterType
-from klass.requests.klass_types import ParamsBeforeType
-from klass.requests.klass_types import VariantsByIdType
-from klass.requests.klass_types import VersionByIDType
-from klass.requests.sections import sections_dict
-from klass.requests.validate import validate_params
+from .. import config
+from ..requests.klass_types import ClassificationFamiliesByIdType
+from ..requests.klass_types import ClassificationFamiliesType
+from ..requests.klass_types import ClassificationsByIdType
+from ..requests.klass_types import ClassificationSearchType
+from ..requests.klass_types import ClassificationsType
+from ..requests.klass_types import CorrespondenceTableIdType
+from ..requests.klass_types import CorrespondsType
+from ..requests.klass_types import Language
+from ..requests.klass_types import OptionalLanguage
+from ..requests.klass_types import ParamsAfterType
+from ..requests.klass_types import ParamsBeforeType
+from ..requests.klass_types import VariantsByIdType
+from ..requests.klass_types import VersionByIDType
+from ..requests.sections import sections_dict
+from ..requests.validate import validate_params
 
 # ##########
 # Types #
@@ -132,7 +134,9 @@ def classification_search(
 
 
 def classification_by_id(
-    classification_id: str, language: str = "nb", include_future: bool = False
+    classification_id: str | int,
+    language: Language = "nb",
+    include_future: bool = False,
 ) -> ClassificationsByIdType:
     """Get from the classification-by-id-endpoint."""
     url = config.BASE_URL + URL_PART_CLASS + str(classification_id)
@@ -144,13 +148,13 @@ def classification_by_id(
 
 
 def codes(
-    classification_id: str,
+    classification_id: str | int,
     from_date: str,
-    to_date: str = "",
-    select_codes: str = "",
-    select_level: int = 0,
-    presentation_name_pattern: str = "",
-    language: str = "nb",
+    to_date: str | None = None,
+    select_codes: str | None = None,
+    select_level: int | None = None,
+    presentation_name_pattern: str | None = None,
+    language: OptionalLanguage = "nb",
     include_future: bool = False,
 ) -> pd.DataFrame:
     """Get from the codes-endpoint."""
@@ -176,12 +180,12 @@ def codes(
 
 
 def codes_at(
-    classification_id: str,
+    classification_id: str | int,
     date: str,
-    select_codes: str = "",
-    select_level: int = 0,
-    presentation_name_pattern: str = "",
-    language: str = "nb",
+    select_codes: str | None = None,
+    select_level: int | None = None,
+    presentation_name_pattern: str | None = None,
+    language: OptionalLanguage = "nb",
     include_future: bool = False,
 ) -> pd.DataFrame:
     """Get from the codesAt-endpoint."""
@@ -203,8 +207,8 @@ def codes_at(
 
 
 def version_by_id(
-    version_id: str,
-    language: str = "nb",
+    version_id: str | int,
+    language: Language = "nb",
     include_future: bool = False,
 ) -> VersionByIDType:
     """Get from the version-by-id-endpoint."""
@@ -220,14 +224,14 @@ def version_by_id(
 
 
 def variant(
-    classification_id: str,
+    classification_id: str | int,
     variant_name: str,
     from_date: str,
-    to_date: str = "",
-    select_codes: str = "",
-    select_level: int = 0,
-    presentation_name_pattern: str = "",
-    language: str = "nb",
+    to_date: str | None = None,
+    select_codes: str | None = None,
+    select_level: int | None = None,
+    presentation_name_pattern: str | None = None,
+    language: OptionalLanguage = "nb",
     include_future: bool = False,
 ) -> pd.DataFrame:
     """Get from the variant-endpoint."""
@@ -255,13 +259,13 @@ def variant(
 
 
 def variant_at(
-    classification_id: str,
+    classification_id: str | int,
     variant_name: str,
     date: str,
-    select_codes: str = "",
-    select_level: int = 0,
-    presentation_name_pattern: str = "",
-    language: str = "nb",
+    select_codes: str | None = None,
+    select_level: int | None = None,
+    presentation_name_pattern: str | None = None,
+    language: OptionalLanguage = "nb",
     include_future: bool = False,
 ) -> pd.DataFrame:
     """Get from the variantAt-endpoint."""
@@ -287,7 +291,9 @@ def variant_at(
     return result
 
 
-def variants_by_id(variant_id: str, language: str = "nb") -> VariantsByIdType:
+def variants_by_id(
+    variant_id: str | int, language: Language = "nb"
+) -> VariantsByIdType:
     """Get from the variants-endpoint."""
     url = config.BASE_URL + "variants/" + str(variant_id)
     params: ParamsAfterType = validate_params({"language": language})
@@ -296,11 +302,11 @@ def variants_by_id(variant_id: str, language: str = "nb") -> VariantsByIdType:
 
 
 def corresponds(
-    source_classification_id: str,
-    target_classification_id: str,
+    source_classification_id: str | int,
+    target_classification_id: str | int,
     from_date: str,
-    to_date: str = "",
-    language: str = "nb",
+    to_date: str | None = None,
+    language: OptionalLanguage = "nb",
     include_future: bool = False,
 ) -> CorrespondsType:
     """Get from the classifications/corresponds-endpoint."""
@@ -327,10 +333,10 @@ def corresponds(
 
 
 def corresponds_at(
-    source_classification_id: str,
-    target_classification_id: str,
+    source_classification_id: str | int,
+    target_classification_id: str | int,
     date: str,
-    language: str = "nb",
+    language: OptionalLanguage = "nb",
     include_future: bool = False,
 ) -> CorrespondsType:
     """Get from the classificatins/correspondsAt-endpoint."""
@@ -355,8 +361,8 @@ def corresponds_at(
 
 
 def correspondence_table_by_id(
-    correspondence_id: str,
-    language: str = "nb",
+    correspondence_id: str | int,
+    language: Language = "nb",
 ) -> CorrespondenceTableIdType:
     """Get from the correspondence-table-by-id-endpoint."""
     url = config.BASE_URL + "correspondencetables/" + str(correspondence_id)
@@ -366,10 +372,10 @@ def correspondence_table_by_id(
 
 
 def changes(
-    classification_id: str,
+    classification_id: str | int,
     from_date: str,
-    to_date: str = "",
-    language: str = "nb",
+    to_date: str | None = None,
+    language: OptionalLanguage = "nb",
     include_future: bool = False,
 ) -> pd.DataFrame:
     """Get from the classifications/changes-endpoint."""
@@ -392,9 +398,9 @@ def changes(
 
 
 def classificationfamilies(
-    ssbsection: str = "",
+    ssbsection: str | None = None,
     include_codelists: bool = False,
-    language: str = "nb",
+    language: Language = "nb",
 ) -> ClassificationFamiliesType:
     """Get from the classificationfamilies-endpoint."""
     url = config.BASE_URL + "classificationfamilies"
@@ -410,10 +416,10 @@ def classificationfamilies(
 
 
 def classificationfamilies_by_id(
-    classificationfamily_id: str,
-    ssbsection: str = "",
+    classificationfamily_id: str | int,
+    ssbsection: str | None = None,
     include_codelists: bool = False,
-    language: str = "nb",
+    language: Language = "nb",
 ) -> ClassificationFamiliesByIdType:
     """Get from the classificationsfamilies-endpoint with id."""
     url = config.BASE_URL + "classificationfamilies/" + str(classificationfamily_id)

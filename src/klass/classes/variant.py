@@ -2,11 +2,12 @@ from collections import defaultdict
 
 import pandas as pd
 
-from klass.requests.klass_requests import variant
-from klass.requests.klass_requests import variant_at
-from klass.requests.klass_requests import variants_by_id
-from klass.requests.klass_types import CorrespondenceTablesType
-from klass.requests.klass_types import VariantsByIdType
+from ..requests.klass_requests import variant
+from ..requests.klass_requests import variant_at
+from ..requests.klass_requests import variants_by_id
+from ..requests.klass_types import CorrespondenceTablesType
+from ..requests.klass_types import Language
+from ..requests.klass_types import VariantsByIdType
 
 
 class KlassVariant:
@@ -41,21 +42,21 @@ class KlassVariant:
         _links (dict): The links returned from the API.
 
     Args:
-        variant_id (str): The variant_id of the variant. For example: '1959'.
-        select_level (int): The level of the dataset to keep. For example: 5.
-        language (str): The language of the variant to select. For example: 'nb'.
+        variant_id: The variant_id of the variant. For example: '1959'.
+        select_level: The level of the dataset to keep. For example: 5.
+        language: The language of the variant to select. For example: 'nb'.
     """
 
     def __init__(
         self,
-        variant_id: str,
-        select_level: int = 0,
-        language: str = "nb",
+        variant_id: str | int,
+        select_level: int | None = None,
+        language: Language = "nb",
     ) -> None:
         """Get the data from the KLASS-api to populate this objects attributes."""
         self.variant_id = variant_id
         self.select_level = select_level
-        self.language = language
+        self.language: Language = language
 
         self.get_variant()
 
@@ -66,7 +67,7 @@ class KlassVariant:
         Other keys are added dynamically to the object, like classificationItems.
 
         Args:
-            select_level (int): The level of the dataset to keep. For example: 0.
+            select_level: The level of the dataset to keep. For example: 0.
         """
         result: VariantsByIdType = variants_by_id(self.variant_id, self.language)
         self.name: str = result["name"]
@@ -122,9 +123,9 @@ class KlassVariant:
         self,
         key: str = "code",
         value: str = "parentCode",
-        other: str = "",
+        other: str | None = None,
         remove_na: bool = True,
-        select_level: int = 0,
+        select_level: int | None = None,
     ) -> dict[str, str] | defaultdict[str, str]:
         """Extract two columns from the data, turning them into a dict.
 
@@ -184,29 +185,29 @@ class KlassVariantSearchByName(KlassVariant):
         include_future (bool): Whether to include future codes. Defaults to False.
 
     Args:
-        classification_id (str): The classification ID.
-        variant_name (str): The start of the variant name.
-        from_date (str): The start of the date range.
-        to_date (str): The end of the date range.
-        select_codes (str): Limit the result to codes matching this pattern.
+        classification_id: The classification ID.
+        variant_name: The start of the variant name.
+        from_date: The start of the date range.
+        to_date: The end of the date range.
+        select_codes: Limit the result to codes matching this pattern.
             See rules: https://data.ssb.no/api/klass/v1/api-guide.html#_selectcodes
-        select_level (str): The level of codes to keep in the dataset.
-        presentation_name_pattern (str): Used to build an alternative presentation name for the codes.
+        select_level: The level of codes to keep in the dataset.
+        presentation_name_pattern: Used to build an alternative presentation name for the codes.
             See rules: https://data.ssb.no/api/klass/v1/api-guide.html#_presentationnamepattern
-        language (str): Language of the names, select "en", "nb" or "nn".
-        include_future (bool): Whether to include future codes. Defaults to False.
+        language: Language of the names, select "en", "nb" or "nn".
+        include_future: Whether to include future codes. Defaults to False.
     """
 
     def __init__(
         self,
-        classification_id: str,
+        classification_id: str | int,
         variant_name: str,
         from_date: str,
-        to_date: str = "",
-        select_codes: str = "",
-        select_level: int = 0,
-        presentation_name_pattern: str = "",
-        language: str = "nb",
+        to_date: str | None = None,
+        select_codes: str | None = None,
+        select_level: int | None = None,
+        presentation_name_pattern: str | None = None,
+        language: Language = "nb",
         include_future: bool = False,
     ) -> None:
         """Get the data from the KLASS-api, setting it as attributes on the object."""
@@ -221,9 +222,9 @@ class KlassVariantSearchByName(KlassVariant):
         self.include_future = include_future
         self.get_variant()
 
-    def get_variant(self, select_level: int = 0) -> None:
+    def get_variant(self, select_level: int | None = None) -> None:
         """Actually get the data from the API, called at the end of init."""
-        if select_level == 0:
+        if not select_level:
             select_level = self.select_level
 
         if self.to_date:

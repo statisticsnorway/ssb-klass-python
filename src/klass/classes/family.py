@@ -1,7 +1,7 @@
-from klass.classes.classification import KlassClassification
-from klass.requests.klass_requests import classificationfamilies_by_id
-from klass.requests.klass_types import ClassificationFamiliesByIdType
-from klass.requests.klass_types import ClassificationPartWithType
+from ..requests.klass_requests import classificationfamilies_by_id
+from ..requests.klass_types import ClassificationFamiliesByIdType
+from ..requests.klass_types import ClassificationPartWithType
+from .classification import KlassClassification
 
 
 class KlassFamily:
@@ -17,10 +17,10 @@ class KlassFamily:
         _links (dict): A dictionary of API links referencing itself.
 
     Args:
-        family_id (str): The ID of the family.
+        family_id: The ID of the family.
     """
 
-    def __init__(self, family_id: str) -> None:
+    def __init__(self, family_id: str | int) -> None:
         """Get the family data from the klass-api, setting it as attributes on the object."""
         self.family_id = family_id
         # Setting for mypy
@@ -57,11 +57,13 @@ And contains the following classifications:
         """Representation of the object, and how to recreate it."""
         return f"KlassFamily({self.family_id})"
 
-    def get_classification(self, classification_id: str = "") -> KlassClassification:
+    def get_classification(
+        self, classification_id: str | int | None = None
+    ) -> KlassClassification:
         """Get a classification from the family.
 
         Args:
-            classification_id (str): The ID of the classification.
+            classification_id: The ID of the classification.
                 If not given, the first classification in the family is returned based on its ID.
 
         Returns:

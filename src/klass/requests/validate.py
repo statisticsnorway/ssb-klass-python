@@ -1,11 +1,13 @@
 import datetime
+from typing import cast
 
 import dateutil
 
-import klass.config as config
-from klass.requests.klass_types import ParamsAfterType
-from klass.requests.klass_types import ParamsBeforeType
-from klass.requests.sections import sections_dict
+from .. import config
+from ..requests.klass_types import Language
+from ..requests.klass_types import ParamsAfterType
+from ..requests.klass_types import ParamsBeforeType
+from ..requests.sections import sections_dict
 
 
 def validate_params(params: ParamsBeforeType) -> ParamsAfterType:
@@ -61,9 +63,9 @@ def validate_date(date: str) -> str:
     return new_date
 
 
-def validate_language(language: str) -> str:
+def validate_language(language: str) -> Language:
     """Validate the language-string against possible languages from the config."""
-    language = language.lower()
+    language = cast(Language, language.lower())
     if language not in config.LANGUAGES:
         raise ValueError(
             f"Specify one of the valid languages: {', '.join(config.LANGUAGES)}"
@@ -90,7 +92,7 @@ def validate_select_codes(codestring: str) -> str:
     return codestring
 
 
-def validate_whole_number(level: str) -> str:
+def validate_whole_number(level: str | int) -> str:
     """Check that string is an int."""
     level = str(level)
     if not level.isdigit():
@@ -123,31 +125,29 @@ def validate_time_iso8601(datestring: str) -> str:
 
     If no match, will try to convert it using dateutil.parser.parse to a datetime that includes milliseconds.
     """
-    try_conversion = False
     try:
         datetime.datetime.strptime(datestring[:-5] + "000", "%Y-%m-%dT%H:%M:%S.%f%z")
     except Exception as e:
-        try_conversion = True
         print(e)
+
     if (
-        not datestring[-5:]
+        datestring[-5:]
         .replace(".", "")
         .replace(":", "")
         .replace("+", "")
         .replace("-", "")
         .isnumeric()
     ):
-        try_conversion = True
-    if try_conversion:
-        if datestring[-3] != ":":
-            date_time = datetime.datetime.fromisoformat(
-                datestring[:-2] + ":" + datestring[-2:]
-            )
-        else:
-            date_time = datetime.datetime.fromisoformat(datestring)
-        date_time.replace(tzinfo=datetime.timezone(datetime.timedelta(hours=1)))
-        datestring = date_time.isoformat("T", "milliseconds")
-    return datestring
+        return datestring
+
+    if datestring[-3] != ":":
+        date_time = datetime.datetime.fromisoformat(
+            datestring[:-2] + ":" + datestring[-2:]
+        )
+    else:
+        date_time = datetime.datetime.fromisoformat(datestring)
+    date_time.replace(tzinfo=datetime.timezone(datetime.timedelta(hours=1)))
+    return date_time.isoformat("T", "milliseconds")
 
 
 def validate_ssb_section(section: str) -> str:
