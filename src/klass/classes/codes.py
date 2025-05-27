@@ -4,8 +4,9 @@ from datetime import datetime
 import pandas as pd
 from typing_extensions import Self
 
-from klass.requests.klass_requests import codes
-from klass.requests.klass_requests import codes_at
+from ..requests.klass_requests import codes
+from ..requests.klass_requests import codes_at
+from ..requests.klass_types import Language
 
 
 class KlassCodes:
@@ -20,14 +21,14 @@ class KlassCodes:
         to_date (str): The end date of the time period. "YYYY-MM-DD".
 
     Args:
-        classification_id (str): The classification ID.
-        from_date (str): The start date of the time period. "YYYY-MM-DD".
-        to_date (str): The end date of the time period. "YYYY-MM-DD".
-        select_codes (str): A list of codes to be selected.
-        select_level (int): The level to keep in the data.
-        presentation_name_pattern (str): A pattern for filtering the code names.
-        language (str): The language of the code names. Defaults to "nb".
-        include_future (bool): Whether to include future codes. Defaults to False.
+        classification_id: The classification ID.
+        from_date: The start date of the time period. "YYYY-MM-DD".
+        to_date: The end date of the time period. "YYYY-MM-DD".
+        select_codes: A list of codes to be selected.
+        select_level: The level to keep in the data.
+        presentation_name_pattern: A pattern for filtering the code names.
+        language: The language of the code names. Defaults to "nb".
+        include_future: Whether to include future codes. Defaults to False.
 
     Raises:
         ValueError: If from_date or to_date is not a valid date or date-string YYYY-MM-DD.
@@ -40,13 +41,13 @@ class KlassCodes:
 
     def __init__(
         self,
-        classification_id: str = "",
-        from_date: str = "",
-        to_date: str = "",
-        select_codes: str = "",
-        select_level: int = 0,
-        presentation_name_pattern: str = "",
-        language: str = "nb",
+        classification_id: str | int,
+        from_date: str | None = None,
+        to_date: str | None = None,
+        select_codes: str | None = None,
+        select_level: int | None = None,
+        presentation_name_pattern: str | None = None,
+        language: Language = "nb",
         include_future: bool = False,
     ) -> None:
         """Get the data from the KLASS-api belonging to the code-list."""
@@ -58,7 +59,7 @@ class KlassCodes:
         self.select_codes = select_codes
         self.select_level = select_level
         self.presentation_name_pattern = presentation_name_pattern
-        self.language = language
+        self.language: Language = language
         self.include_future = include_future
         self.get_codes()
 
@@ -97,16 +98,16 @@ class KlassCodes:
 
     def change_dates(
         self,
-        from_date: str = "",
+        from_date: str | None = None,
         to_date: str = "",
         include_future: bool | None = None,
     ) -> Self:
         """Change the dates of the codelist and get the data again based on new dates.
 
         Args:
-            from_date (str): The start date of the time period. "YYYY-MM-DD".
-            to_date (str): The end date of the time period. "YYYY-MM-DD".
-            include_future (bool): Whether to include future codes.
+            from_date: The start date of the time period. "YYYY-MM-DD".
+            to_date: The end date of the time period. "YYYY-MM-DD".
+            include_future: Whether to include future codes.
 
         Returns:
             self (KlassSearchFamilies): Returns self to make the method more easily chainable.
@@ -128,7 +129,7 @@ class KlassCodes:
         the date specified by self.from_date.
 
         Args:
-            raise_on_empty_data (bool): Whether to raise an error if the returned dataframe is empty. Defaults to True.
+            raise_on_empty_data: Whether to raise an error if the returned dataframe is empty. Defaults to True.
 
         Returns:
             self (KlassSearchFamilies): Returns self to make the method more easily chainable.
@@ -166,17 +167,17 @@ class KlassCodes:
     def to_dict(
         self,
         key: str = "code",
-        value: str = "",  # default is "name" if not set
-        other: str = "",
+        value: str | None = None,  # default is "name" if not set
+        other: str | None = None,
     ) -> dict[str, str] | defaultdict[str, str]:
         """Extract two columns from the data, turning them into a dict.
 
         If you specify a value for "other", returns a defaultdict instead.
 
         Args:
-            key (str): The name of the column with the values you want as keys.
-            value (str): The name of the column with the values you want as values in your dict.
-            other (str): If key is missing from dict, return this value instead, if you specify an OTHER-value.
+            key: The name of the column with the values you want as keys.
+            value: The name of the column with the values you want as values in your dict.
+            other: If key is missing from dict, return this value instead, if you specify an OTHER-value.
 
         Returns:
             dict | defaultdict: The extracted columns as a dict or defaultdict.
@@ -201,7 +202,7 @@ class KlassCodes:
         First envisioned by @mfmssb
 
         Args:
-            keep (list[str]): The start of the names of the columns you want to keep when done.
+            keep: The start of the names of the columns you want to keep when done.
                 Default is ["code", "name"], but other possibilities are "presentationName",
                 "level", "shortName", "validTo", "validFrom", and "notes".
 
