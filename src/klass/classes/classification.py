@@ -301,7 +301,7 @@ class KlassClassification:
         """Return a dataframe of the classification at a specific time or in a specific time range.
 
         Caution:
-            The to_date paramater does not include the date sent! 
+            The to_date paramater does not include the date sent!
             So to include the date 2020-01-01 in the range, you must set the to_date to 2020-01-02 for example.
             Note the difference in days in the preceding line.
             This is decided in the API, and not something this package should alter.

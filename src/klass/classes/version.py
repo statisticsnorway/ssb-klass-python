@@ -163,9 +163,10 @@ class KlassVersion:
             for v in self.classificationVariants
         }
 
-    @staticmethod
     def get_variant(
-        variant_id: str | int,
+        self,
+        variant_id: str | int | None = None,
+        search_term: str = "",
         select_level: int | None = None,
         language: Language = "nb",
     ) -> KlassVariant:
@@ -173,13 +174,35 @@ class KlassVersion:
 
         Args:
             variant_id: The ID of the variant.
+            search_term: Search term to look for in the name of the klass variant you want to look for.
             select_level: The level of the variant to keep in the data. Setting to 0 keeps all levels.
             language: The language of the variant.
 
         Returns:
             KlassVariant: A variant object with the specified ID and language.
+
+        Raises:
+            ValueError: If you are missing an identifier, or you send somethign else than a str as the search_term, or if we find more than one match for the search_term.
+
         """
-        return KlassVariant(variant_id, select_level, language)
+        if variant_id is None and not search_term:
+            raise ValueError("You need to specify either variant_id or a search-term.")
+        if variant_id is not None:
+            return KlassVariant(variant_id, select_level, language)
+        if not isinstance(search_term, str):
+            raise ValueError(
+                "Hey, did you notice the new search_term parameter? Send in select_level as a keyword argument instead..."
+            )
+
+        found_variants = {
+            k: v
+            for k, v in self.variants_simple().items()
+            if search_term.lower() in v.lower()
+        }
+        if len(found_variants) != 1:
+            err_msg = f"When searching for a variant that matches your search, we did not find a single match. If you got multiple matches, be more specific in your search term: {list(found_variants.values())}"
+            raise ValueError(err_msg)
+        return KlassVariant(next(iter(found_variants.keys())), select_level, language)
 
     def get_all_variants(self) -> list[KlassVariant]:
         """Get all variants of version as a list of KlassVariants.
