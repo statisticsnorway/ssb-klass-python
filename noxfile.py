@@ -118,7 +118,7 @@ def insert_header_in_hook(header: dict[str, str], lines: list[str]) -> str:
     return "\n".join(lines)
 
 
-@session(name="pre-commit", python=python_versions[0])
+@session(name="pre-commit", python=python_versions[1])
 def precommit(session: Session) -> None:
     """Lint using pre-commit."""
     args = session.posargs or [
