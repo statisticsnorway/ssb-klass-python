@@ -5,7 +5,7 @@ description = "A Python package built on top of KLASS's API for retrieving class
 authors = [{name="Carl Corneil", email="ssb-pythonistas <ssb-pythonistas@ssb.no>"}, {name = "Statistics Norway" }]
 license = "MIT"
 readme = "README.md"
-requires-python = ">=3.10,<4"
+requires-python = ">=3.11,<4"
 
 dependencies = [
     "python-dateutil >=2.8.2",
