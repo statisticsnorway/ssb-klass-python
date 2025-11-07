@@ -1,28 +1,38 @@
-[tool.poetry]
+[project]
 name = "ssb-klass-python"
 version = "1.0.2"
 description = "A Python package built on top of KLASS's API for retrieving classifications, codes, correspondences etc."
-authors = ["Carl Corneil, ssb-pythonistas <ssb-pythonistas@ssb.no>"]
+authors = [{name="Carl Corneil", email="ssb-pythonistas <ssb-pythonistas@ssb.no>"}, {name = "Statistics Norway" }]
 license = "MIT"
 readme = "README.md"
+requires-python = ">=3.10,<4"
+
+dependencies = [
+    "python-dateutil >=2.8.2",
+    "toml >=0.10.2",
+    "ipywidgets >=8.0.6",
+    "pandas >=1.5.3",
+    "requests >=2.31.0",
+    "ipython <9",
+    "typing-extensions >=4.12.2",
+
+]
+
+[project.urls]
 homepage = "https://github.com/statisticsnorway/ssb-klass-python"
 repository = "https://github.com/statisticsnorway/ssb-klass-python"
 documentation = "https://statisticsnorway.github.io/ssb-klass-python"
+
+
+[tool.poetry]
 packages = [{ include = "klass", from = "src" }]
 classifiers = ["Development Status :: 4 - Beta"]
+requires-poetry = ">=2.0"
 
 [tool.poetry.urls]
 Changelog = "https://github.com/statisticsnorway/ssb-klass-python/releases"
 
-[tool.poetry.dependencies]
-python = ">=3.10,<4.0"
-python-dateutil = ">=2.8.2"
-toml = ">=0.10.2"
-ipywidgets = ">=8.0.6"
-pandas = ">=1.5.3"
-requests = ">=2.31.0"
-ipython = "<9"                 # IPython v9 removes Python 3.10 support
-typing-extensions = ">=4.12.2"
+
 
 [tool.poetry.group.dev.dependencies]
 pygments = ">=2.10.0"
