@@ -24,7 +24,7 @@ sys.path.insert(0, os.path.abspath("../src"))
 project = "KLASS"
 copyright = "2023, Statistics Norway"
 author = "Carl Corneil, ssb-pythonistas"
-version = toml.load("../pyproject.toml")["tool"]["poetry"]["version"]
+version = toml.load("../pyproject.toml")["project"]["version"]
 
 # -- General configuration ---------------------------------------------------
 

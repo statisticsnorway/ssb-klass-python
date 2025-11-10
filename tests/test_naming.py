@@ -40,6 +40,6 @@ def test_create_shortname(obj, shortname_len, expected):
 def test_create_shortname_missing_attribute():
     obj = TestNamingObject()  # No name or target attribute set
     with pytest.raises(
-        ValueError, match="Object is missing valid target/name attribute."
+        ValueError, match=r"Object is missing valid target/name attribute."
     ):
         create_shortname(obj)
