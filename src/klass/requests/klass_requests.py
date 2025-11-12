@@ -383,7 +383,7 @@ def changes(
     include_future: bool = False,
 ) -> pd.DataFrame:
     """Get from the classifications/changes-endpoint."""
-    url = config.BASE_URL + URL_PART_CLASS + str(classification_id) + "/changes.json"
+    url = config.BASE_URL + URL_PART_CLASS + str(classification_id) + "/changes"
     from_date = convert_datestring(from_date, "yyyy-mm-dd")
     if to_date:
         to_date = convert_datestring(to_date, "yyyy-mm-dd")
