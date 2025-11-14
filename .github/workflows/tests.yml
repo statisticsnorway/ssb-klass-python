@@ -18,8 +18,10 @@ jobs:
       matrix:
         include:
           - { python: "3.11", os: "ubuntu-latest", session: "pre-commit" }
+          - { python: "3.10", os: "ubuntu-latest", session: "mypy" }  # Before changing, make sure prodsone runs high enough
           - { python: "3.11", os: "ubuntu-latest", session: "mypy" }
           - { python: "3.12", os: "ubuntu-latest", session: "mypy" }
+          - { python: "3.10", os: "ubuntu-latest", session: "tests" }  # Before changing, make sure prodsone runs high enough
           - { python: "3.11", os: "ubuntu-latest", session: "tests" }
           - { python: "3.12", os: "ubuntu-latest", session: "tests" }
           - { python: "3.12", os: "windows-latest", session: "tests" }
