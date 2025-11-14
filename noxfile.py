@@ -23,7 +23,11 @@ except ImportError:
     raise SystemExit(dedent(message)) from None
 
 package = "klass"
-python_versions = ["3.10", "3.11", "3.12"]  # Before changing, make sure prodsone runs high enough
+python_versions = [
+    "3.10",
+    "3.11",
+    "3.12",
+]  # Before changing, make sure prodsone runs high enough
 nox.needs_version = ">= 2021.6.6"
 nox.options.sessions = (
     "pre-commit",
