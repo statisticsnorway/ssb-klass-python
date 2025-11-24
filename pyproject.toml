@@ -1,11 +1,11 @@
 [project]
 name = "ssb-klass-python"
-version = "1.0.5"
+version = "1.0.6"
 description = "A Python package built on top of KLASS's API for retrieving classifications, codes, correspondences etc."
 authors = [{name="Carl Corneil", email="ssb-pythonistas <ssb-pythonistas@ssb.no>"}, {name = "Statistics Norway" }]
 license = "MIT"
 readme = "README.md"
-requires-python = ">=3.10,<4.0"
+requires-python = ">=3.10"
 
 dependencies = [
     "python-dateutil >=2.8.2",
@@ -38,7 +38,7 @@ Changelog = "https://github.com/statisticsnorway/ssb-klass-python/releases"
 pygments = ">=2.10.0"
 black = { extras = ["jupyter"], version = ">=24.3.0" }
 coverage = { extras = ["toml"], version = ">=6.2" }
-darglint = ">=1.8.1"
+darglint = {version= ">=1.8.1", python = ">=3.10, <4.0"}
 furo = ">=2021.11.12"
 mypy = ">=0.930"
 ipykernel = ">=6.15.3"
@@ -57,7 +57,7 @@ sphinx-click = ">=3.0.2"
 typeguard = ">=2.13.3"
 xdoctest = { extras = ["colors"], version = ">=0.15.10" }
 myst-parser = { version = ">=0.16.1" }
-deptry = ">=0.23.0"
+deptry = {version=">=0.23.0", python = ">=3.10, <4.0"}
 # Stubs for Mypy
 pandas-stubs = ">=2.1.1.230928"
 types-requests = ">=2.31.0.10"
