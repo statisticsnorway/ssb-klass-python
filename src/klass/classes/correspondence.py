@@ -227,7 +227,9 @@ class KlassCorrespondence:
         value_col = value
         if value == "presentationName" and "name" in data.columns:
             value_col = "_value_fallback"
-            data[value_col] = data["presentationName"].astype("string[pyarrow]").fillna("")
+            data[value_col] = (
+                data["presentationName"].astype("string[pyarrow]").fillna("")
+            )
             empty_mask = data[value_col] == ""
             if empty_mask.any():
                 data.loc[empty_mask, value_col] = data["name"].astype("string[pyarrow]")
