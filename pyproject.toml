@@ -12,10 +12,10 @@ dependencies = [
     "toml >=0.10.2",
     "ipywidgets >=8.0.6",
     "pandas >=1.5.3",
+    "pyarrow >=10.0.1",
     "requests >=2.31.0",
     "ipython <9",
     "typing-extensions >=4.12.2",
-
 ]
 
 [project.urls]

@@ -238,10 +238,10 @@ class KlassCorrespondence:
         """
         limit_data = self.data
         if remove_na:
-            limit_data = limit_data[
-                (limit_data[[key, value]].notna().all(axis=1))
-                | (limit_data[[key, value]].astype("string") == "")
-            ]
+            mask = limit_data[[key, value]].notna().all(axis=1) & (
+                limit_data[[key, value]].astype("string[pyarrow]").fillna("") != ""
+            ).all(axis=1)
+            limit_data = limit_data[mask]
         if select_level:
             limit_data = limit_data[
                 limit_data["level"].astype("string[pyarrow]") == str(select_level)

@@ -5,15 +5,20 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.6
+#       jupytext_version: 1.19.1
 #   kernelspec:
-#     display_name: ssb-klass-python
+#     display_name: fake-stat-selvangivelse
 #     language: python
-#     name: ssb-klass-python
+#     name: fake-stat-selvangivelse
 # ---
 
 # %%
 from klass import KlassCorrespondence
+
+# %%
+KlassCorrespondence(correspondence_id="952", from_date="2020-12-31").to_dict(
+    "sourceCode", "targetCode"
+)
 
 # %%
 fylke_komm = KlassCorrespondence(
