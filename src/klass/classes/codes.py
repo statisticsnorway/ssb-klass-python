@@ -187,14 +187,22 @@ class KlassCodes:
         Returns:
             dict | defaultdict: The extracted columns as a dict or defaultdict.
         """
+        data = self.data.copy()
         if not value:
             # If you bothered specifying a pattern, we assume you want it
             if self.presentation_name_pattern:
                 value = "presentationName"
             else:
                 value = "name"
-        limit_data = limit_na_level(self.data, key, value, remove_na, select_level)
-        mapping = dict(zip(limit_data[key], limit_data[value], strict=False))
+        value_col = value
+        if value == "presentationName" and "name" in data.columns:
+            value_col = "_value_fallback"
+            data[value_col] = data["presentationName"].astype("string[pyarrow]").fillna("")
+            empty_mask = data[value_col] == ""
+            if empty_mask.any():
+                data.loc[empty_mask, value_col] = data["name"].astype("string[pyarrow]")
+        limit_data = limit_na_level(data, key, value_col, remove_na, select_level)
+        mapping = dict(zip(limit_data[key], limit_data[value_col], strict=False))
         if other:
             mapping = defaultdict(lambda: other, mapping)
         return mapping

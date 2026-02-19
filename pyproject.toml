@@ -38,7 +38,7 @@ Changelog = "https://github.com/statisticsnorway/ssb-klass-python/releases"
 pygments = ">=2.10.0"
 black = { extras = ["jupyter"], version = ">=24.3.0" }
 coverage = { extras = ["toml"], version = ">=6.2" }
-darglint = {version= ">=1.8.1", python = ">=3.10, <4.0"}
+pydoclint = ">=0.8.3"
 furo = ">=2021.11.12"
 mypy = ">=0.930"
 ipykernel = ">=6.15.3"
