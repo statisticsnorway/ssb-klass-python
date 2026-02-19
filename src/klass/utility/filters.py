@@ -1,5 +1,6 @@
 import pandas as pd
 
+STRING_DTYPE = "string[pyarrow]"
 
 def limit_na_level(
     df: pd.DataFrame,
@@ -35,13 +36,13 @@ def limit_na_level(
     if remove_na:
         print(key, value)
         mask = limit_data[[key, value]].notna().all(axis=1) & (
-            limit_data[[key, value]].astype("string[pyarrow]").fillna("") != ""
+            limit_data[[key, value]].astype(STRING_DTYPE).fillna("") != ""
         ).all(axis=1)
         limit_data = limit_data[mask]
         print(limit_data)
     if select_level:
         limit_data = limit_data[
-            limit_data["level"].astype("string[pyarrow]") == str(select_level)
+            limit_data["level"].astype(STRING_DTYPE) == str(select_level)
         ]
     return limit_data
 
@@ -66,8 +67,8 @@ def apply_presentation_name_fallback(
     if value != "presentationName" or fallback not in df.columns:
         return df, value
     data = df.copy()
-    data[fallback_col] = data["presentationName"].astype("string[pyarrow]").fillna("")
+    data[fallback_col] = data["presentationName"].astype(STRING_DTYPE).fillna("")
     empty_mask = data[fallback_col] == ""
     if empty_mask.any():
-        data.loc[empty_mask, fallback_col] = data[fallback].astype("string[pyarrow]")
+        data.loc[empty_mask, fallback_col] = data[fallback].astype(STRING_DTYPE)
     return data, fallback_col
