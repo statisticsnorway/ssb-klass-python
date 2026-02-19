@@ -29,7 +29,7 @@ def limit_na_level(
         select_level: Optional classification level to filter on.
 
     Returns:
-        A filtered copy of the input DataFrame.
+        pd.DataFrame: A filtered copy of the input DataFrame.
     """
     limit_data = df.copy()
     if remove_na:

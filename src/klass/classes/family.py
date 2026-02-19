@@ -10,18 +10,11 @@ class KlassFamily:
     Families in Klass "own" / "have" several classifications.
     Families are owned by sections (a part of Statistics Norway who is responsible for the family).
 
-    Attributes:
-        classifications (list): A list of classifications in the family.
-        family_id (str): The ID of the family.
-        name (str): The name of the family.
-        _links (dict): A dictionary of API links referencing itself.
-
     Args:
         family_id: The ID of the family.
     """
 
     def __init__(self, family_id: str | int) -> None:
-        """Get the family data from the klass-api, setting it as attributes on the object."""
         self.family_id = family_id
         # Setting for mypy
         result: ClassificationFamiliesByIdType = classificationfamilies_by_id(

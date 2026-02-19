@@ -24,19 +24,6 @@ class KlassCorrespondence:
     You can identify the correspondence by their individual ids,
     or by the source classification ID + the target classification ID + a specific time.
 
-    Attributes:
-        data (pd.DataFrame): The pandas DataFrame of the correspondences.
-        correspondence (list): The list of the correspondences returned by the API.
-        correspondence_id (str): The ID of the correspondence.
-        source_classification_id (str): The ID of the source classification.
-        target_classification_id (str): The ID of the target classification.
-        from_date (str): The start date of the correspondence.
-        to_date (str, optional): The end date of the correspondence.
-        contain_quarter (int): The number of quarters the correspondence should contain,
-            this replaces the to_date during initialization.
-        language (str): The language of the correspondence. "nb", "nn" or "en".
-        include_future (bool): If the correspondence should include future correspondences.
-
     Args:
         correspondence_id: The ID of the correspondence.
         source_classification_id: The ID of the source classification.
@@ -86,7 +73,6 @@ class KlassCorrespondence:
         language: Language = "nb",
         include_future: bool = False,
     ) -> None:
-        """Get the correspondence-data from the API."""
         self.correspondence_id = correspondence_id
         self.source_classification_id = source_classification_id
         self.target_classification_id = target_classification_id
@@ -137,7 +123,7 @@ class KlassCorrespondence:
         Gets and reshapes correspondences based on attributes on the class.
 
         Returns:
-            self (KlassCorrespondence): Returns self to make the method more easily chainable.
+            Self: Returns self to make the method more easily chainable.
 
         Raises:
             ValueError: If you are filling out the wrong combination of correspondence_id, source_classification_id,
@@ -195,7 +181,7 @@ class KlassCorrespondence:
         Uses the attribute "contain_quarter" to determine which quarter to use.
 
         Returns:
-            The last date of the quarter.
+            str: The last date of the quarter.
 
         Raises:
             ValueError: if from date is missing
@@ -235,7 +221,7 @@ class KlassCorrespondence:
             select_level: Keep only a specific level defines the variants codes / groups.
 
         Returns:
-            dict | defaultdict: The dictionary of the correspondence.
+            dict[str, str | None] | defaultdict[str, str | None]: The dictionary of the correspondence.
         """
         data = self.data.copy()
         value_col = value

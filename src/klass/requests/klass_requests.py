@@ -38,8 +38,8 @@ def get_json(url: str, params: ParamsAfterType) -> Any:
     Used in most of the following functions.
 
     Args:
-        url (str): The URL to the endpoint.
-        params (ParamsAfterType): The parameters to send to the endpoint.
+        url: The URL to the endpoint.
+        params: The parameters to send to the endpoint.
 
     Returns:
         Any: The JSON response from the endpoint, hard to type because all endpoints have differently structured responses.

@@ -16,21 +16,6 @@ class KlassVersion:
 
     For example, the ID of NUS valid in 2023 is 1954, while the ID of NUS without being time-specific is 36.
 
-    Attributes:
-        data (pd.DataFrame): The codelist of the classification-version as a pandas dataframe.
-        name (str): The name of the version.
-        validFrom (str): The date the version is valid from.
-        validTo (str): The date the version is valid to (if any).
-        lastModified (str): The date the version was last modified.
-        published (list): A list of languages that the version is published in.
-        introduction (str): A longer description of the version.
-        contactPerson (dict): A dictionary of the contact person of the version.
-        owningSection (str): The name of the section that owns the version.
-        legalBase (str): The basis in law for the classification.
-        publications (str): Where the classification is published (URL).
-        derivedFrom (str): Notes on where the classification was derived from.
-        correspondenceTables (list): A list of correspondence-tables of the version.
-
     Args:
         version_id: The ID of the version.
         select_level: The level in the codelist-data to keep. Defaults to 0 (keep all).
@@ -45,7 +30,6 @@ class KlassVersion:
         language: Language = "nb",
         include_future: bool = False,
     ) -> None:
-        """Set up the object with data from the KLASS-API."""
         self.version_id = version_id
         self.select_level = select_level
         self.language = language.lower()
@@ -139,7 +123,7 @@ class KlassVersion:
             select_level: The level of the version to keep in the data. Setting to 0 keeps all levels.
 
         Returns:
-            self (KlassVersion): Returns self to make the method more easily chainable.
+            Self: Returns self to make the method more easily chainable.
         """
         select_level = select_level if select_level else self.select_level
         data = pd.json_normalize(self.classificationItems)
@@ -272,7 +256,7 @@ class KlassVersion:
         With the IDs as keys.
 
         Returns:
-            dict: A nested dictionary of the available correspondences.
+            dict[str, dict[str, str]]: A nested dictionary of the available correspondences.
         """
         tables = {}
         for tab in self.correspondenceTables:

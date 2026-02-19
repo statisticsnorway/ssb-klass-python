@@ -6,8 +6,9 @@ from klass.utility.naming import create_shortname
 
 
 class TestNamingObject:
+    """Mock class for testing naming-function."""
+
     def __init__(self, name=None, target=None):
-        """Mock class for testing naming-function."""
         self.name = name
         self.target = target
 

@@ -15,12 +15,6 @@ class KlassCodes:
 
     The codelist is owned by the Classification through a Version, and will be valid for a time period.
 
-    Attributes:
-        data (pd.DataFrame): The pandas DataFrame of the codes.
-        classification_id (str): The classification ID.
-        from_date (str): The start date of the time period. "YYYY-MM-DD".
-        to_date (str): The end date of the time period. "YYYY-MM-DD".
-
     Args:
         classification_id: The classification ID.
         from_date: The start date of the time period. "YYYY-MM-DD".
@@ -30,14 +24,6 @@ class KlassCodes:
         presentation_name_pattern: A pattern for filtering the code names.
         language: The language of the code names. Defaults to "nb".
         include_future: Whether to include future codes. Defaults to False.
-
-    Raises:
-        ValueError: If from_date or to_date is not a valid date or date-string YYYY-MM-DD.
-        ValueError: If select_codes contains anything except numbers and the special characters "*" (star) or "-" (dash).
-        ValueError: If select_level is anything except a whole number.
-        ValueError: If presentation_name_pattern is not a valid pattern.
-        ValueError: If language is not "nb", "nn" or "en".
-        ValueError: If include_future is not a bool.
     """
 
     def __init__(
@@ -51,7 +37,6 @@ class KlassCodes:
         language: Language = "nb",
         include_future: bool = False,
     ) -> None:
-        """Get the data from the KLASS-api belonging to the code-list."""
         self.classification_id = classification_id
         if not from_date:
             from_date = datetime.now().strftime("%Y-%m-%d")
@@ -111,7 +96,7 @@ class KlassCodes:
             include_future: Whether to include future codes.
 
         Returns:
-            self (KlassSearchFamilies): Returns self to make the method more easily chainable.
+            Self: Returns self to make the method more easily chainable.
         """
         if not from_date:
             from_date = datetime.now().strftime("%Y-%m-%d")
@@ -133,7 +118,7 @@ class KlassCodes:
             raise_on_empty_data: Whether to raise an error if the returned dataframe is empty. Defaults to True.
 
         Returns:
-            self (KlassSearchFamilies): Returns self to make the method more easily chainable.
+            Self: Returns self to make the method more easily chainable.
 
         Raises:
             ValueError: If the returned dataframe is empty, there is probably something too narrow in the parameters.
@@ -185,7 +170,7 @@ class KlassCodes:
             select_level: Keep only a specific level defines the variants codes / groups.
 
         Returns:
-            dict | defaultdict: The extracted columns as a dict or defaultdict.
+            dict[str, str] | defaultdict[str, str]: The extracted columns as a dict or defaultdict.
         """
         data = self.data.copy()
         if not value:
