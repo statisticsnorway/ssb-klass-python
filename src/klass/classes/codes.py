@@ -7,6 +7,7 @@ from typing_extensions import Self
 from ..requests.klass_requests import codes
 from ..requests.klass_requests import codes_at
 from ..requests.klass_types import Language
+from ..utility.filters import apply_presentation_name_fallback
 from ..utility.filters import limit_na_level
 
 
@@ -172,22 +173,13 @@ class KlassCodes:
         Returns:
             dict[str, str] | defaultdict[str, str]: The extracted columns as a dict or defaultdict.
         """
-        data = self.data.copy()
         if not value:
             # If you bothered specifying a pattern, we assume you want it
             if self.presentation_name_pattern:
                 value = "presentationName"
             else:
                 value = "name"
-        value_col = value
-        if value == "presentationName" and "name" in data.columns:
-            value_col = "_value_fallback"
-            data[value_col] = (
-                data["presentationName"].astype("string[pyarrow]").fillna("")
-            )
-            empty_mask = data[value_col] == ""
-            if empty_mask.any():
-                data.loc[empty_mask, value_col] = data["name"].astype("string[pyarrow]")
+        data, value_col = apply_presentation_name_fallback(self.data, value)
         limit_data = limit_na_level(data, key, value_col, remove_na, select_level)
         mapping = dict(zip(limit_data[key], limit_data[value_col], strict=False))
         if other:

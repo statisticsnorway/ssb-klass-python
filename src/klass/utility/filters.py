@@ -44,3 +44,30 @@ def limit_na_level(
             limit_data["level"].astype("string[pyarrow]") == str(select_level)
         ]
     return limit_data
+
+
+def apply_presentation_name_fallback(
+    df: pd.DataFrame,
+    value: str,
+    fallback: str = "name",
+    fallback_col: str = "_value_fallback",
+) -> tuple[pd.DataFrame, str]:
+    """Create a fallback value column when presentation names are empty.
+
+    Args:
+        df: Input DataFrame.
+        value: The value column name requested.
+        fallback: The fallback column name to use when presentation names are empty.
+        fallback_col: The name of the temporary column to store the fallback result.
+
+    Returns:
+        tuple[pd.DataFrame, str]: The DataFrame (possibly augmented) and the effective value column name.
+    """
+    if value != "presentationName" or fallback not in df.columns:
+        return df, value
+    data = df.copy()
+    data[fallback_col] = data["presentationName"].astype("string[pyarrow]").fillna("")
+    empty_mask = data[fallback_col] == ""
+    if empty_mask.any():
+        data.loc[empty_mask, fallback_col] = data[fallback].astype("string[pyarrow]")
+    return data, fallback_col
