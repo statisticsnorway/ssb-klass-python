@@ -8,6 +8,7 @@ from ..requests.klass_requests import variants_by_id
 from ..requests.klass_types import CorrespondenceTablesType
 from ..requests.klass_types import Language
 from ..requests.klass_types import VariantsByIdType
+from ..utility.filters import limit_na_level
 
 
 class KlassVariant:
@@ -141,16 +142,7 @@ class KlassVariant:
         Returns:
             dict | defaultdict: The extracted columns as a dict or defaultdict.
         """
-        limit_data = self.data
-        if remove_na:
-            limit_data = limit_data[
-                (limit_data[[key, value]].notna().all(axis=1))
-                | (limit_data[[key, value]].astype("string") == "")
-            ]
-        if select_level:
-            limit_data = limit_data[
-                limit_data["level"].astype("string[pyarrow]") == str(select_level)
-            ]
+        limit_data = limit_na_level(self.data, key, value, remove_na, select_level)
         mapping = dict(zip(limit_data[key], limit_data[value], strict=False))
         if other:
             mapping = defaultdict(lambda: other, mapping)

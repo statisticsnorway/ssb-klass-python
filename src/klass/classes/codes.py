@@ -7,6 +7,7 @@ from typing_extensions import Self
 from ..requests.klass_requests import codes
 from ..requests.klass_requests import codes_at
 from ..requests.klass_types import Language
+from ..utility.filters import limit_na_level
 
 
 class KlassCodes:
@@ -169,6 +170,8 @@ class KlassCodes:
         key: str = "code",
         value: str | None = None,  # default is "name" if not set
         other: str | None = None,
+        remove_na: bool = True,
+        select_level: int | None = None,
     ) -> dict[str, str] | defaultdict[str, str]:
         """Extract two columns from the data, turning them into a dict.
 
@@ -178,6 +181,8 @@ class KlassCodes:
             key: The name of the column with the values you want as keys.
             value: The name of the column with the values you want as values in your dict.
             other: If key is missing from dict, return this value instead, if you specify an OTHER-value.
+            remove_na: Set to False if you want to keep empty mappings over the key and value columns. Empty is defined as empty strings or NA-types.
+            select_level: Keep only a specific level defines the variants codes / groups.
 
         Returns:
             dict | defaultdict: The extracted columns as a dict or defaultdict.
@@ -188,7 +193,8 @@ class KlassCodes:
                 value = "presentationName"
             else:
                 value = "name"
-        mapping = dict(zip(self.data[key], self.data[value], strict=False))
+        limit_data = limit_na_level(self.data, key, value, remove_na, select_level)
+        mapping = dict(zip(limit_data[key], limit_data[value], strict=False))
         if other:
             mapping = defaultdict(lambda: other, mapping)
         return mapping

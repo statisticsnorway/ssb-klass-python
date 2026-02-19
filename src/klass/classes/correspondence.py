@@ -12,6 +12,7 @@ from ..requests.klass_requests import corresponds
 from ..requests.klass_types import CorrespondsType
 from ..requests.klass_types import Language
 from ..requests.klass_types import T_correspondanceMaps
+from ..utility.filters import limit_na_level
 
 
 class KlassCorrespondence:
@@ -236,16 +237,7 @@ class KlassCorrespondence:
         Returns:
             dict | defaultdict: The dictionary of the correspondence.
         """
-        limit_data = self.data
-        if remove_na:
-            mask = limit_data[[key, value]].notna().all(axis=1) & (
-                limit_data[[key, value]].astype("string[pyarrow]").fillna("") != ""
-            ).all(axis=1)
-            limit_data = limit_data[mask]
-        if select_level:
-            limit_data = limit_data[
-                limit_data["level"].astype("string[pyarrow]") == str(select_level)
-            ]
+        limit_data = limit_na_level(self.data, key, value, remove_na, select_level)
         mapping = dict(zip(limit_data[key], limit_data[value], strict=False))
         if other:
             mapping = defaultdict(lambda: other, mapping)
