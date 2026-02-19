@@ -1,6 +1,11 @@
+from typing import Final
+from typing import Literal
+from typing import cast
+
 import pandas as pd
 
-STRING_DTYPE = "string[pyarrow]"
+STRING_DTYPE: Final[Literal["string[pyarrow]"]] = "string[pyarrow]"
+
 
 def limit_na_level(
     df: pd.DataFrame,
@@ -35,15 +40,18 @@ def limit_na_level(
     limit_data = df.copy()
     if remove_na:
         print(key, value)
-        mask = limit_data[[key, value]].notna().all(axis=1) & (
+        non_empty = (
             limit_data[[key, value]].astype(STRING_DTYPE).fillna("") != ""
         ).all(axis=1)
-        limit_data = limit_data[mask]
+        mask = cast(pd.Series, limit_data[[key, value]].notna().all(axis=1) & non_empty)
+        limit_data = limit_data.loc[mask]
         print(limit_data)
     if select_level:
-        limit_data = limit_data[
-            limit_data["level"].astype(STRING_DTYPE) == str(select_level)
-        ]
+        level_mask = cast(
+            pd.Series,
+            limit_data["level"].astype(STRING_DTYPE) == str(select_level),
+        )
+        limit_data = limit_data.loc[level_mask]
     return limit_data
 
 
@@ -68,7 +76,7 @@ def apply_presentation_name_fallback(
         return df, value
     data = df.copy()
     data[fallback_col] = data["presentationName"].astype(STRING_DTYPE).fillna("")
-    empty_mask = data[fallback_col] == ""
+    empty_mask = cast(pd.Series, data[fallback_col] == "")
     if empty_mask.any():
         data.loc[empty_mask, fallback_col] = data[fallback].astype(STRING_DTYPE)
     return data, fallback_col
