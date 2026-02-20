@@ -7,7 +7,7 @@
 #       format_version: '1.3'
 #       jupytext_version: 1.19.1
 #   kernelspec:
-#     display_name: fake-stat-selvangivelse
+#     display_name: ssb-klass-python
 #     language: python
 #     name: fake-stat-selvangivelse
 # ---
