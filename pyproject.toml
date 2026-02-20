@@ -1,6 +1,6 @@
 [project]
 name = "ssb-klass-python"
-version = "1.0.6"
+version = "1.0.7"
 description = "A Python package built on top of KLASS's API for retrieving classifications, codes, correspondences etc."
 authors = [{name="Carl Corneil", email="ssb-pythonistas <ssb-pythonistas@ssb.no>"}, {name = "Statistics Norway" }]
 license = "MIT"
@@ -12,10 +12,10 @@ dependencies = [
     "toml >=0.10.2",
     "ipywidgets >=8.0.6",
     "pandas >=1.5.3",
+    "pyarrow >=10.0.1",
     "requests >=2.31.0",
     "ipython <9",
     "typing-extensions >=4.12.2",
-
 ]
 
 [project.urls]
@@ -38,7 +38,7 @@ Changelog = "https://github.com/statisticsnorway/ssb-klass-python/releases"
 pygments = ">=2.10.0"
 black = { extras = ["jupyter"], version = ">=24.3.0" }
 coverage = { extras = ["toml"], version = ">=6.2" }
-darglint = {version= ">=1.8.1", python = ">=3.10, <4.0"}
+pydoclint = ">=0.8.3"
 furo = ">=2021.11.12"
 mypy = ">=0.930"
 ipykernel = ">=6.15.3"
@@ -127,6 +127,7 @@ ignore = [
     "ANN202", # Don't requiere return type annotation for private functions.
     "ANN401", # Allow type annotation with type Any.
     "D100",   # Supress undocumented-public-module. Only doc of public api required.
+    "D107",   # We are of the opinion that inits dont need a docstring, when the class has one...
     "E402",   # Supress module-import-not-at-top-of-file, needed in jupyter notebooks.
     "E501",   # Supress line-too-long warnings: trust black's judgement on this one.
 ]
@@ -166,6 +167,11 @@ classmethod-decorators = [
     "S101",   # asserts are encouraged in pytest
 ]
 "demo/*.py" = ["B018"] # Ignore the useless expressions in the notebooks
+
+[tool.pydoclint]
+style = "google"
+arg-type-hints-in-docstring = false
+native-mode-noqa-location = "definition"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

@@ -40,9 +40,23 @@ def test_codes_to_dict(
 ):
     dict_check = klass_codes_at_success.to_dict()
     default_dict_check = klass_codes_at_success.to_dict(other="other")
-    assert len(dict_check)
+    assert dict_check == {"1": "Mann", "2": "Gutt", "3": "Babygutt"}
     assert len(default_dict_check)
     assert default_dict_check["missing_key"] == "other"
+
+
+def test_codes_to_dict_uses_presentation_name_when_present(
+    klass_codes_at_success,
+):
+    df = klass_codes_at_success.data.copy()
+    df["presentationName"] = df["code"] + " - " + df["name"]
+    klass_codes_at_success.data = df
+    dict_check = klass_codes_at_success.to_dict()
+    assert dict_check == {
+        "1": "1 - Mann",
+        "2": "2 - Gutt",
+        "3": "3 - Babygutt",
+    }
 
 
 def test_codes_pivot_level(

@@ -12,13 +12,6 @@ from .family import KlassFamily
 class KlassSearchClassifications:
     """Use to search for classifications.
 
-    Attributes:
-        classifications (list): A list of KlassClassification objects.
-        query (str): The search query.
-        include_codelists (bool): Whether to include codelists in the search results.
-        ssbsection (str): The SSB section who owns the classification you are searching for.
-        no_dupes (bool): Whether to remove duplicates from the search results.
-
     Args:
         query: The search query.
         include_codelists: Whether to include codelists in the search results.
@@ -34,7 +27,6 @@ class KlassSearchClassifications:
         ssbsection: str = "",
         no_dupes: bool = False,
     ) -> None:
-        """Get data from the KLASS-api, setting it as attributes on this object."""
         self.query = query
         self.include_codelists = include_codelists
         self.ssbsection = ssbsection
@@ -79,7 +71,7 @@ class KlassSearchClassifications:
             no_dupes: Set to True if you want equal results to be filtered out.
 
         Returns:
-            list: The cleaned classifications.
+            list[ClassificationSearchResultsPartType]: The cleaned classifications.
         """
         classification_replace: list[ClassificationSearchResultsPartType] = []
         seen = []
@@ -172,7 +164,6 @@ class KlassSearchFamilies:
         include_codelists: bool = False,
         language: Language = "nb",
     ) -> None:
-        """Get data from the KLASS-api, setting it as attributes on this object."""
         self.ssbsection = ssbsection
         self.include_codelists = include_codelists
         self.language = language
@@ -205,7 +196,7 @@ class KlassSearchFamilies:
         attributes.
 
         Returns:
-            self (KlassSearchFamilies): Returns self to make the method more easily chainable.
+            Self: Returns self to make the method more easily chainable.
         """
         result = classificationfamilies(
             ssbsection=self.ssbsection,

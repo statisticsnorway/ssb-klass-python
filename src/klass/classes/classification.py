@@ -33,33 +33,10 @@ class KlassClassification:
     you first need to get the classification at a specific time (a KlassVersion)
     by using get_version() for example.
 
-    Attributes:
-        versions (list): A list of the data the Classifications has on its versions.
-            Versions represent the changes to the classifications codelists placed in time.
-        name (str): The name of the classification.
-        classification_id (str): The ID of the classification.
-        classificationType (str): The type of the classification.
-        lastModified (str): The last time the classification was modified. ISO-stringified datetime(ISO-datetime)
-        description (str): A longer description of the classification.
-        primaryLanguage (str): The primary language of the classification. "nb", "nn" or "en".
-        language (str): The language chosen at initialization of the classification. "nb", "nn" or "en".
-        copyrighted (bool): Whether the classification is copyrighted.
-        includeShortName (bool): If true, indicates that classificationItems may have shortnames.
-        includeNotes (bool): If true, indicates that classificationItems may have notes.
-        contactPerson (dict): A dictionary containing the contact person of the classification.
-        owningSection (str): The section (part of Statistics Norway)that owns the classification.
-        statisticalUnits (list): Statistical units assigned to classification
-        include_future (bool): Whether to include future versions of the classification.
-        _links (dict): A dictionary containing the links to different possible endpoints using the classification.
-
     Args:
         classification_id: The classification_id of the classification. For example: '36'
         language: The language of the classification. "nb", "nn" or "en".
         include_future: Whether to include future versions of the classification.
-
-    Raises:
-        ValueError: If the language is not "no", "nb" or "en".
-            If the include_future is not a bool.
     """
 
     def __init__(
@@ -68,7 +45,6 @@ class KlassClassification:
         language: Language = "nb",
         include_future: bool = False,
     ) -> None:
-        """Get the data for the classification from the API."""
         self.classification_id = classification_id
         self.language: Language = language
         self.include_future = include_future
@@ -163,7 +139,7 @@ class KlassClassification:
         """Reformats the versions into a simple dict with just the IDs as keys and names as values.
 
         Returns:
-            dict: Version IDs as keys, and version names as values.
+            dict[int, str]: Version IDs as keys, and version names as values.
         """
         return {v["version_id"]: v["name"] for v in self.versions[::-1]}
 

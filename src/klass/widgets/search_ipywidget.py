@@ -17,8 +17,8 @@ def search_classification(no_dupes: bool = True) -> widgets.VBox:
     that'll let you get data from the classification.
 
     Args:
-        no_dupes (bool): To include duplicate results or not in the result.
-                        Dupes are caused by multiple languages being returned.
+        no_dupes: To include duplicate results or not in the result.
+            Dupes are caused by multiple languages being returned.
 
     Returns:
         widgets.VBox: Containing the nested ipywidgets-GUI. Jupyter will automatically display it.
@@ -86,7 +86,7 @@ def format_classification_text(search_class: KlassSearchClassifications) -> str:
     """Format the classifications from a search into a html-string that can be used in the widget results.
 
     Args:
-        search_class (KlassSearchClassifications): The search-results.
+        search_class: The search-results.
 
     Returns:
         str: The formatted html-string.
