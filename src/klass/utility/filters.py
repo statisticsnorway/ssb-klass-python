@@ -39,13 +39,11 @@ def limit_na_level(
     """
     limit_data = df.copy()
     if remove_na:
-        print(key, value)
         non_empty = (
             limit_data[[key, value]].astype(STRING_DTYPE).fillna("") != ""
         ).all(axis=1)
         mask = cast(pd.Series, limit_data[[key, value]].notna().all(axis=1) & non_empty)
         limit_data = limit_data.loc[mask]
-        print(limit_data)
     if select_level:
         level_mask = cast(
             pd.Series,
