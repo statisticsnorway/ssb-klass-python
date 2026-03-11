@@ -29,7 +29,9 @@ klassifikasjoner = klass.classifications(
 display(klass.classification_by_id("36").keys())
 
 # %%
-display(klass.codes(classification_id="36", from_date="2020-01-01", to_date="2023-01-02"))
+display(
+    klass.codes(classification_id="36", from_date="2020-01-01", to_date="2023-01-02")
+)
 
 # %% [raw]
 #
