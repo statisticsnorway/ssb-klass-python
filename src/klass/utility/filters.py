@@ -1,3 +1,4 @@
+import logging
 from typing import Final
 from typing import Literal
 from typing import cast
@@ -5,6 +6,7 @@ from typing import cast
 import pandas as pd
 
 STRING_DTYPE: Final[Literal["string[pyarrow]"]] = "string[pyarrow]"
+logger = logging.getLogger(__name__)
 
 
 def limit_na_level(
@@ -39,13 +41,13 @@ def limit_na_level(
     """
     limit_data = df.copy()
     if remove_na:
-        print(key, value)
+        logger.debug(f"Columns used in NA filtering: {key}, {value}")
         non_empty = (
             limit_data[[key, value]].astype(STRING_DTYPE).fillna("") != ""
         ).all(axis=1)
         mask = cast(pd.Series, limit_data[[key, value]].notna().all(axis=1) & non_empty)
         limit_data = limit_data.loc[mask]
-        print(limit_data)
+        logger.debug(f"Filtered DataFrame: \n {limit_data}")
     if select_level:
         level_mask = cast(
             pd.Series,

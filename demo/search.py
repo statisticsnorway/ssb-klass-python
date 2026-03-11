@@ -13,33 +13,35 @@
 # ---
 
 # %%
+from IPython.display import display
+
 from klass import KlassSearchClassifications
 from klass import KlassSearchFamilies
 
 # %%
 search = KlassSearchClassifications("land", no_dupes=True)
-print(search)
+display(search)
 
 # %%
-print(search.get_classification(106))
+display(search.get_classification(106))
 
 # %%
 ours = KlassSearchFamilies(360)
-print(ours)
+display(ours)
 
 # %%
-ours.families
+display(ours.families)
 
 # %%
 utdanning = ours.get_family(20)
 
 # %%
-print(utdanning)
+display(utdanning)
 
 # %%
 isced = utdanning.get_classification(66)
 
 # %%
-print(isced)
+display(isced)
 
 # %%

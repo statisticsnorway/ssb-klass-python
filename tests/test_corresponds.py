@@ -20,8 +20,6 @@ def test_correspondence_has_str_repr(klass_correspondence_from_id_success):
     assert klass_correspondence_from_id_success.__repr__()
     assert len(klass_correspondence_from_id_success.__str__())
     assert len(klass_correspondence_from_id_success.__repr__())
-    print(klass_correspondence_from_id_success)
-    repr(klass_correspondence_from_id_success)
 
 
 def test_correspondence_can_contain_quarter(

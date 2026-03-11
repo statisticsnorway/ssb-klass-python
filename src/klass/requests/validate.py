@@ -1,4 +1,5 @@
 import datetime
+import logging
 from typing import cast
 
 import dateutil
@@ -8,6 +9,8 @@ from ..requests.klass_types import Language
 from ..requests.klass_types import ParamsAfterType
 from ..requests.klass_types import ParamsBeforeType
 from ..requests.sections import sections_dict
+
+logger = logging.getLogger(__name__)
 
 
 def validate_params(params: ParamsBeforeType) -> ParamsAfterType:
@@ -130,7 +133,7 @@ def validate_time_iso8601(datestring: str) -> str:
     try:
         datetime.datetime.strptime(datestring[:-5] + "000", "%Y-%m-%dT%H:%M:%S.%f%z")
     except Exception as e:
-        print(e)
+        logger.warning(e)
 
     if (
         datestring[-5:]

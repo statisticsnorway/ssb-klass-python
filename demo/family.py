@@ -13,25 +13,27 @@
 # ---
 
 # %%
+from IPython.display import display
+
 from klass import KlassSearchFamilies
 
 # %%
 search = KlassSearchFamilies("360")
-print(search)
+display(search)
 
 # %%
 utdanning = search.get_family(20)
-print(utdanning)
+display(utdanning)
 
 # %%
 nus = utdanning.get_classification(36)
-print(nus)
+display(nus)
 
 # %%
 nus_codes = nus.get_codes("2023-01-01")
-print(nus_codes)
+display(nus_codes)
 
 # %%
-nus_codes.data
+display(nus_codes.data)
 
 # %%

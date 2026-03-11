@@ -19,8 +19,6 @@ def test_version_has_str_repr(klass_version_success):
     assert klass_version_success.__repr__()
     assert len(klass_version_success.__str__())
     assert len(klass_version_success.__repr__())
-    print(klass_version_success)
-    repr(klass_version_success)
 
 
 def test_version_simple_correspondences(klass_version_success):

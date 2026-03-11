@@ -13,6 +13,8 @@
 # ---
 
 # %%
+from IPython.display import display
+
 from klass import KlassCorrespondence
 
 # %%
@@ -24,19 +26,19 @@ bydel = KlassCorrespondence(
 )
 
 # %%
-bydel.from_date
+display(bydel.from_date)
 
 # %%
 # Reset by parameter "contain_quarter" during initialization
-bydel.to_date
+display(bydel.to_date)
 
 # %%
-bydel.data
+display(bydel.data)
 
 # %%
-bydel.data["validFrom"].min()
+display(bydel.data["validFrom"].min())
 
 # %%
-bydel.data["validTo"].max()
+display(bydel.data["validTo"].max())
 
 # %%

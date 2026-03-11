@@ -14,8 +14,6 @@ def test_classification_search_has_str_repr(klass_classification_search_success)
     assert klass_classification_search_success.__repr__()
     assert len(klass_classification_search_success.__str__())
     assert len(klass_classification_search_success.__repr__())
-    print(klass_classification_search_success)
-    repr(klass_classification_search_success)
 
 
 def test_simple_search_result(klass_classification_search_success):
