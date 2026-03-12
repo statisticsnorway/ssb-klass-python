@@ -47,7 +47,7 @@ def get_json(url: str, params: ParamsAfterType) -> Any:
         Any: The JSON response from the endpoint, hard to type because all endpoints have differently structured responses.
     """
     req = requests.Request("GET", url=url, headers=config.HEADERS, params=params)
-    logger.debug("Full URL, check during testing:", req.prepare().url)
+    logger.debug("Full URL: %s", req.prepare().url)
     response = requests.Session().send(req.prepare())
     response.raise_for_status()
     result: Any = response.json()

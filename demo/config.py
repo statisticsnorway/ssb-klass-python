@@ -22,12 +22,6 @@ import klass.config
 [x for x in dir(klass.config) if not x.startswith("_")]
 
 # %%
-display(klass.config.TESTING)
-
-# %%
-klass.config.TESTING = True
-
-# %%
 display(klass.classification_by_id(36))
 
 # %%

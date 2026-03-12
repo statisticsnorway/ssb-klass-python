@@ -16,14 +16,6 @@ def test_convert_datestring():
 
 
 @mock.patch.object(requests.Session, "send")
-def test_get_json_testing(mock_response):
-    klass.config.TESTING = True
-    mock_response.return_value = tests.mock_response_data.classifications_fake_content()
-    classification = klass.requests.klass_requests.classifications()
-    assert len(classification["_embedded"])
-
-
-@mock.patch.object(requests.Session, "send")
 def test_classification_changed_since(mock_response):
     mock_response.return_value = tests.mock_response_data.classifications_fake_content()
     classification = klass.requests.klass_requests.classifications(
