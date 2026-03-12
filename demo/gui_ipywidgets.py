@@ -13,20 +13,20 @@
 # ---
 
 # %%
-import klass
-
-klass.search_classification()
-
-# %%
 from datetime import date
 
-import IPython.display.display
 import ipywidgets as widgets
 from IPython.display import HTML
+from IPython.display import display
 
+import klass
 from klass.classes.search import KlassSearchClassifications
 from klass.requests.sections import sections_dict
 
+# %%
+display(klass.search_classification())
+
+# %%
 DEFAULT_CHOICE = "Choose..."
 
 
@@ -61,7 +61,7 @@ def search_classification(no_dupes: bool = True) -> widgets.VBox:
 
         with search_result:
             search_result.clear_output()
-            IPython.display.display("Searching...")  # type: ignore
+            display("Searching...")  # type: ignore
             # Add loading-gif?
 
         try:
@@ -82,7 +82,7 @@ def search_classification(no_dupes: bool = True) -> widgets.VBox:
 
         with search_result:
             search_result.clear_output()
-            IPython.display.display(HTML(search_content))  # type: ignore
+            display(HTML(search_content))  # type: ignore
 
     sections = [DEFAULT_CHOICE, *list(sections_dict().keys())]
     section_dropdown = widgets.Dropdown(
@@ -137,9 +137,10 @@ def format_classification_text(search_class: KlassSearchClassifications) -> str:
     return search_content
 
 
-search_classification()
+# %%
+display(search_classification())
 
 # %%
-KlassSearchClassifications("Utdanning", include_codelists=True, no_dupes=True)
+display(KlassSearchClassifications("Utdanning", include_codelists=True, no_dupes=True))
 
 # %%

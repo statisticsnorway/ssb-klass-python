@@ -1,3 +1,4 @@
+import logging
 from datetime import datetime
 from datetime import timedelta
 from datetime import timezone
@@ -30,6 +31,7 @@ from ..requests.validate import validate_params
 # ##########
 
 URL_PART_CLASS = "classifications/"
+logger = logging.getLogger(__name__)
 
 
 def get_json(url: str, params: ParamsAfterType) -> Any:
@@ -45,8 +47,7 @@ def get_json(url: str, params: ParamsAfterType) -> Any:
         Any: The JSON response from the endpoint, hard to type because all endpoints have differently structured responses.
     """
     req = requests.Request("GET", url=url, headers=config.HEADERS, params=params)
-    if config.TESTING:
-        print("Full URL, check during testing:", req.prepare().url)
+    logger.debug("Full URL: %s", req.prepare().url)
     response = requests.Session().send(req.prepare())
     response.raise_for_status()
     result: Any = response.json()

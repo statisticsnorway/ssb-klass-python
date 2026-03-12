@@ -10,8 +10,6 @@ def test_search_families_by_id_has_str_repr(klass_search_families_by_id_success)
     assert klass_search_families_by_id_success.__repr__()
     assert len(klass_search_families_by_id_success.__str__())
     assert len(klass_search_families_by_id_success.__repr__())
-    print(klass_search_families_by_id_success)
-    repr(klass_search_families_by_id_success)
 
 
 def test_search_families_simple_search_result(klass_search_families_by_id_success):

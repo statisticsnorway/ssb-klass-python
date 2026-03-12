@@ -13,6 +13,8 @@
 # ---
 
 # %%
+from IPython.display import display
+
 import klass
 
 klass.__version__
@@ -31,15 +33,12 @@ nus = KlassClassification(36)
 
 # %%
 nus_codes = nus.get_codes("2023-01-01")
-print(nus_codes)
+display(nus_codes)
 
 # %%
 nus_codes.data.columns
 
 # %%
-# nus_codes.to_dict("code", "parentCode")
-
-# %%
-nus_codes.pivot_level()
+display(nus_codes.pivot_level())
 
 # %%

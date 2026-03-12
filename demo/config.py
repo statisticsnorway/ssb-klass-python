@@ -13,18 +13,15 @@
 # ---
 
 # %%
+from IPython.display import display
+
 import klass
+import klass.config
 
 # %%
 [x for x in dir(klass.config) if not x.startswith("_")]
 
 # %%
-klass.config.TESTING
-
-# %%
-klass.config.TESTING = True
-
-# %%
-klass.classification_by_id(36)
+display(klass.classification_by_id(36))
 
 # %%

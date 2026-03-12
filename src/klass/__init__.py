@@ -7,8 +7,11 @@ Where data is possible to fit into pandas DataFrames, this will be preferred, bu
 
 import importlib
 import importlib.metadata
+import logging
 
 import toml
+
+logger = logging.getLogger(__name__)
 
 
 def _try_getting_pyproject_toml(e: Exception | None = None) -> str:
@@ -21,7 +24,7 @@ def _try_getting_pyproject_toml(e: Exception | None = None) -> str:
         return version
     except Exception as e:
         version_missing: str = "0.0.0"
-        print(
+        logger.error(
             f"Error from ssb-klass-pythons __init__, not able to get version-number, setting it to {version_missing}: {passed_excep}"
         )
         return version_missing

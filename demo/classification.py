@@ -13,38 +13,40 @@
 # ---
 
 # %%
+from IPython.display import display
+
 from klass import KlassClassification
 
 # %%
 # ID found from website: https://www.ssb.no/klass/
 nus = KlassClassification(36, language="en", include_future=True)
-print(nus)
+display(nus)
 
 # %%
-repr(nus)
+display(repr(nus))
 
 # %%
 # Reformatting for fun
-nus.versions_dict()
+display(nus.versions_dict())
 
 # %%
 nuskoder = nus.get_codes("2023-01-01")
-print(nuskoder)
+display(nuskoder)
 
 # %%
-nuskoder.pivot_level()
+display(nuskoder.pivot_level())
 
 # %%
-nuskoder.data
+display(nuskoder.data)
 
 # %%
 # The actual data is under the .data attribute
-nuskoder.data
+display(nuskoder.data)
 
 # %%
 # Pivots levels into seperate columns
-nuskoder.pivot_level()
+display(nuskoder.pivot_level())
 
 # %%
 # You can filter to a level when getting codes, and then make dict from that level
-nus.get_codes("2023-01-01", select_level=5).to_dict()
+display(nus.get_codes("2023-01-01", select_level=5).to_dict())

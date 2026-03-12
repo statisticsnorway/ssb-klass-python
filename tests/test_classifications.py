@@ -24,8 +24,6 @@ def test_classification_has_str_repr(klass_classification_success):
     assert klass_classification_success.__repr__()
     assert len(klass_classification_success.__str__())
     assert len(klass_classification_success.__repr__())
-    print(klass_classification_success)
-    repr(klass_classification_success)
 
 
 def test_version_dict(klass_classification_success):

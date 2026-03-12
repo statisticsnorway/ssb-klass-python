@@ -13,6 +13,8 @@
 # ---
 
 # %%
+from IPython.display import display
+
 from klass import KlassCorrespondence
 
 # %%
@@ -28,10 +30,10 @@ fylke_komm = KlassCorrespondence(
 )
 
 # %%
-print(fylke_komm)
+display(fylke_komm)
 
 # %%
-fylke_komm.data
+display(fylke_komm.data)
 
 # %%
-fylke_komm.to_dict("sourceName", "targetName")
+display(fylke_komm.to_dict("sourceName", "targetName"))

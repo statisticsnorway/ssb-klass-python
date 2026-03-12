@@ -14,6 +14,7 @@
 
 # %%
 import pandas as pd
+from IPython.display import display
 
 from klass import KlassClassification
 
@@ -34,6 +35,6 @@ fyl = (
 # %%
 kom["fylkesnummer"] = kom["kommunenummer"].str[:2]
 komfyl = pd.merge(kom, fyl, how="left", on="fylkesnummer")
-komfyl
+display(komfyl)
 
 # %%

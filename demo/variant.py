@@ -13,6 +13,8 @@
 # ---
 
 # %%
+from IPython.display import display
+
 from klass import KlassVariant
 from klass import KlassVariantSearchByName
 
@@ -20,14 +22,14 @@ from klass import KlassVariantSearchByName
 studpoeng = KlassVariantSearchByName(36, "Studiepoeng ved fagskole", "2023-01-01")
 
 # %%
-print(studpoeng)
+display(studpoeng)
 
 # %%
-studpoeng.get_variant()
+display(studpoeng.get_variant())
 
 # %%
 studpoeng2 = KlassVariant(1959)
-print(studpoeng2)
+display(studpoeng2)
 
 # %%
-studpoeng2.data
+display(studpoeng2.data)

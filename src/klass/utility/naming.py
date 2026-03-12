@@ -20,7 +20,6 @@ def create_shortname(elem: Any, shortname_len: int = 3) -> str:
         raise ValueError("Object is missing valid target/name attribute.")
     else:
         name = elem.name
-    print(name)
     name = name.lower()
     replace = {
         k: ""
