@@ -1,4 +1,5 @@
 {
+  "_commit": "9bcf1a4225d41ff99ff3f048568165f38b525daa",
   "_copy_without_render": [
     "*.rst_t"
   ],
@@ -11,6 +12,8 @@
   "code_quality_level": "Medium",
   "copyright_owner": "Statistics Norway",
   "copyright_year": "2023",
+  "department_number": "",
+  "dependency_manager_tool": "poetry",
   "development_status": "Development Status :: 4 - Beta",
   "email": "ssb-pythonistas@ssb.no",
   "friendly_name": "KLASS",

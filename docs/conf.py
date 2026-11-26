@@ -8,23 +8,21 @@
 
 # -- Path setup --------------------------------------------------------------
 
-# If extensions (or modules to document with autodoc) are in another directory,
-# add these directories to sys.path here. If the directory is relative to the
-# documentation root, use os.path.abspath to make it absolute, like shown here.
-#
-import os
+# Resolve paths relative to this file for both local builds and CI.
 import sys
+from pathlib import Path
+
 import toml
 
-sys.path.insert(0, os.path.abspath("../src"))
-
+project_root = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(project_root / "src"))
 
 # -- Project information -----------------------------------------------------
 
 project = "KLASS"
 copyright = "2023, Statistics Norway"
 author = "Carl Corneil, ssb-pythonistas"
-version = toml.load("../pyproject.toml")["project"]["version"]
+version = toml.load(project_root / "pyproject.toml")["project"]["version"]
 
 # -- General configuration ---------------------------------------------------
 

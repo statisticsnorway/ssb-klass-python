@@ -23,7 +23,7 @@ def search_classification(no_dupes: bool = True) -> widgets.VBox:
     Returns:
         widgets.VBox: Containing the nested ipywidgets-GUI. Jupyter will automatically display it.
     """
-    search_result: widgets.output = widgets.Output()
+    search_result: widgets.Output = widgets.Output()
     search_term: widgets.Text = widgets.Text(
         value="", placeholder="Searchterm", description="Type searchterm:"
     )

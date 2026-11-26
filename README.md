@@ -17,7 +17,6 @@
 [pypi status]: https://pypi.org/project/ssb-klass-python/
 [documentation]: https://statisticsnorway.github.io/ssb-klass-python
 [tests]: https://github.com/statisticsnorway/ssb-klass-python/actions?workflow=Tests
-
 [sonarcov]: https://sonarcloud.io/summary/overall?id=statisticsnorway_ssb-klass-python
 [sonarquality]: https://sonarcloud.io/summary/overall?id=statisticsnorway_ssb-klass-python
 [pre-commit]: https://github.com/pre-commit/pre-commit

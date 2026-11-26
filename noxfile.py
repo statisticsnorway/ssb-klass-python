@@ -4,6 +4,7 @@ import os
 import shlex
 import shutil
 import sys
+import tempfile
 from pathlib import Path
 from textwrap import dedent
 
@@ -22,13 +23,10 @@ except ImportError:
     raise SystemExit(dedent(message)) from None
 
 package = "klass"
-python_versions = [
-    "3.10",
-    "3.11",
-    "3.12",
-    "3.13",
-]  # Before changing, make sure prodsone runs high enough
-nox.needs_version = ">= 2021.6.6"
+# Check the production runtime before raising the minimum version.
+python_versions = ["3.10", "3.11", "3.12", "3.13", "3.14"]
+tooling_python = "3.13"
+nox.needs_version = ">= 2025.2.9"
 nox.options.sessions = [
     "pre-commit",
     "mypy",
@@ -37,6 +35,22 @@ nox.options.sessions = [
     "xdoctest",
     "docs-build",
 ]
+
+
+def install_poetry_groups(session: Session, *groups: str) -> None:
+    """Install dependency groups pinned by Poetry's lock file."""
+    # nox-poetry does not discover PEP 735 groups yet.
+    with tempfile.TemporaryDirectory() as tempdir:
+        requirements = Path(tempdir) / "requirements.txt"
+        session.run_install(
+            "poetry",
+            "export",
+            f"--only={','.join(groups)}",
+            "--without-hashes",
+            f"--output={requirements}",
+            external=True,
+        )
+        session.install("--no-deps", "-r", str(requirements))
 
 
 def activate_virtualenv_in_precommit_hooks(session: Session) -> None:
@@ -102,7 +116,9 @@ def activate_virtualenv_in_precommit_hooks(session: Session) -> None:
             continue
 
         lines = text.splitlines()
-        hook.write_text(insert_header_in_hook(headers, lines))
+        hook.write_text(
+            insert_header_in_hook(headers, lines)
+        )  # NOSONAR - Safe because hardcoded local directory, and not user-controlled input.
 
 
 def is_bindir_in_text(bindirs: list[str], text: str) -> bool:
@@ -122,7 +138,7 @@ def insert_header_in_hook(header: dict[str, str], lines: list[str]) -> str:
     return "\n".join(lines)
 
 
-@session(name="pre-commit", python=python_versions[-1])
+@session(name="pre-commit", python=tooling_python)
 def precommit(session: Session) -> None:
     """Lint using pre-commit."""
     args = session.posargs or [
@@ -131,13 +147,7 @@ def precommit(session: Session) -> None:
         "--hook-stage=manual",
         "--show-diff-on-failure",
     ]
-    session.install(
-        "pre-commit",
-        "pre-commit-hooks",
-        "pydoclint",
-        "ruff",
-        "black",
-    )
+    install_poetry_groups(session, "lint")
     session.run("pre-commit", *args)
     if args and args[0] == "install":
         activate_virtualenv_in_precommit_hooks(session)
@@ -151,25 +161,15 @@ def mypy(session: Session) -> None:
         "src",
     ]  # , "tests"] #Ignoring tests for now
     session.install(".")
-    session.install(
-        "mypy",
-        "pytest",
-        "pandas-stubs",
-        "types-requests",
-        "types-python-dateutil",
-        "types-toml",
-        "typing-extensions",
-    )
+    install_poetry_groups(session, "typing", "test")
     session.run("mypy", *args)
-    if not session.posargs:
-        session.run("mypy", f"--python-executable={sys.executable}", "noxfile.py")
 
 
 @session(python=python_versions)
 def tests(session: Session) -> None:
     """Run the test suite."""
     session.install(".")
-    session.install("coverage[toml]", "pytest", "pygments")
+    install_poetry_groups(session, "test")
     try:
         session.run(
             "coverage",
@@ -186,33 +186,22 @@ def tests(session: Session) -> None:
             session.notify("coverage", posargs=[])
 
 
-@session(python=python_versions[-1])
+@session(python=tooling_python)
 def coverage(session: Session) -> None:
     """Produce the coverage report."""
     args = session.posargs or ["report", "--skip-empty"]
-
-    session.install("coverage[toml]")
-
+    install_poetry_groups(session, "test")
     if not session.posargs and any(Path().glob(".coverage.*")):
         session.run("coverage", "combine")
 
     session.run("coverage", *args)
 
 
-@session(python=python_versions[-1])
+@session(python=tooling_python)
 def typeguard(session: Session) -> None:
     """Runtime type checking using Typeguard."""
     session.install(".")
-    session.install(
-        "pytest",
-        "typeguard",
-        "pygments",
-        "pandas-stubs",
-        "types-requests",
-        "types-python-dateutil",
-        "types-toml",
-        "typing-extensions",
-    )
+    install_poetry_groups(session, "test", "typing")
     session.run("pytest", f"--typeguard-packages={package}", *session.posargs)
 
 
@@ -227,11 +216,11 @@ def xdoctest(session: Session) -> None:
             args.append("--colored=1")
 
     session.install(".")
-    session.install("xdoctest[colors]")
+    install_poetry_groups(session, "test")
     session.run("python", "-m", "xdoctest", *args)
 
 
-@session(name="docs-build", python=python_versions[-1])
+@session(name="docs-build", python=tooling_python)
 def docs_build(session: Session) -> None:
     """Build the documentation."""
     args = session.posargs or ["docs", "docs/_build"]
@@ -239,9 +228,7 @@ def docs_build(session: Session) -> None:
         args.insert(0, "--color")
 
     session.install(".")
-    session.install(
-        "sphinx", "sphinx-autodoc-typehints", "sphinx-click", "furo", "myst-parser"
-    )
+    install_poetry_groups(session, "doc")
 
     build_dir = Path("docs", "_build")
     if build_dir.exists():
@@ -250,19 +237,12 @@ def docs_build(session: Session) -> None:
     session.run("sphinx-build", *args)
 
 
-@session(python=python_versions[-1])
+@session(python=tooling_python)
 def docs(session: Session) -> None:
     """Build and serve the documentation with live reloading on file changes."""
     args = session.posargs or ["--open-browser", "docs", "docs/_build"]
     session.install(".")
-    session.install(
-        "sphinx",
-        "sphinx-autobuild",
-        "sphinx-autodoc-typehints",
-        "sphinx-click",
-        "furo",
-        "myst-parser",
-    )
+    install_poetry_groups(session, "doc")
 
     build_dir = Path("docs", "_build")
     if build_dir.exists():

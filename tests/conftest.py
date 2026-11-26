@@ -2,14 +2,28 @@ from unittest import mock
 
 import pytest
 
-import klass
-import tests.mock_request_functions as mock_returns
+
+# Defer package imports until pytest has configured the Typeguard import hook.
+@pytest.fixture(scope="session")
+def klass():
+    import klass as klass_package
+
+    return klass_package
+
+
+@pytest.fixture(scope="session")
+def mock_returns():
+    from tests import mock_request_functions
+
+    return mock_request_functions
 
 
 @pytest.fixture
 @mock.patch("klass.classes.classification.classification_by_id")
-@mock.patch.object(klass.KlassClassification, "get_changes")
-def klass_classification_success(test_changes, tesClassificationsByIdType):
+@mock.patch("klass.KlassClassification.get_changes")
+def klass_classification_success(
+    test_changes, tesClassificationsByIdType, klass, mock_returns
+):
     test_changes.return_value = mock_returns.changes_success()
     tesClassificationsByIdType.return_value = (
         mock_returns.classification_by_id_success()
@@ -22,7 +36,9 @@ def klass_classification_success(test_changes, tesClassificationsByIdType):
 
 @pytest.fixture
 @mock.patch("klass.classes.search.classification_search")
-def klass_classification_search_success(test_classification_search):
+def klass_classification_search_success(
+    test_classification_search, klass, mock_returns
+):
     test_classification_search.return_value = (
         mock_returns.classification_search_success()
     )
@@ -31,14 +47,14 @@ def klass_classification_search_success(test_classification_search):
 
 @pytest.fixture
 @mock.patch("klass.classes.search.classification_search")
-def klass_classification_search_empty(test_classification_search):
+def klass_classification_search_empty(test_classification_search, klass, mock_returns):
     test_classification_search.return_value = mock_returns.classification_search_empty()
     return klass.KlassSearchClassifications("Nus")
 
 
 @pytest.fixture
 @mock.patch("klass.classes.codes.codes_at")
-def klass_codes_at_success(test_codes_at):
+def klass_codes_at_success(test_codes_at, klass, mock_returns):
     test_codes_at.return_value = mock_returns.codes_at_success()
     return klass.KlassCodes(
         36,
@@ -54,7 +70,7 @@ def klass_codes_at_success(test_codes_at):
 
 @pytest.fixture
 @mock.patch("klass.classes.version.version_by_id")
-def klass_version_success(test_version_success):
+def klass_version_success(test_version_success, klass, mock_returns):
     test_version_success.return_value = mock_returns.version_by_id_success()
     return klass.KlassVersion(
         "1954",
@@ -66,7 +82,7 @@ def klass_version_success(test_version_success):
 
 @pytest.fixture
 @mock.patch("klass.classes.variant.variants_by_id")
-def klass_variant_success(test_variant_success):
+def klass_variant_success(test_variant_success, klass, mock_returns):
     test_variant_success.return_value = mock_returns.variants_by_id_success()
     return klass.KlassVariant(36)
 
@@ -74,7 +90,7 @@ def klass_variant_success(test_variant_success):
 @pytest.fixture
 @mock.patch("klass.classes.variant.variant_at")
 @mock.patch("klass.classes.variant.variant")
-def klass_variant_search_success(test_variant, test_variant_at):
+def klass_variant_search_success(test_variant, test_variant_at, klass, mock_returns):
     test_variant.return_value = mock_returns.variant_success()
     test_variant_at.return_value = mock_returns.variant_at_success()
     return klass.KlassVariantSearchByName("0", "Variant name", "2023-01-01")
@@ -84,7 +100,7 @@ def klass_variant_search_success(test_variant, test_variant_at):
 @mock.patch("klass.classes.correspondence.correspondence_table_by_id")
 @mock.patch("klass.classes.correspondence.corresponds")
 def klass_correspondence_from_id_success(
-    tescorrespondstype, test_correspondence_table_by_id
+    tescorrespondstype, test_correspondence_table_by_id, klass, mock_returns
 ):
     tescorrespondstype.return_value = mock_returns.corresponds_success()
     test_correspondence_table_by_id.return_value = (
@@ -97,7 +113,7 @@ def klass_correspondence_from_id_success(
 @mock.patch("klass.classes.correspondence.correspondence_table_by_id")
 @mock.patch("klass.classes.correspondence.corresponds")
 def klass_correspondence_between_classifications_success(
-    test_correspondstype, test_correspondence_table_by_id
+    test_correspondstype, test_correspondence_table_by_id, klass, mock_returns
 ):
     test_correspondstype.return_value = mock_returns.corresponds_success()
     test_correspondence_table_by_id.return_value = (
@@ -114,7 +130,7 @@ def klass_correspondence_between_classifications_success(
 @pytest.fixture
 @mock.patch("klass.classes.family.classificationfamilies_by_id")
 def klass_search_families_by_id_success(
-    test_classificationfamilies_by_id,
+    test_classificationfamilies_by_id, klass, mock_returns
 ):
     test_classificationfamilies_by_id.return_value = (
         mock_returns.classificationfamilies_by_id_success()
