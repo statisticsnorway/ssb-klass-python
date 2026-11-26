@@ -1,11 +1,14 @@
 import datetime
 from unittest import mock
+from urllib.parse import parse_qs
+from urllib.parse import urlsplit
 
 import pandas as pd
+import pytest
 import requests
 
 import klass
-import tests
+import tests.mock_response_data
 
 
 def test_convert_datestring():
@@ -15,13 +18,21 @@ def test_convert_datestring():
     assert len(date_str)
 
 
+@pytest.mark.parametrize(
+    "changed_since",
+    ["2022-01-01T00:00:00:123+00:00", "2022-01-01T00:00:00.123+00:00"],
+)
 @mock.patch.object(requests.Session, "send")
-def test_classification_changed_since(mock_response):
+def test_classification_changed_since(mock_response, changed_since):
     mock_response.return_value = tests.mock_response_data.classifications_fake_content()
     classification = klass.requests.klass_requests.classifications(
-        include_codelists=True, changed_since="2022-01-01T00:00:00:000+00:00"
+        include_codelists=True, changed_since=changed_since
     )
     assert classification["_embedded"]
+    request = mock_response.call_args.args[0]
+    assert parse_qs(urlsplit(request.url).query)["changedSince"] == [
+        "2022-01-01T00:00:00.123+01:00"
+    ]
 
 
 @mock.patch.object(requests, "get")

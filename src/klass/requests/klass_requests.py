@@ -1,4 +1,5 @@
 import logging
+import re
 from datetime import datetime
 from datetime import timedelta
 from datetime import timezone
@@ -60,6 +61,12 @@ def convert_datestring(date: str | datetime, return_type: str = "isoklass") -> s
     Convert it to the expected string format of the API.
     """
     if isinstance(date, str):
+        # Accept older timestamp inputs with a colon before the milliseconds.
+        date = re.sub(
+            r"^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}):(?=\d{3}(?:Z|[+-]\d{2}:?\d{2})?$)",
+            r"\1.",
+            date,
+        )
         try:
             date_time: datetime = dateutil.parser.parse(date)
         except ParserError:
