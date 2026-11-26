@@ -32,9 +32,9 @@ Request features on the [Issue Tracker].
 
 ## How to set up your development environment
 
-You need Python 3.10+ and the following tools:
+The package supports Python 3.10 and newer. Use Python 3.13 for the pre-commit and documentation sessions. Development requires these tools:
 
-- [Poetry]
+- [Poetry] 2.3 or newer
 - [Nox]
 - [nox-poetry]
 
@@ -58,23 +58,22 @@ pipx install nox
 pipx inject nox nox-poetry
 ```
 
-Install the pre-commit hooks
-
-```console
-nox --session=pre-commit -- install
-```
-
 Install the package with development requirements:
 
 ```console
 poetry install
 ```
 
-You can now run an interactive Python session, or your app:
+Install the pre-commit hooks:
+
+```console
+nox --session=pre-commit -- install
+```
+
+You can now run an interactive Python session:
 
 ```console
 poetry run python
-poetry run ssb-klass-python
 ```
 
 ## How to test the project
