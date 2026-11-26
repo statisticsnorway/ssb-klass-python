@@ -48,7 +48,7 @@ test = [
     "pygments>=2.19.0",
     "pytest>=9.0.0",
     "pytest-cov>=4.0.0",
-    "typeguard>=2.13.3",
+    "typeguard>=3.0",
     "xdoctest[colors]>=1.3.0",
 ]
 typing = [
@@ -100,6 +100,7 @@ DEP001 = ["nox", "nox_poetry"]  # packages available by default
 
 [tool.mypy]
 strict = true
+mypy_path = "$MYPY_CONFIG_FILE_DIR/src"
 warn_unreachable = true
 pretty = true
 show_column_numbers = true

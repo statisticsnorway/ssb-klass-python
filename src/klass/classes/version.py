@@ -6,6 +6,7 @@ from ..requests.klass_requests import version_by_id
 from ..requests.klass_types import CorrespondenceTablesType
 from ..requests.klass_types import Language
 from ..requests.klass_types import VersionByIDType
+from ..requests.klass_types import VersionVariantType
 from ..utility.naming import create_shortname
 from .correspondence import KlassCorrespondence
 from .variant import KlassVariant
@@ -59,7 +60,7 @@ class KlassVersion:
             "correspondenceTables"
         ]
         if "classificationVariants" in result:
-            self.classificationVariants: list[CorrespondenceTablesType] = result[
+            self.classificationVariants: list[VersionVariantType] = result[
                 "classificationVariants"
             ]
         self.changelogs: list[dict[str, str]] = result["changelogs"]
@@ -250,13 +251,13 @@ class KlassVersion:
                         )
         return data
 
-    def correspondences_simple(self) -> dict[str, dict[str, str]]:
+    def correspondences_simple(self) -> dict[str, dict[str, int | str]]:
         """Get a simple dictionary of the correspondences.
 
         With the IDs as keys.
 
         Returns:
-            dict[str, dict[str, str]]: A nested dictionary of the available correspondences.
+            dict[str, dict[str, int | str]]: A nested dictionary of the available correspondences.
         """
         tables = {}
         for tab in self.correspondenceTables:

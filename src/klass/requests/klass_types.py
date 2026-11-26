@@ -54,19 +54,33 @@ ParamsAfterType = TypedDict(
 )
 
 
-class CorrespondenceTablesType(TypedDict):
-    """The type in the correspondanceTables attribute."""
+class _VersionResourceType(TypedDict):
+    """Metadata shared by the related resources in a version response."""
 
     name: str
     contactPerson: dict[str, str]
     owningSection: str
     lastModified: str
     published: list[str]
-    source: NotRequired[str]
-    sourceId: NotRequired[str]
-    target: NotRequired[str]
-    targetId: NotRequired[str]
     _links: dict[str, dict[str, str]]
+
+
+class CorrespondenceTablesType(_VersionResourceType):
+    """A summary of a correspondence table in a version response."""
+
+    source: NotRequired[str]
+    sourceId: NotRequired[int | str]
+    target: NotRequired[str]
+    targetId: NotRequired[int | str]
+    changeTable: NotRequired[bool]
+    sourceLevel: NotRequired[str | None]
+    targetLevel: NotRequired[str | None]
+
+
+class VersionVariantType(_VersionResourceType):
+    """A summary of a classification variant in a version response."""
+
+    id: NotRequired[int]
 
 
 class VersionPartType(TypedDict):
@@ -84,6 +98,7 @@ class VersionPartType(TypedDict):
 class VariantsByIdType(TypedDict):
     """The type returned by the variants_by_id function."""
 
+    id: NotRequired[int]
     validTo: NotRequired[str]
     legalBase: NotRequired[str]
     publications: NotRequired[str]
@@ -171,7 +186,7 @@ class VersionByIDType(TypedDict):
     publications: NotRequired[str]
     derivedFrom: NotRequired[str]
     correspondenceTables: list[CorrespondenceTablesType]
-    classificationVariants: NotRequired[list[CorrespondenceTablesType]]
+    classificationVariants: NotRequired[list[VersionVariantType]]
     changelogs: list[dict[str, str]]
     levels: list[dict[str, int | str]]
     classificationItems: list[dict[str, str | None]]
@@ -208,11 +223,13 @@ class CorrespondenceTableIdType(TypedDict):
     description: str
     changelogs: list[str]
     correspondenceMaps: T_correspondanceMaps
+    _links: NotRequired[dict[str, dict[str, str]]]
 
 
 class ClassificationFamiliesPartWithNumberType(TypedDict):
     """Type for each of the classifications returned by a classificationfamilies-search."""
 
+    id: NotRequired[int]
     family_id: NotRequired[str]
     name: str
     numberOfClassifications: int

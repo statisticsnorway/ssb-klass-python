@@ -2,6 +2,7 @@ from unittest import mock
 
 import pandas as pd
 import pytest
+from typeguard import suppress_type_checks
 
 import tests.mock_request_functions as mock_returns
 
@@ -51,5 +52,6 @@ def test_version_get_variant_missing_identifier_raises(klass_version_success):
 
 
 def test_version_get_variant_non_string_search_term_raises(klass_version_success):
-    with pytest.raises(ValueError):
+    # Exercise the method's own validation for callers without type checking.
+    with suppress_type_checks(), pytest.raises(ValueError):
         klass_version_success.get_variant(search_term=123)  # type: ignore[arg-type]
