@@ -62,11 +62,11 @@ def convert_datestring(date: str | datetime, return_type: str = "isoklass") -> s
     """
     if isinstance(date, str):
         # Accept older timestamp inputs with a colon before the milliseconds.
-        date = re.sub(
-            r"^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}):(?=\d{3}(?:Z|[+-]\d{2}:?\d{2})?$)",
-            r"\1.",
-            date,
-        )
+        legacy_time = re.match(r"(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}):", date)
+        if legacy_time:
+            fraction_and_offset = date[legacy_time.end() :]
+            if re.match(r"\d{3}(?:Z|[+-]\d{2}:?\d{2})?$", fraction_and_offset):
+                date = f"{legacy_time[1]}.{fraction_and_offset}"
         try:
             date_time: datetime = dateutil.parser.parse(date)
         except ParserError:

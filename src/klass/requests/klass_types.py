@@ -1,11 +1,10 @@
 from typing import Literal
-from typing import TypeAlias
 
 from typing_extensions import NotRequired
 from typing_extensions import TypedDict
 
-Language: TypeAlias = Literal["nb", "nn", "en"]
-OptionalLanguage: TypeAlias = Language | Literal[""] | None
+Language = Literal["nb", "nn", "en"]
+OptionalLanguage = Language | Literal[""] | None
 
 # Keeping these two as non-class, declarative, as the API operates with the parameter "from", which is a reserved keyword in Python
 ParamsBeforeType = TypedDict(
